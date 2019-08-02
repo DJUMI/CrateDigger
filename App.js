@@ -1,73 +1,62 @@
-import React from 'react';
-import { Button, View, Text } from 'react-native';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
+import React, { useState } from 'react';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-class HomeScreen extends React.Component {
-  render() {
+import AppNavigator from './navigation/AppNavigator';
+
+export default function App(props) {
+  const [isLoadingComplete, setLoadingComplete] = useState(false);
+
+  if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Helllloooo!!!!</Text>
-        <Button
-          title="Go to Details"
-          onPress={() => {
-            /* 1. Navigate to the Details route with params */
-            this.props.navigation.navigate('Details', {
-              itemId: 86,
-              otherParam: 'anything you want here',
-            });
-          }}
-        />
+      <AppLoading
+        startAsync={loadResourcesAsync}
+        onError={handleLoadingError}
+        onFinish={() => handleFinishLoading(setLoadingComplete)}
+      />
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <AppNavigator />
       </View>
     );
   }
 }
 
-class DetailsScreen extends React.Component {
-  render() {
-    /* 2. Get the param, provide a fallback value if not available */
-    const { navigation } = this.props;
-    const itemId = navigation.getParam('itemId', 'NO-ID');
-    const otherParam = navigation.getParam('otherParam', 'some default value');
-
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Details Screen</Text>
-        <Text>itemId: {JSON.stringify(itemId)}</Text>
-        <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-        <Button
-          title="Go to Details... again"
-          onPress={() =>
-            this.props.navigation.push('Details', {
-              itemId: Math.floor(Math.random() * 100),
-            })}
-        />
-        <Button
-          title="Go to Home"
-          onPress={() => this.props.navigation.navigate('Home')}
-        />
-        <Button
-          title="Go back"
-          onPress={() => this.props.navigation.goBack()}
-        />
-      </View>
-    );
-  }
+async function loadResourcesAsync() {
+  await Promise.all([
+    Asset.loadAsync([
+      require('./assets/images/robot-dev.png'),
+      require('./assets/images/robot-prod.png'),
+    ]),
+    Font.loadAsync({
+      // This is the font that we are using for our tab bar
+      ...Ionicons.font,
+      // We include SpaceMono because we use it in HomeScreen.js. Feel free to
+      // remove this if you are not using it in your app
+      'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+    }),
+  ]);
 }
 
-const RootStack = createStackNavigator(
-  {
-    Home: HomeScreen,
-    Details: DetailsScreen,
+function handleLoadingError(error) {
+  // In this case, you might want to report the error to your error reporting
+  // service, for example Sentry
+  console.warn(error);
+}
+
+function handleFinishLoading(setLoadingComplete) {
+  setLoadingComplete(true);
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  {
-    initialRouteName: 'Home',
-  }
-);
-
-const AppContainer = createAppContainer(RootStack);
-
-export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
-  }
-}
+});
