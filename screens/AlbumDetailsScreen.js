@@ -1,34 +1,41 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { SearchBar } from 'react-native-elements';
-import {
+import { 
+  ScrollView,
   StyleSheet,
   Text,
+  Image,
   View,
+  TouchableOpacity,
 } from 'react-native';
 
 import HomeList from '../components/HomeList';
 
-export default function HomeScreen() {
-
+export default function AlbumDetailsScreen() {
+  let pic = {
+    uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+  };
   return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.shopText}>JiggyJamz</Text>
-          <Text style={styles.appNameText}>Crate Digger</Text>
+    <ScrollView style={styles.container}>
+      <View style={styles.albumInfoContainer}>
+        <Text style={styles.artistText}>Artist Name</Text>
+        <Text style={styles.titleText}>Release Name</Text>
+        <Text style={styles.labelText}>Label Name</Text>
+        <View style={styles.imageContainer}>
+          <Image source={pic} style={{width: 200, height: 200, borderRadius: 15}}/>
         </View>
-        
-        <SearchBar
-          placeholder="Type here..."
-          round
-          containerStyle={styles.searchBarContainer}
-          //lightTheme
-        />
-        
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>What's New</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          /* Add to Cart */
+        }}
+      >
+        <Text style={styles.buttonText}>+ Add to Cart</Text>
+      </TouchableOpacity>
+
+      <View style={styles.listHeader}>
+          <Text style={styles.listHeaderText}>More from this artist</Text>
         </View>
 
         <View style={styles.listContainer}>
@@ -47,7 +54,7 @@ export default function HomeScreen() {
         </View>
         
         <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>What's Hot</Text>
+          <Text style={styles.listHeaderText}>More from this Label</Text>
         </View>
 
         <View style={styles.listContainer2}>
@@ -64,46 +71,50 @@ export default function HomeScreen() {
             ]}
           />
         </View>
-          
-
-
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
-HomeScreen.navigationOptions = {
+AlbumDetailsScreen.navigationOptions = {
   header: null,
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5bdfd5',
-    justifyContent: 'flex-end',
-  },
-  contentContainer: {
     paddingTop: 30,
-    justifyContent: 'flex-end',
+    backgroundColor: '#5bdfd5',
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
+  albumInfoContainer: {
+    margin: 5,
+    paddingLeft: 10,
   },
-  shopText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  appNameText: {
+  artistText: {
     fontSize: 20,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-    marginBottom: 10,
   },
-  searchBarContainer: {
+  titleText: {
+    fontSize: 25,
+  },
+  labelText: {
+    fontSize: 20,
+  },
+  imageContainer: {
+    paddingVertical: 5,
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: '#800909',
+    backgroundColor: 'red',
+    marginBottom: 10,
+    marginLeft: 15,
+    width: 120,
+    height: 20,
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  buttonText: {
+    flex: 1,
+    fontSize: 15,
   },
   listHeader: {
     alignItems: 'center',

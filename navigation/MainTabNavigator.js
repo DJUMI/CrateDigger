@@ -4,8 +4,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import AlbumDetailsScreen from '../screens/AlbumDetailsScreen';
+import SearchResultsScreen from '../screens/SearchResultsScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -35,42 +35,42 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
+const AlbumDetailsStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    Details: AlbumDetailsScreen,
   },
   config
 );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+AlbumDetailsStack.navigationOptions = {
+  tabBarLabel: 'Details',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
 };
 
-LinksStack.path = '';
+AlbumDetailsStack.path = '';
 
-const SettingsStack = createStackNavigator(
+const SearchResultsStack = createStackNavigator(
   {
-    Settings: SettingsScreen,
+    SearchResults: SearchResultsScreen,
   },
   config
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+SearchResultsStack.navigationOptions = {
+  tabBarLabel: 'Search Results',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
   ),
 };
 
-SettingsStack.path = '';
+SearchResultsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  AlbumDetailsStack,
+  SearchResultsStack,
 });
 
 tabNavigator.path = '';
