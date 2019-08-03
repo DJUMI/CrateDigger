@@ -1,11 +1,11 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { SearchBar } from 'react-native-elements';
 import {
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+
+import { SearchBar } from 'react-native-elements';
 
 import HomeList from '../components/HomeList';
 
@@ -24,7 +24,7 @@ export default function HomeScreen() {
           placeholder="Type here..."
           round
           lightTheme
-          containerStyle={styles.searchBarContainer}
+          //containerStyle={styles.searchBarContainer}
           /* TODO: implement search */
         />
         

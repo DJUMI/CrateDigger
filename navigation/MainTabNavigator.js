@@ -9,6 +9,8 @@ import SearchResultsScreen from '../screens/SearchResultsScreen';
 import CartScreen from '../screens/CartScreen';
 import RandomScreen from '../screens/RandomScreen';
 import RecommendScreen from '../screens/RecommendScreen';
+import SearchScreen from '../screens/SearchScreen';
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -118,8 +120,25 @@ RecommendStack.navigationOptions = {
 
 RecommendStack.path = '';
 
+const SearchStack = createStackNavigator(
+  {
+    Search: SearchScreen,
+  },
+  config
+);
+
+SearchStack.navigationOptions = {
+  tabBarLabel: 'Search',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
+  ),
+};
+
+SearchStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
+  SearchStack,
   RandomStack,
   RecommendStack,
   CartStack,

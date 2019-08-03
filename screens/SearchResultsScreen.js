@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { SearchBar, List, ListItem } from 'react-native-elements';
 
 import SearchResultsList from '../components/SearchResultsList';
 
