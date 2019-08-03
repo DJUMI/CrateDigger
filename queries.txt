@@ -1,0 +1,135 @@
+(1)get artist name using listing id
+
+DELIMITER $$
+CREATE PROCEDURE getArtistFromListing_id(IN listing_id_input bigint)
+BEGIN
+SELECT a.artist_name FROM Artist a, Listing l, Album r WHERE a.artist_id = r.artist_id AND r.release_id = l.release_id AND l.listing_id = listing_id_input;
+END $$
+DELIMITER ;
+
+(2)get release name using listing id
+
+DELIMITER $$
+CREATE PROCEDURE getAlbum_titleFromListing_id(IN listing_id_input bigint)
+BEGIN
+SELECT r.title FROM Listing l, Album r WHERE r.release_id = l.release_id AND l.listing_id = listing_id_input;
+END $$
+DELIMITER ;
+
+(3)get label name using listing id
+
+DELIMITER $$
+CREATE PROCEDURE getLabel_nameFromListing_id(IN listing_id_input bigint)
+BEGIN
+SELECT s.label_name FROM Listing l, Album r, label s WHERE r.release_id = l.release_id AND r.label_id = s.label_id AND l.listing_id = listing_id_input;
+END $$
+DELIMITER ;
+
+(4)get release year using listing id -- TODO Not in database yet
+
+
+
+(5)get format using listing id
+
+DELIMITER $$
+CREATE PROCEDURE getFormatFromListing_id(IN listing_id_input bigint)
+BEGIN
+SELECT format FROM Listing WHERE listing_id = listing_id_input;
+END $$
+DELIMITER ;
+
+(6)get price using listing id
+
+DELIMITER $$
+CREATE PROCEDURE getPriceFromListing_id(IN listing_id_input bigint)
+BEGIN
+SELECT price FROM Listing WHERE listing_id = listing_id_input;
+END $$
+DELIMITER ;
+
+(7)maybe: get image using listing id -- TODO Not in database yet
+
+
+
+(8)add item to cart using listing id -- fixed: user_id = 1 TODO should probably just remove user_id column
+
+DELIMITER $$
+CREATE PROCEDURE addListingToContains(IN listing_id_input bigint)
+BEGIN
+INSERT INTO Contains VALUES(1, listing_id_input);
+END $$
+DELIMITER ;
+
+(9)get array of 20 listings using user input -- TODO Unclear on what this means
+
+
+
+(10)get array of 20 newest listings using upload date -- TODO not in database yet
+
+
+
+(11)get array of 20 most sold listings using number of sales -- TODO Probably not going to happen
+
+
+
+(12)get random listing id
+
+DELIMITER $$
+CREATE PROCEDURE getRandomListing_id()
+BEGIN
+SELECT listing_id FROM Listing ORDER BY RAND() LIMIT 1;
+END $$
+DELIMITER ;
+
+(13)get recommended listing id based on cart -- TODO I don't think this is possible in our current timeframe
+
+
+
+(14)get array of 20 listings matching release name with user input -- TODO should I select everything from the listing table + title?
+
+DELIMITER $$
+CREATE PROCEDURE getListingFromRelease_title(IN title_input varchar(255))
+BEGIN
+SELECT r.title, l.* FROM Listing l, Album r WHERE r.release_id = l.release_id AND r.title LIKE CONCAT('%',title_input,'%') LIMIT 20;
+END $$
+DELIMITER ;
+
+(15)get array of 20 listings matching artist name with user input
+
+DELIMITER $$
+CREATE PROCEDURE getListingFromRelease_artist_name(IN artist_name_input varchar(255))
+BEGIN
+SELECT r.title, l.* FROM Listing l, Album r, Artist a WHERE r.release_id = l.release_id AND a.artist_id = r.artist_id AND a.artist_name LIKE CONCAT('%',artist_name_input,'%') LIMIT 20;
+END $$
+DELIMITER ;
+
+(16)get array of 20 listings matching label name with user input
+
+DELIMITER $$
+CREATE PROCEDURE getListingFromLabel_name(IN label_name_input varchar(255))
+BEGIN
+SELECT s.label_name, r.title, l.* FROM Listing l, Album r, label s WHERE r.release_id = l.release_id AND s.label_id = r.label_id AND s.label_name LIKE CONCAT('%',label_name_input,'%') LIMIT 20;
+END $$
+DELIMITER ;
+
+(17)get array of 20 listings matching price name with user input -- TODO not sure what this means
+
+
+
+(18)remove item from cart using listing id -- TODO removing form the contains table, then need to update cart
+
+DELIMITER $$
+CREATE PROCEDURE removeListingFromContains(IN listing_id_input bigint)
+BEGIN
+DELETE FROM Contains WHERE listing_id = listing_id_input;
+END $$
+DELIMITER ;
+
+(19)get number of items in cart with a given listing id
+
+DELIMITER $$
+CREATE PROCEDURE getNumListingsFromContains(IN listing_id_input bigint)
+BEGIN
+Select COUNT(t.listing_id) FROM (SELECT listing_id from Contains WHERE listing_id = listing_id_input) t;
+END $$
+DELIMITER ;
