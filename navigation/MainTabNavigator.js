@@ -6,6 +6,9 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import AlbumDetailsScreen from '../screens/AlbumDetailsScreen';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
+import CartScreen from '../screens/CartScreen';
+import RandomScreen from '../screens/RandomScreen';
+import RecommendScreen from '../screens/RecommendScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -45,7 +48,7 @@ const AlbumDetailsStack = createStackNavigator(
 AlbumDetailsStack.navigationOptions = {
   tabBarLabel: 'Details',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
   ),
 };
 
@@ -61,14 +64,65 @@ const SearchResultsStack = createStackNavigator(
 SearchResultsStack.navigationOptions = {
   tabBarLabel: 'Search Results',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
   ),
 };
 
 SearchResultsStack.path = '';
 
+const CartStack = createStackNavigator(
+  {
+    Cart: CartScreen,
+  },
+  config
+);
+
+CartStack.navigationOptions = {
+  tabBarLabel: 'Cart',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'} />
+  ),
+};
+
+CartStack.path = '';
+
+const RandomStack = createStackNavigator(
+  {
+    Random: RandomScreen,
+  },
+  config
+);
+
+RandomStack.navigationOptions = {
+  tabBarLabel: 'Dig',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
+  ),
+};
+
+RandomStack.path = '';
+
+const RecommendStack = createStackNavigator(
+  {
+    Recommed: RecommendScreen,
+  },
+  config
+);
+
+RecommendStack.navigationOptions = {
+  tabBarLabel: 'Recommended',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
+  ),
+};
+
+RecommendStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
+  RandomStack,
+  RecommendStack,
+  CartStack,
   AlbumDetailsStack,
   SearchResultsStack,
 });
@@ -76,3 +130,4 @@ const tabNavigator = createBottomTabNavigator({
 tabNavigator.path = '';
 
 export default tabNavigator;
+/* TODO: remove details and search results screen */

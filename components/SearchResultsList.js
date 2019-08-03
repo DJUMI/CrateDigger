@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 
-import { SearchBar} from 'react-native-elements';
+import { SearchBar, Icon } from 'react-native-elements';
 
 class SearchResultsList extends Component {
   state = {
@@ -28,26 +28,35 @@ class SearchResultsList extends Component {
       <SearchBar
       placeholder="Type here..."
       round
+      lightTheme
+      /* TODO: implement search*/
       />
     );
   }
 
   renderItem = ({ item }) => {
-    let pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-    };
     const { data } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
-          /* Navigate to the Details route with params */
+          /* TODO: Navigate to the Details route with params */
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={pic} style={styles.imageContainer}/>
+          <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemTitleText}>Item Title</Text>
+            <Text style={styles.itemOtherText}/* TODO */>Artist Name</Text>
+            <Text style={styles.itemTitleText}/* TODO */>Item Title</Text>
+            <Text style={styles.itemOtherText}/* TODO */>Label Name Year</Text>
+            <Text style={styles.itemOtherText}/* TODO */>Format</Text>
+          </View>
+          <View style={styles.arrowContainer}>      
+            <Icon 
+              name='chevron-thin-right'
+              type='entypo'
+              size= '40'
+              color= '#727776' /> 
           </View>
         </View>
       </TouchableOpacity>
@@ -74,22 +83,39 @@ export default SearchResultsList;
 const styles = StyleSheet.create({
   itemContainer: {
    flex: 1,
-   paddingTop: 5
   },
   itemInfoContainer: {
-    alignItems: 'center',
-    marginRight: 15,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#E5EEED',
+    paddingVertical: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#727776',
   },
   imageContainer: {
     borderRadius: 15,
-    width: 150,
-    height: 150,
+    width: 90,
+    height: 90,
+    marginLeft: 5,
   },
   itemTitleContainer: {
-    alignItems: 'center',
+    height: 90,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 5,
+  },
+  itemOtherText: {
+    fontSize: 15,
+    padding: 1,
   },
   itemTitleText: {
     fontSize: 20,
-    padding: 5,
-  }
+    padding: 1,
+  },
+  arrowContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    height: 90,
+  },
 })

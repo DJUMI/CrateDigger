@@ -22,21 +22,18 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    let pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-    };
     const { data } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
-          /* Navigate to the Details route with params */
+          /* TODO: Navigate to the Details route with params */
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={pic} style={styles.imageContainer}/>
+          <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemTitleText}>Item Title</Text>
+            <Text style={styles.itemTitleText}/* TODO */>Item Title</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -63,7 +60,9 @@ export default HomeList;
 const styles = StyleSheet.create({
   itemContainer: {
    flex: 1,
-   paddingTop: 5
+   paddingTop: 5,
+   alignItems: 'center',
+   justifyContent: 'center',
   },
   itemInfoContainer: {
     alignItems: 'center',

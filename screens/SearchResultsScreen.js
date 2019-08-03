@@ -1,12 +1,7 @@
 import React from 'react';
-import { 
-  ScrollView,
+import {
   StyleSheet,
-  Text,
-  Image,
   View,
-  TouchableOpacity,
-  FlatList
 } from 'react-native';
 import { SearchBar, List, ListItem } from 'react-native-elements';
 

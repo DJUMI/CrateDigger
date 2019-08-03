@@ -23,15 +23,16 @@ export default function HomeScreen() {
         <SearchBar
           placeholder="Type here..."
           round
+          lightTheme
           containerStyle={styles.searchBarContainer}
-          //lightTheme
+          /* TODO: implement search */
         />
         
         <View style={styles.listHeader}>
           <Text style={styles.listHeaderText}>What's New</Text>
         </View>
 
-        <View style={styles.listContainer}>
+        <View style={styles.listContainer}/* TODO: return list of newest releases */>
           <HomeList
             data={[
               {key: 'Devin'},
@@ -50,7 +51,7 @@ export default function HomeScreen() {
           <Text style={styles.listHeaderText}>What's Hot</Text>
         </View>
 
-        <View style={styles.listContainer2}>
+        <View style={styles.listContainer}/* TODO: return list of most sold records in past month*/>
           <HomeList
             data={[
               {key: 'Devin'},
@@ -79,7 +80,7 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5bdfd5',
+    backgroundColor: '#E5EEED',
     justifyContent: 'flex-end',
   },
   contentContainer: {
@@ -88,7 +89,6 @@ const styles = StyleSheet.create({
   },
   getStartedContainer: {
     alignItems: 'center',
-    marginHorizontal: 50,
   },
   shopText: {
     fontSize: 17,
@@ -107,8 +107,8 @@ const styles = StyleSheet.create({
   },
   listHeader: {
     alignItems: 'center',
-    backgroundColor: '#9FB6B4',
-    paddingTop: 10,
+    backgroundColor: '#E5EEED',
+    paddingVertical: 5,
   },
   listHeaderText: {
     fontSize: 25,
@@ -116,12 +116,11 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     height: 195,
-    backgroundColor: '#9FB6B4',
-    borderBottomWidth: 2,
-    borderBottomColor: 'black',
+    backgroundColor: '#ACB3B2',
+    borderTopWidth: 1,
+    borderTopColor: '#727776',
+    borderBottomWidth: 1,
+    borderBottomColor: '#727776',
+    paddingTop: 5,
   },
-  listContainer2: {
-    height: 195,
-    backgroundColor: '#9FB6B4',
-  }
 });
