@@ -39,7 +39,7 @@ class CartList extends Component {
                         <Text style={styles.buttonText}>-</Text>
                     </TouchableOpacity>
                     <View style={styles.numContainer}>
-                        <Text style={styles.numText}>1</Text>
+                        <Text style={styles.numText}/* TODO: display number of items in cart*/>1</Text>
                     </View>
                     <TouchableOpacity
                         style={styles.button}

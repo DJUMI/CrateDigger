@@ -18,6 +18,7 @@ export default function AlbumDetailsScreen() {
         <Text style={styles.titleText}/* TODO */>Release Name</Text>
         <Text style={styles.labelText}/* TODO */>Label Name Year</Text>
         <Text style={styles.labelText}/* TODO */>Format</Text>
+        <Text style={styles.labelText}/* TODO */>Price</Text>
         <View style={styles.imageContainer}>
           <Image source={require('../assets/images/vinyl.jpg')} style={{width: 175, height: 175, borderRadius: 15}}/* TODO *//>
         </View>
