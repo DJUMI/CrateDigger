@@ -8,38 +8,41 @@ import {
 
 import { SearchBar, CheckBox } from 'react-native-elements';
 
-export default function SearchScreen() {
-    return(
-        <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>Search by Release</Text>
+export default class SearchScreen extends React.Component {
+    
+    render() {
+        return(
+            <View style={styles.container}>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>Search by Release</Text>
+                </View>
+                <SearchBar
+                    placeholder="Type here..."
+                    round
+                    lightTheme
+                    /* TODO: implement search by release name */
+                />
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>Search by Artist</Text>
+                </View>
+                <SearchBar
+                    placeholder="Type here..."
+                    round
+                    lightTheme
+                    /* TODO: implement search by artist name */
+                />
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>Search by Label</Text>
+                </View>
+                <SearchBar
+                    placeholder="Type here..."
+                    round
+                    lightTheme
+                    /* TODO: implement search by label name */
+                />
             </View>
-            <SearchBar
-                placeholder="Type here..."
-                round
-                lightTheme
-                /* TODO: implement search by release name */
-            />
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>Search by Artist</Text>
-            </View>
-            <SearchBar
-                placeholder="Type here..."
-                round
-                lightTheme
-                /* TODO: implement search by artist name */
-            />
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>Search by Label</Text>
-            </View>
-            <SearchBar
-                placeholder="Type here..."
-                round
-                lightTheme
-                /* TODO: implement search by label name */
-            />
-        </View>
-    );
+        );
+    }
 }
 
 SearchScreen.navigationOptions = {

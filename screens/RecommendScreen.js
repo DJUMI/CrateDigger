@@ -9,7 +9,7 @@ import {
 
 import { DeckSwiper } from 'native-base';
 
-export default function RecommendScreen() {
+export default class RecommendScreen extends React.Component {
     
     renderItem = ({ item }) => {
         //const { data } = this.props;
@@ -43,24 +43,27 @@ export default function RecommendScreen() {
             </View>
         );
     }
-    return(
-        <View style={styles.container}>
-            <DeckSwiper
-                dataSource= {[  /* TODO: get recommended */
-                    {key: 'Devin'},
-                    {key: 'Jackson'},
-                    {key: 'James'},
-                    {key: 'Joel'},
-                    {key: 'John'},
-                    {key: 'Jillian'},
-                    {key: 'Jimmy'},
-                    {key: 'Julie'},
-                ]}                   
-                renderItem={this.renderItem}
-            >   
-            </DeckSwiper>
-        </View>
-    );
+    
+    render() {
+        return(
+            <View style={styles.container}>
+                <DeckSwiper
+                    dataSource= {[  /* TODO: get recommended */
+                        {key: 'Devin'},
+                        {key: 'Jackson'},
+                        {key: 'James'},
+                        {key: 'Joel'},
+                        {key: 'John'},
+                        {key: 'Jillian'},
+                        {key: 'Jimmy'},
+                        {key: 'Julie'},
+                    ]}                   
+                    renderItem={this.renderItem}
+                >   
+                </DeckSwiper>
+            </View>
+        );
+    }
 }
 
 RecommendScreen.navigationOptions = {

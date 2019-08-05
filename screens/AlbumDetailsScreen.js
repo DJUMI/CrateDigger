@@ -10,70 +10,73 @@ import {
 
 import HomeList from '../components/HomeList';
 
-export default function AlbumDetailsScreen() {
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.albumInfoContainer}>
-        <Text style={styles.artistText}/* TODO */>Artist Name</Text>
-        <Text style={styles.titleText}/* TODO */>Release Name</Text>
-        <Text style={styles.labelText}/* TODO */>Label Name Year</Text>
-        <Text style={styles.labelText}/* TODO */>Format</Text>
-        <Text style={styles.labelText}/* TODO */>Price</Text>
-        <View style={styles.imageContainer}>
-          <Image source={require('../assets/images/vinyl.jpg')} style={{width: 175, height: 175, borderRadius: 15}}/* TODO *//>
+export default class AlbumDetailsScreen extends React.Component {
+  
+  render() {
+    return (
+      <ScrollView style={styles.container}>
+        <View style={styles.albumInfoContainer}>
+          <Text style={styles.artistText}/* TODO */>Artist Name</Text>
+          <Text style={styles.titleText}/* TODO */>Release Name</Text>
+          <Text style={styles.labelText}/* TODO */>Label Name Year</Text>
+          <Text style={styles.labelText}/* TODO */>Format</Text>
+          <Text style={styles.labelText}/* TODO */>Price</Text>
+          <View style={styles.imageContainer}>
+            <Image source={require('../assets/images/vinyl.jpg')} style={{width: 175, height: 175, borderRadius: 15}}/* TODO *//>
+          </View>
         </View>
-      </View>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            /* TODO: Add to Cart */
-          }}
-        >
-          <Text style={styles.buttonText}>+ Add to Cart</Text>
-        </TouchableOpacity>
-
-      <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>More from this artist</Text>
-        </View>
-
-        <View style={styles.listContainer}>
-          <HomeList
-            data={[
-              {key: 'Devin'},
-              {key: 'Jackson'},
-              {key: 'James'},
-              {key: 'Joel'},
-              {key: 'John'},
-              {key: 'Jillian'},
-              {key: 'Jimmy'},
-              {key: 'Julie'},
-            ]}
-          />
-        </View>
-        
+  
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              /* TODO: Add to Cart */
+            }}
+          >
+            <Text style={styles.buttonText}>+ Add to Cart</Text>
+          </TouchableOpacity>
+  
         <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>More from this Label</Text>
-        </View>
-
-        <View style={styles.listContainer}>
-          <HomeList
-            data={[
-              {key: 'Devin'},
-              {key: 'Jackson'},
-              {key: 'James'},
-              {key: 'Joel'},
-              {key: 'John'},
-              {key: 'Jillian'},
-              {key: 'Jimmy'},
-              {key: 'Julie'},
-            ]}
-          />
-        </View>
-        <View style={styles.footer}>
-        </View>
-    </ScrollView>
-  );
+            <Text style={styles.listHeaderText}>More from this artist</Text>
+          </View>
+  
+          <View style={styles.listContainer}>
+            <HomeList
+              data={[
+                {key: 'Devin'},
+                {key: 'Jackson'},
+                {key: 'James'},
+                {key: 'Joel'},
+                {key: 'John'},
+                {key: 'Jillian'},
+                {key: 'Jimmy'},
+                {key: 'Julie'},
+              ]}
+            />
+          </View>
+          
+          <View style={styles.listHeader}>
+            <Text style={styles.listHeaderText}>More from this Label</Text>
+          </View>
+  
+          <View style={styles.listContainer}>
+            <HomeList
+              data={[
+                {key: 'Devin'},
+                {key: 'Jackson'},
+                {key: 'James'},
+                {key: 'Joel'},
+                {key: 'John'},
+                {key: 'Jillian'},
+                {key: 'Jimmy'},
+                {key: 'Julie'},
+              ]}
+            />
+          </View>
+          <View style={styles.footer}>
+          </View>
+      </ScrollView>
+    );
+  }
 }
 
 AlbumDetailsScreen.navigationOptions = {

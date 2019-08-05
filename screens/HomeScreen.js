@@ -9,68 +9,70 @@ import { SearchBar } from 'react-native-elements';
 
 import HomeList from '../components/HomeList';
 
-export default function HomeScreen() {
+export default class HomeScreen extends React.Component {
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.shopText}>JiggyJamz</Text>
-          <Text style={styles.appNameText}>Crate Digger</Text>
-        </View>
-        
-        <SearchBar
-          placeholder="Type here..."
-          round
-          lightTheme
-          //containerStyle={styles.searchBarContainer}
-          /* TODO: implement search */
-        />
-        
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>What's New</Text>
-        </View>
-
-        <View style={styles.listContainer}/* TODO: return list of newest releases */>
-          <HomeList
-            data={[
-              {key: 'Devin'},
-              {key: 'Jackson'},
-              {key: 'James'},
-              {key: 'Joel'},
-              {key: 'John'},
-              {key: 'Jillian'},
-              {key: 'Jimmy'},
-              {key: 'Julie'},
-            ]}
-          />
-        </View>
-        
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>What's Hot</Text>
-        </View>
-
-        <View style={styles.listContainer}/* TODO: return list of most sold records in past month*/>
-          <HomeList
-            data={[
-              {key: 'Devin'},
-              {key: 'Jackson'},
-              {key: 'James'},
-              {key: 'Joel'},
-              {key: 'John'},
-              {key: 'Jillian'},
-              {key: 'Jimmy'},
-              {key: 'Julie'},
-            ]}
-          />
-        </View>
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.contentContainer}>
+  
+          <View style={styles.getStartedContainer}>
+            <Text style={styles.shopText}>JiggyJamz</Text>
+            <Text style={styles.appNameText}>Crate Digger</Text>
+          </View>
           
-
-
+          <SearchBar
+            placeholder="Type here..."
+            round
+            lightTheme
+            //containerStyle={styles.searchBarContainer}
+            /* TODO: implement search */
+          />
+          
+          <View style={styles.listHeader}>
+            <Text style={styles.listHeaderText}>What's New</Text>
+          </View>
+  
+          <View style={styles.listContainer}/* TODO: return list of newest releases */>
+            <HomeList
+              data={[
+                {key: 'Devin'},
+                {key: 'Jackson'},
+                {key: 'James'},
+                {key: 'Joel'},
+                {key: 'John'},
+                {key: 'Jillian'},
+                {key: 'Jimmy'},
+                {key: 'Julie'},
+              ]}
+            />
+          </View>
+          
+          <View style={styles.listHeader}>
+            <Text style={styles.listHeaderText}>What's Hot</Text>
+          </View>
+  
+          <View style={styles.listContainer}/* TODO: return list of most sold records in past month*/>
+            <HomeList
+              data={[
+                {key: 'Devin'},
+                {key: 'Jackson'},
+                {key: 'James'},
+                {key: 'Joel'},
+                {key: 'John'},
+                {key: 'Jillian'},
+                {key: 'Jimmy'},
+                {key: 'Julie'},
+              ]}
+            />
+          </View>
+            
+  
+  
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 HomeScreen.navigationOptions = {
