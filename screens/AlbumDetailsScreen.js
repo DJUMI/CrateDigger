@@ -13,16 +13,17 @@ import HomeList from '../components/HomeList';
 export default class AlbumDetailsScreen extends React.Component {
   
   render() {
+    const { navigation, data } = this.props;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.albumInfoContainer}>
           <Text style={styles.artistText}/* TODO */>Artist Name</Text>
           <Text style={styles.titleText}/* TODO */>Release Name</Text>
-          <Text style={styles.labelText}/* TODO */>Label Name Year</Text>
+          <Text style={styles.labelText}/* TODO */>Label Name</Text>
           <Text style={styles.labelText}/* TODO */>Format</Text>
           <Text style={styles.labelText}/* TODO */>Price</Text>
           <View style={styles.imageContainer}>
-            <Image source={require('../assets/images/vinyl.jpg')} style={{width: 175, height: 175, borderRadius: 15}}/* TODO *//>
+            <Image source={require('../assets/images/vinyl.jpg')} style={{width: 175, height: 175, borderRadius: 15}}/* TODO: Later *//>
           </View>
         </View>
   

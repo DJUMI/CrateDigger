@@ -133,3 +133,13 @@ BEGIN
 Select COUNT(t.listing_id) FROM (SELECT listing_id from Contains WHERE listing_id = listing_id_input) t;
 END $$
 DELIMITER ;
+
+
+
+
+
+
+
+
+
+51870418

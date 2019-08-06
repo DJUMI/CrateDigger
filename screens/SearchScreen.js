@@ -14,7 +14,7 @@ export default class SearchScreen extends React.Component {
         return(
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Search by Release</Text>
+                    <Text style={styles.headerText}>Search by Album</Text>
                 </View>
                 <SearchBar
                     placeholder="Type here..."

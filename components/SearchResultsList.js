@@ -8,6 +8,8 @@ import {
   FlatList,
 } from 'react-native';
 
+import { withNavigation } from 'react-navigation';
+
 import { SearchBar, Icon } from 'react-native-elements';
 
 class SearchResultsList extends Component {
@@ -35,12 +37,13 @@ class SearchResultsList extends Component {
   }
 
   renderItem = ({ item }) => {
-    const { data } = this.props;
+    const { navigation, data } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
           /* TODO: Navigate to the Details route with params */
+          navigation.navigate('Details', {/* props go here */});
         }}
       >
         <View style={styles.itemInfoContainer}>
@@ -78,7 +81,7 @@ class SearchResultsList extends Component {
   }
 }
 
-export default SearchResultsList;
+export default withNavigation(SearchResultsList);
 
 const styles = StyleSheet.create({
   itemContainer: {

@@ -8,6 +8,8 @@ import {
   FlatList,
 } from 'react-native';
 
+import { withNavigation } from 'react-navigation';
+
 class HomeList extends Component {
   state = {
     isLoadingComplete: true,
@@ -22,12 +24,13 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    const { data } = this.props;
+    const { navigation, data } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
           /* TODO: Navigate to the Details route with params */
+          navigation.navigate('Details', {/* props go here */});
         }}
       >
         <View style={styles.itemInfoContainer}>
@@ -55,7 +58,7 @@ class HomeList extends Component {
   }
 }
 
-export default HomeList;
+export default withNavigation(HomeList);
 
 const styles = StyleSheet.create({
   itemContainer: {

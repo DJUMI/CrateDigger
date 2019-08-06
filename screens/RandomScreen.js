@@ -12,7 +12,7 @@ import { DeckSwiper } from 'native-base';
 export default class RandomScreen extends React.Component {
     
     renderItem = ({ item }) => {
-        //const { data } = this.props;
+        const { navigation, data } = this.props;
         return(
             <View style={styles.itemContainer}>
                 <View style={styles.infoContainer}>
@@ -20,13 +20,14 @@ export default class RandomScreen extends React.Component {
                     <Text style={styles.titleText}/* TODO */>Release Name</Text>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../assets/images/vinyl.jpg')} style={styles.image}/* TODO *//>
+                    <Image source={require('../assets/images/vinyl.jpg')} style={styles.image}/* TODO: Later *//>
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
                         /* TODO: Navigate to the Details route with params */
+                        navigation.navigate('Details', {/* props go here */});
                         }}
                     >
                         <Text style={styles.buttonText}>See Details</Text>
