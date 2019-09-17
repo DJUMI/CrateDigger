@@ -1,75 +1,77 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { SearchBar } from 'react-native-elements';
 import {
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 
+import { SearchBar } from 'react-native-elements';
+
 import HomeList from '../components/HomeList';
 
-export default function HomeScreen() {
+export default class HomeScreen extends React.Component {
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.shopText}>JiggyJamz</Text>
-          <Text style={styles.appNameText}>Crate Digger</Text>
-        </View>
-        
-        <SearchBar
-          placeholder="Type here..."
-          round
-          containerStyle={styles.searchBarContainer}
-          //lightTheme
-        />
-        
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>What's New</Text>
-        </View>
-
-        <View style={styles.listContainer}>
-          <HomeList
-            data={[
-              {key: 'Devin'},
-              {key: 'Jackson'},
-              {key: 'James'},
-              {key: 'Joel'},
-              {key: 'John'},
-              {key: 'Jillian'},
-              {key: 'Jimmy'},
-              {key: 'Julie'},
-            ]}
-          />
-        </View>
-        
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>What's Hot</Text>
-        </View>
-
-        <View style={styles.listContainer2}>
-          <HomeList
-            data={[
-              {key: 'Devin'},
-              {key: 'Jackson'},
-              {key: 'James'},
-              {key: 'Joel'},
-              {key: 'John'},
-              {key: 'Jillian'},
-              {key: 'Jimmy'},
-              {key: 'Julie'},
-            ]}
-          />
-        </View>
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.contentContainer}>
+  
+          <View style={styles.getStartedContainer}>
+            <Text style={styles.shopText}>JiggyJamz</Text>
+            <Text style={styles.appNameText}>Crate Digger</Text>
+          </View>
           
-
-
+          <SearchBar
+            placeholder="Type here..."
+            round
+            lightTheme
+            /* TODO: implement search */
+          />
+          
+          <View style={styles.listHeader}>
+            <Text style={styles.listHeaderText}>What's New</Text>
+          </View>
+  
+          <View style={styles.listContainer}/* TODO Later : return list of newest releases */>
+            <HomeList
+              data={[
+                {key: 'Devin'},
+                {key: 'Jackson'},
+                {key: 'James'},
+                {key: 'Joel'},
+                {key: 'John'},
+                {key: 'Jillian'},
+                {key: 'Jimmy'},
+                {key: 'Julie'},
+              ]}
+            />
+          </View>
+          
+          <View style={styles.listHeader}>
+            <Text style={styles.listHeaderText}>What's Hot</Text>
+          </View>
+  
+          <View style={styles.listContainer}/* TODO LATER: return list of most sold records in past month*/>
+            <HomeList
+              data={[
+                {key: 'Devin'},
+                {key: 'Jackson'},
+                {key: 'James'},
+                {key: 'Joel'},
+                {key: 'John'},
+                {key: 'Jillian'},
+                {key: 'Jimmy'},
+                {key: 'Julie'},
+              ]}
+            />
+          </View>
+            
+  
+  
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 HomeScreen.navigationOptions = {
@@ -79,7 +81,7 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5bdfd5',
+    backgroundColor: '#E5EEED',
     justifyContent: 'flex-end',
   },
   contentContainer: {
@@ -88,7 +90,6 @@ const styles = StyleSheet.create({
   },
   getStartedContainer: {
     alignItems: 'center',
-    marginHorizontal: 50,
   },
   shopText: {
     fontSize: 17,
@@ -107,8 +108,8 @@ const styles = StyleSheet.create({
   },
   listHeader: {
     alignItems: 'center',
-    backgroundColor: '#9FB6B4',
-    paddingTop: 10,
+    backgroundColor: '#E5EEED',
+    paddingVertical: 5,
   },
   listHeaderText: {
     fontSize: 25,
@@ -116,12 +117,11 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     height: 195,
-    backgroundColor: '#9FB6B4',
-    borderBottomWidth: 2,
-    borderBottomColor: 'black',
+    backgroundColor: '#ACB3B2',
+    borderTopWidth: 1,
+    borderTopColor: '#727776',
+    borderBottomWidth: 1,
+    borderBottomColor: '#727776',
+    paddingTop: 5,
   },
-  listContainer2: {
-    height: 195,
-    backgroundColor: '#9FB6B4',
-  }
 });
