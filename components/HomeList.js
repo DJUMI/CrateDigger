@@ -8,6 +8,8 @@ import {
   FlatList,
 } from 'react-native';
 
+import { withNavigation } from 'react-navigation';
+
 class HomeList extends Component {
   state = {
     isLoadingComplete: true,
@@ -22,21 +24,19 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    let pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-    };
-    const { data } = this.props;
+    const { navigation, data } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
-          /* Navigate to the Details route with params */
+          /* TODO: Navigate to the Details route with params */
+          navigation.navigate('Details', {/* props go here */});
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={pic} style={styles.imageContainer}/>
+          <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemTitleText}>Item Title</Text>
+            <Text style={styles.itemTitleText}/* TODO */>Item Title</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -58,12 +58,14 @@ class HomeList extends Component {
   }
 }
 
-export default HomeList;
+export default withNavigation(HomeList);
 
 const styles = StyleSheet.create({
   itemContainer: {
    flex: 1,
-   paddingTop: 5
+   paddingTop: 5,
+   alignItems: 'center',
+   justifyContent: 'center',
   },
   itemInfoContainer: {
     alignItems: 'center',
