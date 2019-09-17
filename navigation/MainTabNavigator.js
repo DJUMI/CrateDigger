@@ -6,6 +6,11 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import AlbumDetailsScreen from '../screens/AlbumDetailsScreen';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
+import CartScreen from '../screens/CartScreen';
+import RandomScreen from '../screens/RandomScreen';
+import RecommendScreen from '../screens/RecommendScreen';
+import SearchScreen from '../screens/SearchScreen';
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -15,6 +20,8 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
+    Details: AlbumDetailsScreen,
+    SearchResults: SearchResultsScreen,
   },
   config
 );
@@ -35,6 +42,82 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
+const SearchStack = createStackNavigator(
+  {
+    Search: SearchScreen,
+    SearchResults: SearchResultsScreen,
+  },
+  config
+);
+
+SearchStack.navigationOptions = {
+  tabBarLabel: 'Search',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
+  ),
+};
+
+SearchStack.path = '';
+
+const RandomStack = createStackNavigator(
+  {
+    Random: RandomScreen,
+    Details: AlbumDetailsScreen,
+  },
+  config
+);
+
+RandomStack.navigationOptions = {
+  tabBarLabel: 'Dig',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
+  ),
+};
+
+RandomStack.path = '';
+
+const RecommendStack = createStackNavigator(
+  {
+    Recommed: RecommendScreen,
+    Details: AlbumDetailsScreen,
+  },
+  config
+);
+
+RecommendStack.navigationOptions = {
+  tabBarLabel: 'Recommended',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
+  ),
+};
+
+RecommendStack.path = '';
+
+const CartStack = createStackNavigator(
+  {
+    Cart: CartScreen,
+  },
+  config
+);
+
+CartStack.navigationOptions = {
+  tabBarLabel: 'Cart',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'} />
+  ),
+};
+
+CartStack.path = '';
+
+AlbumDetailsScreen.navigationOptions = {
+  title: 'Details'
+};
+
+SearchResultsScreen.navigationOptions = {
+  title: 'Search Results'
+};
+
+/*
 const AlbumDetailsStack = createStackNavigator(
   {
     Details: AlbumDetailsScreen,
@@ -45,7 +128,7 @@ const AlbumDetailsStack = createStackNavigator(
 AlbumDetailsStack.navigationOptions = {
   tabBarLabel: 'Details',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
   ),
 };
 
@@ -61,16 +144,20 @@ const SearchResultsStack = createStackNavigator(
 SearchResultsStack.navigationOptions = {
   tabBarLabel: 'Search Results',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
   ),
 };
 
 SearchResultsStack.path = '';
 
+*/
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  AlbumDetailsStack,
-  SearchResultsStack,
+  SearchStack,
+  RandomStack,
+  RecommendStack,
+  CartStack,
 });
 
 tabNavigator.path = '';
