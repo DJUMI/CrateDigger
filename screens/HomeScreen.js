@@ -4,14 +4,104 @@ import {
   Text,
   View,
 } from 'react-native';
-
 import { SearchBar } from 'react-native-elements';
-
 import HomeList from '../components/HomeList';
+import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 export default class HomeScreen extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      tasks: undefined,
+      refreshing: false,
+      search: "",
+    };
+    this._loadClient = this._loadClient.bind(this);
+  }
+
+  // componentDidMount() {
+  //   this._loadClient();
+  // }
+
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    const stitchAppClient = Stitch.defaultAppClient;
+    const mongoClient = stitchAppClient.getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
+    );
+    const db = mongoClient.db("crate-dgger");
+    const tasks = db.collection("music-0");
+    tasks
+      .find({ status:"Draft" }, { sort: { listed: -1 } })
+      .asArray()
+      .then(docs => {
+        this.setState({ tasks: docs });
+        this.setState({ refreshing: false });
+      })
+      .catch(err => {
+        console.warn(err);
+      });
+  };
+
+
+  updateSearch = search => {
+    this.setState({ search });
+  };
+
   render() {
+    const { search } = this.state;
+
+    const sections =
+      this.state.tasks == undefined
+        ? [{ data: [{ title: "Loading..." }], title: "Loading..." }]
+        : this.state.tasks.length > 0
+        ? [{ data: this.state.tasks, title: "Current Tasks" }]
+        : [
+            {
+              data: [{ title: "No listings" }],
+              title: "No listings"
+            }
+          ];
+
+          // return (
+          //   <View style={styles.container}
+          //   style={{ ...styles.container }}
+          //   renderItem={this._renderItem}
+          //     //  renderSectionHeader={this._renderSectionHeader}
+          //     // stickySectionHeadersEnabled={true}
+          //    keyExtractor={(item, index) => index}
+          //    sections={sections}
+          //     // refreshControl={
+          //     //   <RefreshControl
+          //     //     refreshing={this.state.refreshing}
+          //     //     onRefresh={this._onRefresh}
+          //     //   />
+          //     // }
+              
+
+          //   />
+          //   // <SectionList
+            
+          //   //   style={{ ...styles.container }}
+          //   //   renderItem={this._renderItem}
+          //   //   //renderSectionHeader={this._renderSectionHeader}
+          //   //   // stickySectionHeadersEnabled={true}
+          //   //   keyExtractor={(item, index) => index}
+          //   //   sections={sections}
+          //   //   refreshControl={
+          //   //     <RefreshControl
+          //   //       refreshing={this.state.refreshing}
+          //   //       onRefresh={this._onRefresh}
+          //   //     />
+          //   //   }
+              
+          //   // />
+          // );
+
     return (
       <View style={styles.container}>
         <View style={styles.contentContainer}>
@@ -25,7 +115,13 @@ export default class HomeScreen extends React.Component {
             placeholder="Type here..."
             round
             lightTheme
-            /* TODO: implement search */
+            onChangeText={this.updateSearch}
+            value={search}
+            // placeholder={'Placeholder'}
+            style={styles.input}
+            onChangeText={search => this.setState({ search })}
+            value={this.state.search}
+            onSubmitEditing={() => this.handleSubmit()}
           />
           
           <View style={styles.listHeader}>
@@ -34,16 +130,17 @@ export default class HomeScreen extends React.Component {
   
           <View style={styles.listContainer}/* TODO Later : return list of newest releases */>
             <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
+              // data={[
+              //   {key: 'Devin'},
+              //   {key: 'Jackson'},
+              //   {key: 'James'},
+              //   {key: 'Joel'},
+              //   {key: 'John'},
+              //   {key: 'Jillian'},
+              //   {key: 'Jimmy'},
+              //   {key: 'Julie'},
+              // ]}
+              // data={this._renderItem}
             />
           </View>
           
@@ -72,6 +169,70 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
+
+  _loadClient() {
+    const stitchAppClient = Stitch.defaultAppClient;
+    const mongoClient = stitchAppClient.getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
+    );
+    const db = mongoClient.db("crate-digger");
+    const tasks = db.collection("music-0");
+    tasks
+      .find({ status: "Draft" }, { sort: { listed: -1 } })
+      .asArray()
+      .then(docs => {
+        this.setState({ tasks: docs });
+      })
+      .catch(err => {
+        console.warn(err);
+      });
+  }
+
+  _renderItem = ({ item }) => {
+    return (
+      <SectionContent>
+        <Swipeout
+          autoClose={true}
+          backgroundColor="none"
+        >
+          <View style={styles.listContainer}>
+            {item.title != "No listings" && item.title != "Loading..." ? (
+              <View>
+                <Text style={styles.listContainer}>
+                  {item.name}
+                </Text>
+                <Text style={styles.listContainer}>
+                  {item.bedrooms} bedrooms
+                </Text>
+                <Text style={styles.listContainer}>
+                  ${item.price}
+                </Text>
+                <Text style={styles.listContainer}>
+                  {moment(item.date).fromNow()}
+                </Text>
+              </View>
+            ) : item.title == "No listings" ? (
+              <AntDesign
+                name={Platform.OS == "ios" ? "smileo" : "smileo"}
+                size={30}
+                style={{
+                  textAlign: "center",
+                  color: "lightgray",
+                  marginTop: 25
+                }}
+              />
+            ) : (
+              <Text />
+            )}
+          </View>
+          <Text style={styles.sectionContentText}>
+            {item.title != "No listings" ? item.description : ""}
+          </Text>
+        </Swipeout>
+      </SectionContent>
+    );
+  };
 }
 
 HomeScreen.navigationOptions = {
@@ -123,5 +284,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#727776',
     paddingTop: 5,
+  },
+  sectionContentContainer: {
+    paddingHorizontal: 15,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: "lightgray"
+  },
+  sectionContentText: {
+    color: "black",
+    fontSize: 15,
+    paddingBottom: 10,
+    paddingHorizontal: 10,
+    textAlign: "left"
   },
 });
