@@ -140,7 +140,7 @@ export default class HomeScreen extends React.Component {
               //   {key: 'Jimmy'},
               //   {key: 'Julie'},
               // ]}
-              // data={this._renderItem}
+              data={this.renderItem}
             />
           </View>
           
@@ -189,50 +189,50 @@ export default class HomeScreen extends React.Component {
       });
   }
 
-  _renderItem = ({ item }) => {
-    return (
-      <SectionContent>
-        <Swipeout
-          autoClose={true}
-          backgroundColor="none"
-        >
-          <View style={styles.listContainer}>
-            {item.title != "No listings" && item.title != "Loading..." ? (
-              <View>
-                <Text style={styles.listContainer}>
-                  {item.name}
-                </Text>
-                <Text style={styles.listContainer}>
-                  {item.bedrooms} bedrooms
-                </Text>
-                <Text style={styles.listContainer}>
-                  ${item.price}
-                </Text>
-                <Text style={styles.listContainer}>
-                  {moment(item.date).fromNow()}
-                </Text>
-              </View>
-            ) : item.title == "No listings" ? (
-              <AntDesign
-                name={Platform.OS == "ios" ? "smileo" : "smileo"}
-                size={30}
-                style={{
-                  textAlign: "center",
-                  color: "lightgray",
-                  marginTop: 25
-                }}
-              />
-            ) : (
-              <Text />
-            )}
-          </View>
-          <Text style={styles.sectionContentText}>
-            {item.title != "No listings" ? item.description : ""}
-          </Text>
-        </Swipeout>
-      </SectionContent>
-    );
-  };
+  // _renderItem = ({ item }) => {
+  //   return (
+  //     <SectionContent>
+  //       <Swipeout
+  //         autoClose={true}
+  //         backgroundColor="none"
+  //       >
+  //         <View style={styles.listContainer}>
+  //           {item.title != "No listings" && item.title != "Loading..." ? (
+  //             <View>
+  //               <Text style={styles.listContainer}>
+  //                 {item.title}
+  //               </Text>
+  //               <Text style={styles.listContainer}>
+  //                 {item.artist}
+  //               </Text>
+  //               <Text style={styles.listContainer}>
+  //                 ${item.price}
+  //               </Text>
+  //               <Text style={styles.listContainer}>
+  //                 {item.listed}
+  //               </Text>
+  //             </View>
+  //           ) : item.title == "No listings" ? (
+  //             <AntDesign
+  //               name={Platform.OS == "ios" ? "smileo" : "smileo"}
+  //               size={30}
+  //               style={{
+  //                 textAlign: "center",
+  //                 color: "lightgray",
+  //                 marginTop: 25
+  //               }}
+  //             />
+  //           ) : (
+  //             <Text />
+  //           )}
+  //         </View>
+  //         <Text style={styles.sectionContentText}>
+  //           {item.title != "No listings" ? item.description : ""}
+  //         </Text>
+  //       </Swipeout>
+  //     </SectionContent>
+  //   );
+  // };
 }
 
 HomeScreen.navigationOptions = {

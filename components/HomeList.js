@@ -6,21 +6,72 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
 
+import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+
 class HomeList extends Component {
-  state = {
-    isLoadingComplete: true,
+  // state = {
+  //   isLoadingComplete: true,
+  // }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      records: undefined,
+      refreshing: false,
+      isLoadingComplete: true
+    };
+    this.loadClient = this.loadClient.bind(this);
   }
 
   componentDidMount = async () => {
-    this.setState(
-      {
-        isLoadingComplete: true,
-      },
+    this.loadClient();
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    const stitchAppClient = Stitch.defaultAppClient;
+    const mongoClient = stitchAppClient.getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
     );
+    const db = mongoClient.db("crate-dgger");
+    const records = db.collection("music-0");
+    records
+      .find({ status:"Draft" }/*, { sort: { listed: -1 } }*/)
+      .asArray()
+      .then(docs => {
+        this.setState({ records: docs });
+        this.setState({ refreshing: false });
+      })
+      .catch(err => {
+        console.warn(err);
+      });
+  };
+
+  loadClient() {
+    const stitchAppClient = Stitch.defaultAppClient;
+    const mongoClient = stitchAppClient.getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
+    );
+    const db = mongoClient.db("crate-digger");
+    const records = db.collection("music-0");
+    records
+      .find({ status: "Draft" }/*, { sort: { listed: -1 } }*/)
+      .asArray()
+      .then(docs => {
+        this.setState({ records: docs });
+      })
+      .catch(err => {
+        console.warn(err);
+      });
   }
 
   renderItem = ({ item }) => {
@@ -36,7 +87,9 @@ class HomeList extends Component {
         <View style={styles.itemInfoContainer}>
           <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemTitleText}/* TODO */>Item Title</Text>
+            <Text style={styles.itemTitleText}>
+              {item.title}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
