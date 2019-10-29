@@ -14,9 +14,9 @@ import { withNavigation } from 'react-navigation';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 class HomeList extends Component {
-  // state = {
-  //   isLoadingComplete: true,
-  // }
+  state = {
+    isLoadingComplete: true,
+  }
 
   constructor(props) {
     super(props);
@@ -35,24 +35,6 @@ class HomeList extends Component {
   }
 
   onRefresh = () => {
-    // this.setState({ refreshing: true });
-    // const stitchAppClient = Stitch.defaultAppClient;
-    // const mongoClient = stitchAppClient.getServiceClient(
-    //   RemoteMongoClient.factory,
-    //   "mongodb-atlas"
-    // );
-    // const db = mongoClient.db("crate-dgger");
-    // const records = db.collection("music-0");
-    // records
-    //   .find({ status:"Draft" }/*, { sort: { listed: -1 } }*/)
-    //   .asArray()
-    //   .then(docs => {
-    //     this.setState({ records: docs });
-    //     this.setState({ refreshing: false });
-    //   })
-    //   .catch(err => {
-    //     console.warn(err);
-    //   });
     this.setState({ refreshing: true });
     if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
       const app = Stitch.getAppClient("crate-digger-stitch-sikln");
@@ -63,25 +45,6 @@ class HomeList extends Component {
       .catch(err => console.error(err));
     }
   };
-
-  // loadClient() {
-  //   const stitchAppClient = Stitch.defaultAppClient;
-  //   const mongoClient = stitchAppClient.getServiceClient(
-  //     RemoteMongoClient.factory,
-  //     "mongodb-atlas"
-  //   );
-  //   const db = mongoClient.db("crate-digger");
-  //   const records = db.collection("music-0");
-  //   records
-  //     .find({ status: "Draft" }/*, { sort: { listed: -1 } }*/)
-  //     .asArray()
-  //     .then(docs => {
-  //       this.setState({ records: docs });
-  //     })
-  //     .catch(err => {
-  //       console.warn(err);
-  //     });
-  // }
 
   loadClient() {
     if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
@@ -140,7 +103,7 @@ class HomeList extends Component {
     if (isLoadingComplete) {
       return (
         <FlatList
-          data={data}
+          data={this.state.records}
           horizontal
           renderItem={this.renderItem}
         />  

@@ -28,23 +28,6 @@ export default class HomeScreen extends React.Component {
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
-    // const stitchAppClient = Stitch.defaultAppClient;
-    // const mongoClient = stitchAppClient.getServiceClient(
-    //   RemoteMongoClient.factory,
-    //   "mongodb-atlas"
-    // );
-    // const db = mongoClient.db("crate-dgger");
-    // const records = db.collection("music-0");
-    // records
-    //   .find({ label:"RCA" }/*, { sort: { listed: -1 } }*/)
-    //   .asArray()
-    //   .then(docs => {
-    //     this.setState({ records: docs });
-    //     this.setState({ refreshing: false });
-    //   })
-    //   .catch(err => {
-    //     console.warn(err);//
-    //   });
 
     if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
       const app = Stitch.getAppClient("crate-digger-stitch-sikln");
@@ -76,41 +59,6 @@ export default class HomeScreen extends React.Component {
             }
           ];
 
-          // return (
-          //   <View style={styles.container}
-          //   style={{ ...styles.container }}
-          //   renderItem={this._renderItem}
-          //     //  renderSectionHeader={this._renderSectionHeader}
-          //     // stickySectionHeadersEnabled={true}
-          //    keyExtractor={(item, index) => index}
-          //    sections={sections}
-          //     // refreshControl={
-          //     //   <RefreshControl
-          //     //     refreshing={this.state.refreshing}
-          //     //     onRefresh={this._onRefresh}
-          //     //   />
-          //     // }
-              
-
-          //   />
-          //   // <SectionList
-            
-          //   //   style={{ ...styles.container }}
-          //   //   renderItem={this._renderItem}
-          //   //   //renderSectionHeader={this._renderSectionHeader}
-          //   //   // stickySectionHeadersEnabled={true}
-          //   //   keyExtractor={(item, index) => index}
-          //   //   sections={sections}
-          //   //   refreshControl={
-          //   //     <RefreshControl
-          //   //       refreshing={this.state.refreshing}
-          //   //       onRefresh={this._onRefresh}
-          //   //     />
-          //   //   }
-              
-          //   // />
-          // );
-
     return (
       <View style={styles.container}>
         <View style={styles.contentContainer}>
@@ -139,17 +87,6 @@ export default class HomeScreen extends React.Component {
   
           <View style={styles.listContainer}/* TODO Later : return list of newest releases */>
             <HomeList
-              // data={[
-              //   {key: 'Devin'},
-              //   {key: 'Jackson'},
-              //   {key: 'James'},
-              //   {key: 'Joel'},
-              //   {key: 'John'},
-              //   {key: 'Jillian'},
-              //   {key: 'Jimmy'},
-              //   {key: 'Julie'},
-              // ]}
-              data={this._renderItem}
             />
           </View>
           
@@ -159,16 +96,6 @@ export default class HomeScreen extends React.Component {
   
           <View style={styles.listContainer}/* TODO LATER: return list of most sold records in past month*/>
             <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
             />
           </View>
             
@@ -178,25 +105,6 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-
-  // _loadClient() {
-  //   const stitchAppClient = Stitch.defaultAppClient;
-  //   const mongoClient = stitchAppClient.getServiceClient(
-  //     RemoteMongoClient.factory,
-  //     "mongodb-atlas"
-  //   );
-  //   const db = mongoClient.db("crate-digger");
-  //   const records = db.collection("music-0");
-  //   records
-  //     .find({ records: "Draft" }/*, { sort: { listed: -1 } }*/)
-  //     .asArray()
-  //     .then(docs => {
-  //       this.setState({ records: docs });
-  //     })
-  //     .catch(err => {
-  //       console.warn(err);
-  //     });
-  // }
 
   _loadClient() {
     if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
@@ -248,51 +156,6 @@ export default class HomeScreen extends React.Component {
       </TouchableOpacity>
     );
   }
-
-  // _renderItem = ({ item }) => {
-  //   return (
-  //     <SectionContent>
-  //       <Swipeout
-  //         autoClose={true}
-  //         backgroundColor="none"
-  //       >
-  //         <View style={styles.listContainer}>
-  //           {item.title != "No listings" && item.title != "Loading..." ? (
-  //             <View>
-  //               <Text style={styles.listContainer}>
-  //                 {item.title}
-  //               </Text>
-  //               <Text style={styles.listContainer}>
-  //                 {item.artist}
-  //               </Text>
-  //               <Text style={styles.listContainer}>
-  //                 ${item.price}
-  //               </Text>
-  //               <Text style={styles.listContainer}>
-  //                 {item.listed}
-  //               </Text>
-  //             </View>
-  //           ) : item.title == "No listings" ? (
-  //             <AntDesign
-  //               name={Platform.OS == "ios" ? "smileo" : "smileo"}
-  //               size={30}
-  //               style={{
-  //                 textAlign: "center",
-  //                 color: "lightgray",
-  //                 marginTop: 25
-  //               }}
-  //             />
-  //           ) : (
-  //             <Text />
-  //           )}
-  //         </View>
-  //         <Text style={styles.sectionContentText}>
-  //           {item.title != "No listings" ? item.description : ""}
-  //         </Text>
-  //       </Swipeout>
-  //     </SectionContent>
-  //   );
-  // };
 }
 
 HomeScreen.navigationOptions = {
