@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import HomeList from '../components/HomeList';
-import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 export default class HomeScreen extends React.Component {
 
@@ -28,18 +27,6 @@ export default class HomeScreen extends React.Component {
   render() {
     const { search } = this.state;
 
-    const sections =
-      this.state.tasks == undefined
-        ? [{ data: [{ title: "Loading..." }], title: "Loading..." }]
-        : this.state.tasks.length > 0
-        ? [{ data: this.state.tasks, title: "Current Tasks" }]
-        : [
-            {
-              data: [{ title: "No listings" }],
-              title: "No listings"
-            }
-          ];
-
     return (
       <View style={styles.container}>
         <View style={styles.contentContainer}>
@@ -55,7 +42,6 @@ export default class HomeScreen extends React.Component {
             lightTheme
             onChangeText={this.updateSearch}
             value={search}
-            // placeholder={'Placeholder'}
             style={styles.input}
             onChangeText={search => this.setState({ search })}
             value={this.state.search}
