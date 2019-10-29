@@ -22,29 +22,38 @@ export default class HomeScreen extends React.Component {
     this._loadClient = this._loadClient.bind(this);
   }
 
-  // componentDidMount() {
-  //   this._loadClient();
-  // }
+  componentDidMount() {
+    this._loadClient();
+  }
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
-    const stitchAppClient = Stitch.defaultAppClient;
-    const mongoClient = stitchAppClient.getServiceClient(
-      RemoteMongoClient.factory,
-      "mongodb-atlas"
-    );
-    const db = mongoClient.db("crate-dgger");
-    const tasks = db.collection("music-0");
-    tasks
-      .find({ status:"Draft" }, { sort: { listed: -1 } })
-      .asArray()
-      .then(docs => {
-        this.setState({ tasks: docs });
-        this.setState({ refreshing: false });
-      })
-      .catch(err => {
-        console.warn(err);
-      });
+    // const stitchAppClient = Stitch.defaultAppClient;
+    // const mongoClient = stitchAppClient.getServiceClient(
+    //   RemoteMongoClient.factory,
+    //   "mongodb-atlas"
+    // );
+    // const db = mongoClient.db("crate-dgger");
+    // const records = db.collection("music-0");
+    // records
+    //   .find({ label:"RCA" }/*, { sort: { listed: -1 } }*/)
+    //   .asArray()
+    //   .then(docs => {
+    //     this.setState({ records: docs });
+    //     this.setState({ refreshing: false });
+    //   })
+    //   .catch(err => {
+    //     console.warn(err);//
+    //   });
+
+    if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+      const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+      this._loadData(app);
+    } else {
+      Stitch.initializeAppClient("crate-digger-stitch-sikln")
+      .then(app => this._loadData(app))
+      .catch(err => console.error(err));
+    }
   };
 
 
@@ -140,7 +149,7 @@ export default class HomeScreen extends React.Component {
               //   {key: 'Jimmy'},
               //   {key: 'Julie'},
               // ]}
-              data={this.renderItem}
+              data={this._renderItem}
             />
           </View>
           
@@ -170,23 +179,74 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  // _loadClient() {
+  //   const stitchAppClient = Stitch.defaultAppClient;
+  //   const mongoClient = stitchAppClient.getServiceClient(
+  //     RemoteMongoClient.factory,
+  //     "mongodb-atlas"
+  //   );
+  //   const db = mongoClient.db("crate-digger");
+  //   const records = db.collection("music-0");
+  //   records
+  //     .find({ records: "Draft" }/*, { sort: { listed: -1 } }*/)
+  //     .asArray()
+  //     .then(docs => {
+  //       this.setState({ records: docs });
+  //     })
+  //     .catch(err => {
+  //       console.warn(err);
+  //     });
+  // }
+
   _loadClient() {
-    const stitchAppClient = Stitch.defaultAppClient;
-    const mongoClient = stitchAppClient.getServiceClient(
+    if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+      const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+      this._loadData(app);
+    } else {
+      Stitch.initializeAppClient("crate-digger-stitch-sikln")
+      .then(app => this._loadData(app))
+      .catch(err => console.error(err));
+    }
+  }
+
+  _loadData(appClient) {
+    const mongoClient = appClient.getServiceClient(
       RemoteMongoClient.factory,
       "mongodb-atlas"
     );
     const db = mongoClient.db("crate-digger");
-    const tasks = db.collection("music-0");
-    tasks
-      .find({ status: "Draft" }, { sort: { listed: -1 } })
+    const records = db.collection("music-0");
+    records
+      .find({ label: "RCA" })
       .asArray()
-      .then(docs => {
-        this.setState({ tasks: docs });
+      .then(records => {
+        this.setState({ records });
       })
       .catch(err => {
         console.warn(err);
       });
+  }
+
+  renderItem = ({ item }) => {
+    const { navigation, data } = this.props;
+    return (
+      <TouchableOpacity
+        style={styles.itemContainer}
+        onPress={() => {
+          /* TODO: Navigate to the Details route with params */
+          navigation.navigate('Details', {/* props go here */});
+        }}
+      >
+        <View style={styles.itemInfoContainer}>
+          <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
+          <View style={styles.itemTitleContainer}>
+            <Text style={styles.itemTitleText}>
+              {item.title}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
   }
 
   // _renderItem = ({ item }) => {

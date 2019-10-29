@@ -58,22 +58,48 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 
+  // _loadClient() {
+  //   Stitch.initializeDefaultAppClient("crate-digger-stitch-sikln").then(client => {
+  //     this.setState({ client });
+  //     this.state.client.auth
+  //       .loginWithCredential(new AnonymousCredential())
+  //       .then(user => {
+  //         console.log(`Successfully logged in as user ${user.id}`);
+  //         this.setState({ currentUserId: user.id });
+  //         this.setState({ currentUserId: client.auth.user.id });
+  //       })
+  //       .catch(err => {
+  //         console.log(`Failed to log in anonymously: ${err}`);
+  //         this.setState({ currentUserId: undefined });
+  //       });
+  //   });
+  // }
   _loadClient() {
-    Stitch.initializeDefaultAppClient("crate-digger-stitch-sikln").then(client => {
-      this.setState({ client });
-      this.state.client.auth
+    Stitch.initializeDefaultAppClient("crate-digger-stitch-sikln")
+    .then(client => {
+      client.auth
         .loginWithCredential(new AnonymousCredential())
         .then(user => {
           console.log(`Successfully logged in as user ${user.id}`);
-          this.setState({ currentUserId: user.id });
-          this.setState({ currentUserId: client.auth.user.id });
+          this.setState({
+            currentUserId: user.id,
+            currentUserId: client.auth.user.id,
+            client,
+          });
         })
         .catch(err => {
           console.log(`Failed to log in anonymously: ${err}`);
-          this.setState({ currentUserId: undefined });
+          this.setState({
+            currentUserId: undefined,
+            client,
+          });
         });
+    })
+    .catch(err => {
+      console.error(err)
     });
   }
+
 }
 
 const styles = StyleSheet.create({

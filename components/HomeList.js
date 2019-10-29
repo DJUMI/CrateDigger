@@ -30,44 +30,82 @@ class HomeList extends Component {
     this.loadClient = this.loadClient.bind(this);
   }
 
-  componentDidMount = async () => {
+  componentDidMount() {
     this.loadClient();
   }
 
   onRefresh = () => {
+    // this.setState({ refreshing: true });
+    // const stitchAppClient = Stitch.defaultAppClient;
+    // const mongoClient = stitchAppClient.getServiceClient(
+    //   RemoteMongoClient.factory,
+    //   "mongodb-atlas"
+    // );
+    // const db = mongoClient.db("crate-dgger");
+    // const records = db.collection("music-0");
+    // records
+    //   .find({ status:"Draft" }/*, { sort: { listed: -1 } }*/)
+    //   .asArray()
+    //   .then(docs => {
+    //     this.setState({ records: docs });
+    //     this.setState({ refreshing: false });
+    //   })
+    //   .catch(err => {
+    //     console.warn(err);
+    //   });
     this.setState({ refreshing: true });
-    const stitchAppClient = Stitch.defaultAppClient;
-    const mongoClient = stitchAppClient.getServiceClient(
-      RemoteMongoClient.factory,
-      "mongodb-atlas"
-    );
-    const db = mongoClient.db("crate-dgger");
-    const records = db.collection("music-0");
-    records
-      .find({ status:"Draft" }/*, { sort: { listed: -1 } }*/)
-      .asArray()
-      .then(docs => {
-        this.setState({ records: docs });
-        this.setState({ refreshing: false });
-      })
-      .catch(err => {
-        console.warn(err);
-      });
+    if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+      const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+      this.loadData(app);
+    } else {
+      Stitch.initializeAppClient("crate-digger-stitch-sikln")
+      .then(app => this.loadData(app))
+      .catch(err => console.error(err));
+    }
   };
 
+  // loadClient() {
+  //   const stitchAppClient = Stitch.defaultAppClient;
+  //   const mongoClient = stitchAppClient.getServiceClient(
+  //     RemoteMongoClient.factory,
+  //     "mongodb-atlas"
+  //   );
+  //   const db = mongoClient.db("crate-digger");
+  //   const records = db.collection("music-0");
+  //   records
+  //     .find({ status: "Draft" }/*, { sort: { listed: -1 } }*/)
+  //     .asArray()
+  //     .then(docs => {
+  //       this.setState({ records: docs });
+  //     })
+  //     .catch(err => {
+  //       console.warn(err);
+  //     });
+  // }
+
   loadClient() {
-    const stitchAppClient = Stitch.defaultAppClient;
-    const mongoClient = stitchAppClient.getServiceClient(
+    if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+      const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+      this.loadData(app);
+    } else {
+      Stitch.initializeAppClient("crate-digger-stitch-sikln")
+      .then(app => this.loadData(app))
+      .catch(err => console.error(err));
+    }
+  }
+
+  loadData(appClient) {
+    const mongoClient = appClient.getServiceClient(
       RemoteMongoClient.factory,
       "mongodb-atlas"
     );
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .find({ status: "Draft" }/*, { sort: { listed: -1 } }*/)
+      .find({ label: "RCA" })
       .asArray()
-      .then(docs => {
-        this.setState({ records: docs });
+      .then(records => {
+        this.setState({ records });
       })
       .catch(err => {
         console.warn(err);
