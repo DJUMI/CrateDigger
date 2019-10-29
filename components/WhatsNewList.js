@@ -13,7 +13,7 @@ import { withNavigation } from 'react-navigation';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
-class HomeList extends Component {
+class WhatsNewList extends Component {
   state = {
     isLoadingComplete: true,
   }
@@ -65,7 +65,7 @@ class HomeList extends Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .find({ label: "RCA" }/*, { sort: { date: -1 } }*/)
+      .find({ label: "RCA" }, { sort: { date: -1 } })
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -82,18 +82,11 @@ class HomeList extends Component {
         style={styles.itemContainer}
         onPress={() => {
           /* TODO: Navigate to the Details route with params */
-          navigation.navigate('Details', {
-            title: item.title,
-            artist: item.artist,
-            label: item.label,
-            format: item.format,
-            price: item.price,
-            image_url: item.image_url,
-          });
+          navigation.navigate('Details', {/* props go here */});
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
+          <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
           <View style={styles.itemTitleContainer}>
             <Text style={styles.itemTitleText}>
               {item.title}
@@ -119,7 +112,7 @@ class HomeList extends Component {
   }
 }
 
-export default withNavigation(HomeList);
+export default withNavigation(WhatsNewList);
 
 const styles = StyleSheet.create({
   itemContainer: {

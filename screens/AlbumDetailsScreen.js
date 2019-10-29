@@ -13,17 +13,26 @@ import HomeList from '../components/HomeList';
 export default class AlbumDetailsScreen extends React.Component {
   
   render() {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
+    const { title, artist, label, format, price, image_url } = {
+      id: navigation.getParam('id'),
+      title: navigation.getParam('title'),
+      artist: navigation.getParam('artist'),
+      label: navigation.getParam('label'),
+      format: navigation.getParam('format'),
+      price: navigation.getParam('price'),
+      image_url: navigation.getParam('image_url'),
+    };
     return (
       <ScrollView style={styles.container}>
         <View style={styles.albumInfoContainer}>
-          <Text style={styles.artistText}/* TODO */>Artist Name</Text>
-          <Text style={styles.titleText}/* TODO */>Release Name</Text>
-          <Text style={styles.labelText}/* TODO */>Label Name</Text>
-          <Text style={styles.labelText}/* TODO */>Format</Text>
-          <Text style={styles.labelText}/* TODO */>Price</Text>
+          <Text style={styles.artistText}/* TODO */>{artist}</Text>
+          <Text style={styles.titleText}/* TODO */>{title}</Text>
+          <Text style={styles.labelText}/* TODO */>{label}</Text>
+          <Text style={styles.labelText}/* TODO */>{format}</Text>
+          <Text style={styles.labelText}/* TODO */>${price}</Text>
           <View style={styles.imageContainer}>
-            <Image source={require('../assets/images/vinyl.jpg')} style={{width: 175, height: 175, borderRadius: 15}}/* TODO: Later *//>
+            <Image source={{uri:image_url}} style={{width: 175, height: 175, borderRadius: 15}}/* TODO: Later *//>
           </View>
         </View>
   
