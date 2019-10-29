@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   View,
   FlatList,
-  RefreshControl,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
@@ -105,7 +104,6 @@ class HomeList extends Component {
   }
 
   render() {
-    console.log(this.state.records)
     const { isLoadingComplete } = this.state;
     const { data } = this.props;
     if (isLoadingComplete) {
