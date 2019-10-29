@@ -65,7 +65,7 @@ class HomeList extends Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .find({ label: "RCA" }/*, { sort: { date: -1 } }*/)
+      .find({ status: "For Sale" }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -105,6 +105,7 @@ class HomeList extends Component {
   }
 
   render() {
+    console.log(this.state.records)
     const { isLoadingComplete } = this.state;
     const { data } = this.props;
     if (isLoadingComplete) {
