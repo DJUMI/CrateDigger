@@ -80,7 +80,6 @@ class HomeList extends Component {
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
-          /* TODO: Navigate to the Details route with params */
           navigation.navigate('Details', {
             title: item.title,
             artist: item.artist,
@@ -105,7 +104,7 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-    const { data } = this.props;
+   // const { data } = this.props;
     if (isLoadingComplete) {
       return (
         <FlatList

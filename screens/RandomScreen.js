@@ -12,13 +12,18 @@ import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 export default class RandomScreen extends React.Component {
 
-    constructor(props) {
+    state = {
+        isLoadingComplete: true,
+      }
+    
+      constructor(props) {
         super(props);
         this.state = {
           currentUserId: undefined,
           client: undefined,
           records: undefined,
           refreshing: false,
+          isLoadingComplete: true
         };
         this.loadClient = this.loadClient.bind(this);
       }
@@ -73,18 +78,24 @@ export default class RandomScreen extends React.Component {
         return(
             <View style={styles.itemContainer}>
                 <View style={styles.infoContainer}>
-                    <Text style={styles.artistText}/* TODO */>{item.artist}</Text>
-                    <Text style={styles.titleText}/* TODO */>{item.title}</Text>
+                    <Text style={styles.artistText}>{item.artist}</Text>
+                    <Text style={styles.titleText}>{item.title}</Text>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../assets/images/vinyl.jpg')} style={styles.image}/* TODO: Later *//>
+                    <Image source={{uri: item.image_url}} style={styles.image}/>
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
-                        /* TODO: Navigate to the Details route with params */
-                        navigation.navigate('Details', {/* props go here */});
+                        navigation.navigate('Details', {
+                            title: item.title,
+                            artist: item.artist,
+                            label: item.label,
+                            format: item.format,
+                            price: item.price,
+                            image_url: item.image_url,
+                          });
                         }}
                     >
                         <Text style={styles.buttonText}>See Details</Text>
@@ -103,6 +114,8 @@ export default class RandomScreen extends React.Component {
     }
     
     render() {
+        // const { dataSource } = this.props;
+        console.log(this.state.records)
         return(
             <View style={styles.container}>
                 <DeckSwiper
