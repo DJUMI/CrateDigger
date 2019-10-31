@@ -9,12 +9,18 @@ import {
 } from 'react-native';
 
 import HomeList from '../components/HomeList';
+import MoreFromArtistList from '../components/MoreFromArtistList';
+import MoreFromLabelList from '../components/MoreFromLabelList';
+
+let sameartist;
+let samelabel;
+let sameid;
 
 export default class AlbumDetailsScreen extends React.Component {
   
   render() {
     const { navigation } = this.props;
-    const { title, artist, label, format, price, image_url } = {
+    const { id, title, artist, label, format, price, image_url } = {
       id: navigation.getParam('id'),
       title: navigation.getParam('title'),
       artist: navigation.getParam('artist'),
@@ -23,14 +29,19 @@ export default class AlbumDetailsScreen extends React.Component {
       price: navigation.getParam('price'),
       image_url: navigation.getParam('image_url'),
     };
+
+    sameartist = artist;
+    samelabel = label;
+    sameid = id;
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.albumInfoContainer}>
-          <Text style={styles.artistText}/* TODO */>{artist}</Text>
-          <Text style={styles.titleText}/* TODO */>{title}</Text>
-          <Text style={styles.labelText}/* TODO */>{label}</Text>
-          <Text style={styles.labelText}/* TODO */>{format}</Text>
-          <Text style={styles.labelText}/* TODO */>${price}</Text>
+          <Text style={styles.artistText}>{artist}</Text>
+          <Text style={styles.titleText}>{title}</Text>
+          <Text style={styles.labelText}>{label}</Text>
+          <Text style={styles.labelText}>{format}</Text>
+          <Text style={styles.labelText}>${price}</Text>
           <View style={styles.imageContainer}>
             <Image source={{uri:image_url}} style={{width: 175, height: 175, borderRadius: 15}}/* TODO: Later *//>
           </View>
@@ -50,7 +61,7 @@ export default class AlbumDetailsScreen extends React.Component {
           </View>
   
           <View style={styles.listContainer}>
-            <HomeList
+            {/* <HomeList
               data={[
                 {key: 'Devin'},
                 {key: 'Jackson'},
@@ -61,7 +72,8 @@ export default class AlbumDetailsScreen extends React.Component {
                 {key: 'Jimmy'},
                 {key: 'Julie'},
               ]}
-            />
+            /> */}
+            <MoreFromArtistList/>
           </View>
           
           <View style={styles.listHeader}>
@@ -69,7 +81,7 @@ export default class AlbumDetailsScreen extends React.Component {
           </View>
   
           <View style={styles.listContainer}>
-            <HomeList
+            {/* <HomeList
               data={[
                 {key: 'Devin'},
                 {key: 'Jackson'},
@@ -80,7 +92,8 @@ export default class AlbumDetailsScreen extends React.Component {
                 {key: 'Jimmy'},
                 {key: 'Julie'},
               ]}
-            />
+            /> */}
+            <MoreFromLabelList/>
           </View>
           <View style={styles.footer}>
           </View>
@@ -88,6 +101,8 @@ export default class AlbumDetailsScreen extends React.Component {
     );
   }
 }
+
+export {sameartist, samelabel, sameid};
 
 AlbumDetailsScreen.navigationOptions = {
   header: null,

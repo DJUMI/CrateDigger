@@ -81,6 +81,7 @@ class HomeList extends Component {
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
+            id: item.listing_id,
             title: item.title,
             artist: item.artist,
             label: item.label,

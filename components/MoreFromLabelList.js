@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
+import { samelabel, sameid } from '../screens/AlbumDetailsScreen';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
@@ -64,7 +65,7 @@ class HomeList extends Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .find({ label: "RCA" }, { sort: { listing_id: -1 }, limit: 20 })
+      .find({ label: samelabel }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
