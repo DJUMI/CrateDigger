@@ -63,9 +63,9 @@ export default class RandomScreen extends React.Component {
         const db = mongoClient.db("crate-digger");
         const records = db.collection("music-0");
         records
-          .aggregate({ status: "For Sale" }, { $sample: { size: 100 } })  // Commented this lineout to
+          // .aggregate({ status: "For Sale" }, { $sample: { size: 100 } })  // Commented this lineout to
                                                                              // see if it's the problem
-          // .find({ status: "For Sale" }, { sort: { listing_id: -1 }, limit: 20 })
+          .find({ status: "For Sale" }, { sort: { listing_id: -1 }, limit: 20 })
           .asArray()
           .then(records => {
             this.setState({ records });
