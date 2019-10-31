@@ -63,7 +63,9 @@ export default class RandomScreen extends React.Component {
         const db = mongoClient.db("crate-digger");
         const records = db.collection("music-0");
         records
-          .aggregate({ status: "For Sale" }, { $sample: { size: 100 } })
+          .aggregate({ status: "For Sale" }, { $sample: { size: 100 } })  // Commented this lineout to
+                                                                             // see if it's the problem
+          // .find({ status: "For Sale" }, { sort: { listing_id: -1 }, limit: 20 })
           .asArray()
           .then(records => {
             this.setState({ records });
@@ -75,6 +77,7 @@ export default class RandomScreen extends React.Component {
     
     renderItem = ({ item }) => {
         const { navigation, data } = this.props;
+        console.log("HII")
         return(
             <View style={styles.itemContainer}>
                 <View style={styles.infoContainer}>
@@ -114,12 +117,11 @@ export default class RandomScreen extends React.Component {
     }
     
     render() {
-        // const { dataSource } = this.props;
         console.log(this.state.records)
         return(
             <View style={styles.container}>
                 <DeckSwiper
-                    dataSource = {this.state.records}
+                    dataSource = {[this.state.records]}
                     // dataSource= {[  /* TODO: get random */
                     //     {key: 'Devin'},
                     //     {key: 'Jackson'},
