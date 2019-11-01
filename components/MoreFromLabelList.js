@@ -65,7 +65,8 @@ class HomeList extends Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .find({ label: samelabel }, { sort: { listing_id: -1 }, limit: 20 })
+      // .find({ label: samelabel }, { sort: { listing_id: -1 }, limit: 20 })
+      .find({ $and: [ {label: samelabel }, {listing_id: {$ne: sameid}}] }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -82,6 +83,7 @@ class HomeList extends Component {
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
+            id: item.listing_id,
             title: item.title,
             artist: item.artist,
             label: item.label,
@@ -89,6 +91,9 @@ class HomeList extends Component {
             price: item.price,
             image_url: item.image_url,
           });
+          // samelabel = item.label
+          // sameid = item.listing_id
+          this.onRefresh()
         }}
       >
         <View style={styles.itemInfoContainer}>
@@ -110,6 +115,7 @@ class HomeList extends Component {
       return (
         <FlatList
           data={this.state.records}
+          extraData={this.state.records}
           horizontal
           renderItem={this.renderItem}
         />  

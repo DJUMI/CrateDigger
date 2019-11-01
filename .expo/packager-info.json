@@ -2,9 +2,9 @@
   "webpackServerPort": 19006,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": "https://r2-7ch.mjlatham.cratedigger.exp.direct",
-  "packagerNgrokUrl": "https://packager.r2-7ch.mjlatham.cratedigger.exp.direct",
-  "ngrokPid": 12752
+  "packagerPort": 19001,
+  "packagerPid": 30632,
+  "expoServerNgrokUrl": "https://zk-3hh.mjlatham.cratedigger.exp.direct",
+  "packagerNgrokUrl": "https://packager.zk-3hh.mjlatham.cratedigger.exp.direct",
+  "ngrokPid": 12204
 }
