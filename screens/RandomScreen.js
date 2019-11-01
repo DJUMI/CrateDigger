@@ -8,26 +8,97 @@ import {
 } from 'react-native';
 
 import { DeckSwiper } from 'native-base';
+import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 export default class RandomScreen extends React.Component {
+
+    state = {
+        isLoadingComplete: true,
+      }
+    
+      constructor(props) {
+        super(props);
+        this.state = {
+          currentUserId: undefined,
+          client: undefined,
+          records: undefined,
+          refreshing: false,
+          isLoadingComplete: true
+        };
+        this.loadClient = this.loadClient.bind(this);
+      }
+    
+      componentDidMount() {
+        this.loadClient();
+      }
+    
+      onRefresh = () => {
+        this.setState({ refreshing: true });
+        if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+          const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+          this.loadData(app);
+        } else {
+          Stitch.initializeAppClient("crate-digger-stitch-sikln")
+          .then(app => this.loadData(app))
+          .catch(err => console.error(err));
+        }
+      };
+    
+      loadClient() {
+        if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+          const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+          this.loadData(app);
+        } else {
+          Stitch.initializeAppClient("crate-digger-stitch-sikln")
+          .then(app => this.loadData(app))
+          .catch(err => console.error(err));
+        }
+      }
+    
+      loadData(appClient) {
+        const mongoClient = appClient.getServiceClient(
+          RemoteMongoClient.factory,
+          "mongodb-atlas"
+        );
+        const db = mongoClient.db("crate-digger");
+        const records = db.collection("music-0");
+        records
+          .aggregate({ status: "For Sale" }, { $sample: { size: 100 } })  // Commented this lineout to
+                                                                             // see if it's the problem
+          // .find({ status: "For Sale" }, { sort: { listing_id: -1 }, limit: 20 })
+          .asArray()
+          .then(records => {
+            this.setState({ records });
+          })
+          .catch(err => {
+            console.warn(err);
+          });
+      }
     
     renderItem = ({ item }) => {
         const { navigation, data } = this.props;
+        console.log("HII")
         return(
             <View style={styles.itemContainer}>
                 <View style={styles.infoContainer}>
-                    <Text style={styles.artistText}/* TODO */>Artist Name</Text>
-                    <Text style={styles.titleText}/* TODO */>Release Name</Text>
+                    <Text style={styles.artistText}>{item.artist}</Text>
+                    <Text style={styles.titleText}>{item.title}</Text>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../assets/images/vinyl.jpg')} style={styles.image}/* TODO: Later *//>
+                    <Image source={{uri: item.image_url}} style={styles.image}/>
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
-                        /* TODO: Navigate to the Details route with params */
-                        navigation.navigate('Details', {/* props go here */});
+                        navigation.navigate('Details', {
+                            title: item.title,
+                            artist: item.artist,
+                            label: item.label,
+                            format: item.format,
+                            price: item.price,
+                            image_url: item.image_url,
+                          });
                         }}
                     >
                         <Text style={styles.buttonText}>See Details</Text>
@@ -46,19 +117,21 @@ export default class RandomScreen extends React.Component {
     }
     
     render() {
+        console.log(this.state.records)
         return(
             <View style={styles.container}>
                 <DeckSwiper
-                    dataSource= {[  /* TODO: get random */
-                        {key: 'Devin'},
-                        {key: 'Jackson'},
-                        {key: 'James'},
-                        {key: 'Joel'},
-                        {key: 'John'},
-                        {key: 'Jillian'},
-                        {key: 'Jimmy'},
-                        {key: 'Julie'},
-                    ]}                   
+                    dataSource = {[this.state.records]}
+                    // dataSource= {[  /* TODO: get random */
+                    //     {key: 'Devin'},
+                    //     {key: 'Jackson'},
+                    //     {key: 'James'},
+                    //     {key: 'Joel'},
+                    //     {key: 'John'},
+                    //     {key: 'Jillian'},
+                    //     {key: 'Jimmy'},
+                    //     {key: 'Julie'},
+                    // ]}                   
                     renderItem={this.renderItem}
                 >   
                 </DeckSwiper>

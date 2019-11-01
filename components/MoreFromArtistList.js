@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
+import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
@@ -64,7 +65,7 @@ class HomeList extends Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .find({ status: "For Sale" }, { sort: { listing_id: -1 }, limit: 20 })
+      .find({ artist: sameartist }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -81,7 +82,6 @@ class HomeList extends Component {
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
-            id: item.listing_id,
             title: item.title,
             artist: item.artist,
             label: item.label,
@@ -108,6 +108,7 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
+   // const { data } = this.props;
     if (isLoadingComplete) {
       return (
         <FlatList

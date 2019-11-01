@@ -5,7 +5,8 @@ import {
   View,
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import HomeList from '../components/HomeList';
+import StaffPicksList from '../components/StaffPicksList';
+import WhatsNewList from '../components/WhatsNewList';
 
 export default class HomeScreen extends React.Component {
 
@@ -52,16 +53,16 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.listHeaderText}>What's New</Text>
           </View>
   
-          <View style={styles.listContainer}/* TODO Later : return list of newest releases */>
-            <HomeList/>
+          <View style={styles.listContainer}>
+            <WhatsNewList/>
           </View>
           
           <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>What's Hot</Text>
+            <Text style={styles.listHeaderText}>Staff Picks</Text>
           </View>
   
-          <View style={styles.listContainer}/* TODO LATER: return list of most sold records in past month*/>
-            <HomeList/>
+          <View style={styles.listContainer}>
+            <StaffPicksList/>
           </View>
             
   

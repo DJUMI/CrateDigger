@@ -81,7 +81,6 @@ class HomeList extends Component {
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
-            id: item.listing_id,
             title: item.title,
             artist: item.artist,
             label: item.label,
@@ -108,6 +107,7 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
+   // const { data } = this.props;
     if (isLoadingComplete) {
       return (
         <FlatList
