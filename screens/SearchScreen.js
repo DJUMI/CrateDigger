@@ -8,9 +8,6 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 
-
-
-
 export default class SearchScreen extends React.Component {
     render() {
         const { navigation, data } = this.props;

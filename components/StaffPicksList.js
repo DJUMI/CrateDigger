@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
@@ -13,10 +14,6 @@ import { withNavigation } from 'react-navigation';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 class HomeList extends Component {
-  state = {
-    isLoadingComplete: true,
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +21,7 @@ class HomeList extends Component {
       client: undefined,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: true
+      isLoadingComplete: false
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -68,6 +65,7 @@ class HomeList extends Component {
       .asArray()
       .then(records => {
         this.setState({ records });
+        this.setState({ isLoadingComplete: true });
       })
       .catch(err => {
         console.warn(err);
@@ -81,6 +79,7 @@ class HomeList extends Component {
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
+            id: item.listing_id,
             title: item.title,
             artist: item.artist,
             label: item.label,
@@ -95,7 +94,7 @@ class HomeList extends Component {
           <View style={styles.itemTitleContainer}>
             <Text 
               style={styles.itemTitleText} 
-              numberOfLines='1'
+              numberOfLines={1}
             >
               {item.title}
             </Text>
@@ -107,7 +106,6 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-   // const { data } = this.props;
     if (isLoadingComplete) {
       return (
         <FlatList
@@ -115,6 +113,15 @@ class HomeList extends Component {
           horizontal
           renderItem={this.renderItem}
         />  
+      );
+    }
+    else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.activityContainer}>
+            <ActivityIndicator/>
+          </View>
+        </View>
       );
     }
   }
@@ -147,6 +154,12 @@ const styles = StyleSheet.create({
   },
   itemTitleText: {
     fontSize: 20,
-  }
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 85,
+  },
 })
 

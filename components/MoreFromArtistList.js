@@ -6,18 +6,16 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
 import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+import { isEmptyStatement } from "@babel/types";
 
 class HomeList extends Component {
-  state = {
-    isLoadingComplete: true,
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +23,7 @@ class HomeList extends Component {
       client: undefined,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: true
+      isLoadingComplete: false
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -65,10 +63,11 @@ class HomeList extends Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .find({ artist: sameartist }, { sort: { listing_id: -1 }, limit: 20 })
+      .find({ $and: [ {artist: sameartist }, {listing_id: {$ne: sameid}}] }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
+        this.setState({ isLoadingComplete: true });
       })
       .catch(err => {
         console.warn(err);
@@ -76,12 +75,13 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
+            id: item.listing_id,
             title: item.title,
             artist: item.artist,
             label: item.label,
@@ -92,11 +92,11 @@ class HomeList extends Component {
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
           <View style={styles.itemTitleContainer}>
             <Text 
               style={styles.itemTitleText} 
-              numberOfLines='1'
+              numberOfLines={1}
             >
               {item.title}
             </Text>
@@ -108,14 +108,31 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-   // const { data } = this.props;
     if (isLoadingComplete) {
+      if (this.state.records.length == 0) {
+        return (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              Nothing else from this artist
+            </Text>
+          </View>
+        );
+      }
       return (
         <FlatList
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
         />  
+      );
+    }
+    else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.activityContainer}>
+            <ActivityIndicator/>
+          </View>
+        </View>
       );
     }
   }
@@ -148,6 +165,20 @@ const styles = StyleSheet.create({
   },
   itemTitleText: {
     fontSize: 20,
-  }
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    paddingTop: 85,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 15,
+  },
 })
 

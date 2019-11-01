@@ -9,7 +9,6 @@ import StaffPicksList from '../components/StaffPicksList';
 import WhatsNewList from '../components/WhatsNewList';
 
 export default class HomeScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +22,7 @@ export default class HomeScreen extends React.Component {
 
   updateSearch = search => {
     this.setState({ search });
-  };
+  }
 
   render() {
     const { search } = this.state;
@@ -31,7 +30,6 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.contentContainer}>
-  
           <View style={styles.getStartedContainer}>
             <Text style={styles.shopText}>JiggyJamz</Text>
             <Text style={styles.appNameText}>Crate Digger</Text>
@@ -64,9 +62,6 @@ export default class HomeScreen extends React.Component {
           <View style={styles.listContainer}>
             <StaffPicksList/>
           </View>
-            
-  
-  
         </View>
       </View>
     );
