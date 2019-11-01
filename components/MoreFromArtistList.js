@@ -100,7 +100,10 @@ class HomeList extends Component {
         <View style={styles.itemInfoContainer}>
           <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemTitleText}>
+            <Text 
+              style={styles.itemTitleText} 
+              numberOfLines={1}
+            >
               {item.title}
             </Text>
           </View>
@@ -145,10 +148,13 @@ const styles = StyleSheet.create({
   },
   itemTitleContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 30,
+    padding: 5,
   },
   itemTitleText: {
     fontSize: 20,
-    padding: 5,
   }
 })
 

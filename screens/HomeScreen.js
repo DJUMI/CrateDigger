@@ -53,7 +53,7 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.listHeaderText}>What's New</Text>
           </View>
   
-          <View style={styles.listContainer}/* TODO Later : return list of newest releases */>
+          <View style={styles.listContainer}>
             <WhatsNewList/>
           </View>
           
@@ -61,7 +61,7 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.listHeaderText}>Staff Picks</Text>
           </View>
   
-          <View style={styles.listContainer}/* TODO LATER: return list of most sold records in past month*/>
+          <View style={styles.listContainer}>
             <StaffPicksList/>
           </View>
             
