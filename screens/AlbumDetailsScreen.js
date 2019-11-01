@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import HomeList from '../components/HomeList';
 import MoreFromArtistList from '../components/MoreFromArtistList';
 import MoreFromLabelList from '../components/MoreFromLabelList';
 
@@ -41,7 +40,7 @@ export default class AlbumDetailsScreen extends React.Component {
           <Text style={styles.titleText}>{title}</Text>
           <Text style={styles.labelText}>{label}</Text>
           <Text style={styles.labelText}>{format}</Text>
-          <Text style={styles.labelText}>${price}</Text>
+          <Text style={styles.labelText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
           <View style={styles.imageContainer}>
             <Image source={{uri:image_url}} style={{width: 175, height: 175, borderRadius: 15}}/* TODO: Later *//>
           </View>
@@ -61,18 +60,6 @@ export default class AlbumDetailsScreen extends React.Component {
           </View>
   
           <View style={styles.listContainer}>
-            {/* <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
-            /> */}
             <MoreFromArtistList/>
           </View>
           
@@ -81,18 +68,6 @@ export default class AlbumDetailsScreen extends React.Component {
           </View>
   
           <View style={styles.listContainer}>
-            {/* <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
-            /> */}
             <MoreFromLabelList/>
           </View>
           <View style={styles.footer}>
@@ -111,7 +86,6 @@ AlbumDetailsScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
     backgroundColor: '#E5EEED',
   },
   albumInfoContainer: {
@@ -128,7 +102,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   imageContainer: {
-    //paddingVertical: 5,
   },
   button: {
     borderWidth: 1,

@@ -13,9 +13,6 @@ import { withNavigation } from 'react-navigation';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 class HomeList extends Component {
-  state = {
-    isLoadingComplete: true,
-  }
 
   constructor(props) {
     super(props);
@@ -75,7 +72,7 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -91,9 +88,12 @@ class HomeList extends Component {
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemTitleText}>
+            <Text 
+              style={styles.itemTitleText} 
+              numberOfLines={1}
+            >
               {item.title}
             </Text>
           </View>
@@ -104,7 +104,6 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-   // const { data } = this.props;
     if (isLoadingComplete) {
       return (
         <FlatList
@@ -137,10 +136,13 @@ const styles = StyleSheet.create({
   },
   itemTitleContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 30,
+    padding: 5,
   },
   itemTitleText: {
     fontSize: 20,
-    padding: 5,
   }
 })
 
