@@ -5,12 +5,14 @@ import {
   Image,
   View,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
+import { withNavigation } from 'react-navigation';
 import { DeckSwiper } from 'native-base';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
-export default class RandomScreen extends React.Component {
+class RandomScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -19,7 +21,8 @@ export default class RandomScreen extends React.Component {
       client: undefined,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: false
+      isLoadingComplete: false,
+      cart: global.cart,
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -59,7 +62,7 @@ export default class RandomScreen extends React.Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .aggregate([{ $match: { status: "For Sale" }}, { $sample: { size: 100 } }])
+      .aggregate([{ $match: { status: "For Sale" } }, { $sample: { size: 100 } }])
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -71,29 +74,30 @@ export default class RandomScreen extends React.Component {
   }
 
   render() {
-    console.log(this.state.isLoadingComplete)
-    console.log(this.state.records)
     const { isLoadingComplete } = this.state;
+    const { cart } = this.state;
+    const { navigation } = this.props;
     if (isLoadingComplete) {
       return (
         <View style={styles.container}>
           <DeckSwiper
-            dataSource={this.state.records}                  
+            dataSource={this.state.records}
             renderItem={item =>
               <View style={styles.itemContainer}>
                 <View style={styles.infoContainer}>
                   <Text style={styles.artistText}>{item.artist}</Text>
                   <Text style={styles.titleText}>{item.title}</Text>
                 </View>
+
                 <View style={styles.imageContainer}>
                   <Image source={{ uri: item.image_url }} style={styles.image} />
                 </View>
+
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
                       navigation.navigate('Details', {
-                        id: item.listing_id,
                         title: item.title,
                         artist: item.artist,
                         label: item.label,
@@ -105,10 +109,12 @@ export default class RandomScreen extends React.Component {
                   >
                     <Text style={styles.buttonText}>See Details</Text>
                   </TouchableOpacity>
+
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                      /* TODO: Add to Cart */
+                      this.state.cart.push(item);
+                      console.log(this.state.cart)
                     }}
                   >
                     <Text style={styles.buttonText}>+ Add to Cart</Text>
@@ -116,17 +122,16 @@ export default class RandomScreen extends React.Component {
                 </View>
               </View>
             }
-          >
-          </DeckSwiper>
+          />
         </View>
       );
     }
     else {
       return (
         <View style={styles.container}>
-          <Text>
-            Loading...
-          </Text>
+          <View style={styles.activityContainer}>
+            <ActivityIndicator />
+          </View>
         </View>
       );
     }
@@ -136,6 +141,8 @@ export default class RandomScreen extends React.Component {
 RandomScreen.navigationOptions = {
   title: 'Random',
 };
+
+export default withNavigation(RandomScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -198,5 +205,10 @@ const styles = StyleSheet.create({
   buttonText: {
     flex: 1,
     fontSize: 15,
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

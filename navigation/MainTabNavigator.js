@@ -109,15 +109,6 @@ CartStack.navigationOptions = {
 
 CartStack.path = '';
 
-AlbumDetailsScreen.navigationOptions = {
-  title: 'Details'
-};
-
-SearchResultsScreen.navigationOptions = {
-  title: 'Search Results'
-};
-
-/*
 const AlbumDetailsStack = createStackNavigator(
   {
     Details: AlbumDetailsScreen,
@@ -133,6 +124,10 @@ AlbumDetailsStack.navigationOptions = {
 };
 
 AlbumDetailsStack.path = '';
+
+AlbumDetailsScreen.navigationOptions = {
+  title: 'Details'
+};
 
 const SearchResultsStack = createStackNavigator(
   {
@@ -150,7 +145,12 @@ SearchResultsStack.navigationOptions = {
 
 SearchResultsStack.path = '';
 
-*/
+SearchResultsScreen.navigationOptions = {
+  title: 'Search Results'
+};
+
+
+
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,

@@ -75,6 +75,7 @@ class SearchResultsList extends Component {
           data={data}
           renderItem={this.renderItem}
           ListHeaderComponent={this.renderHeader}
+          keyExtractor={(item, listing_id) => listing_id.toString()}
         />  
       );
     }

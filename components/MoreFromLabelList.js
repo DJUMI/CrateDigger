@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
@@ -13,10 +14,7 @@ import { samelabel, sameid } from '../screens/AlbumDetailsScreen';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
-class HomeList extends Component {
-  state = {
-    isLoadingComplete: true,
-  }
+class MoreFromLabelList extends Component {
 
   constructor(props) {
     super(props);
@@ -25,7 +23,8 @@ class HomeList extends Component {
       client: undefined,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: true
+      isLoadingComplete: false,
+      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -65,11 +64,11 @@ class HomeList extends Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      // .find({ label: samelabel }, { sort: { listing_id: -1 }, limit: 20 })
       .find({ $and: [ {label: samelabel }, {listing_id: {$ne: sameid}}] }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
+        this.setState({ isLoadingComplete: true });
       })
       .catch(err => {
         console.warn(err);
@@ -77,7 +76,7 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -90,14 +89,13 @@ class HomeList extends Component {
             format: item.format,
             price: item.price,
             image_url: item.image_url,
-          });
-          // samelabel = item.label
-          // sameid = item.listing_id
-          this.onRefresh()
+            key: Math.random () * 10000
+          })
+
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
           <View style={styles.itemTitleContainer}>
             <Text 
               style={styles.itemTitleText} 
@@ -113,21 +111,38 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-   // const { data } = this.props;
     if (isLoadingComplete) {
+      if (this.state.records.length == 0) {
+        return (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              Nothing else from this label
+            </Text>
+          </View>
+        );
+      }
       return (
         <FlatList
           data={this.state.records}
-          extraData={this.state.records}
           horizontal
           renderItem={this.renderItem}
+          keyExtractor={(item, listing_id) => listing_id.toString()}
         />  
+      );
+    }
+    else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.activityContainer}>
+            <ActivityIndicator/>
+          </View>
+        </View>
       );
     }
   }
 }
 
-export default withNavigation(HomeList);
+export default withNavigation(MoreFromLabelList);
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -154,6 +169,20 @@ const styles = StyleSheet.create({
   },
   itemTitleText: {
     fontSize: 20,
-  }
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 85,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 15,
+  },
 })
 
