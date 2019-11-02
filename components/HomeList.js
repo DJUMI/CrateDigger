@@ -13,10 +13,6 @@ import { withNavigation } from 'react-navigation';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 class HomeList extends Component {
-  state = {
-    isLoadingComplete: true,
-  }
-
   constructor(props) {
     super(props);
     this.state = {

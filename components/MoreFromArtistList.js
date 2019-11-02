@@ -23,7 +23,8 @@ class HomeList extends Component {
       client: undefined,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: false
+      isLoadingComplete: false,
+      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }

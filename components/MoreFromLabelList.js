@@ -24,6 +24,7 @@ class HomeList extends Component {
       records: undefined,
       refreshing: false,
       isLoadingComplete: false,
+      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }

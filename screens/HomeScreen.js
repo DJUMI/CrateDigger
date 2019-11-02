@@ -17,6 +17,7 @@ export default class HomeScreen extends React.Component {
       tasks: undefined,
       refreshing: false,
       search: "",
+      cart: [],
     };
   }
 
@@ -34,7 +35,7 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.shopText}>JiggyJamz</Text>
             <Text style={styles.appNameText}>Crate Digger</Text>
           </View>
-          
+
           <SearchBar
             placeholder="Type here..."
             round
@@ -46,21 +47,21 @@ export default class HomeScreen extends React.Component {
             value={this.state.search}
             onSubmitEditing={() => this.handleSubmit()}
           />
-          
+
           <View style={styles.listHeader}>
             <Text style={styles.listHeaderText}>What's New</Text>
           </View>
-  
+
           <View style={styles.listContainer}>
-            <WhatsNewList/>
+            <WhatsNewList />
           </View>
-          
+
           <View style={styles.listHeader}>
             <Text style={styles.listHeaderText}>Staff Picks</Text>
           </View>
-  
+
           <View style={styles.listContainer}>
-            <StaffPicksList/>
+            <StaffPicksList />
           </View>
         </View>
       </View>

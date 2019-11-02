@@ -9,9 +9,17 @@ import {
 } from 'react-native';
 
 class CartList extends Component {
-  state = {
-    isLoadingComplete: true,
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+          currentUserId: undefined,
+          client: undefined,
+          records: undefined,
+          refreshing: false,
+          isLoadingComplete: false,
+          cart: [],
+        };
+      }
 
     componentDidMount = async () => {
         this.setState({ isLoadingComplete: true });
@@ -62,11 +70,11 @@ class CartList extends Component {
     }   
 
 render() {
-    const { data } = this.props;
+    const { cart } = this.props;
     return (
         <View style={styles.container}>
             <FlatList
-            data={data}
+            data={cart}
             renderItem={this.renderItem}
             />
         </View>

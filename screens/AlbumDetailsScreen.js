@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   ScrollView,
   StyleSheet,
   Text,
@@ -16,7 +16,20 @@ let samelabel;
 let sameid;
 
 export default class AlbumDetailsScreen extends React.Component {
-  
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      records: undefined,
+      refreshing: false,
+      isLoadingComplete: false,
+      cart: [],
+    };
+    //this.loadClient = this.loadClient.bind(this);
+  }
+
   render() {
     const { navigation } = this.props;
     const { id, title, artist, label, format, price, image_url } = {
@@ -42,42 +55,44 @@ export default class AlbumDetailsScreen extends React.Component {
           <Text style={styles.labelText}>{format}</Text>
           <Text style={styles.labelText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
           <View style={styles.imageContainer}>
-            <Image source={{uri:image_url}} style={{width: 175, height: 175, borderRadius: 15}}/>
+            <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 15 }} />
           </View>
         </View>
-  
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              /* TODO: Add to Cart */
-            }}
-          >
-            <Text style={styles.buttonText}>+ Add to Cart</Text>
-          </TouchableOpacity>
-  
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            /* TODO: Add to Cart */
+            //this.state.cart.push(item);
+            //console.log(cart);
+          }}
+        >
+          <Text style={styles.buttonText}>+ Add to Cart</Text>
+        </TouchableOpacity>
+
         <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>More from this artist</Text>
-          </View>
-  
-          <View style={styles.listContainer}>
-            <MoreFromArtistList/>
-          </View>
-          
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>More from this Label</Text>
-          </View>
-  
-          <View style={styles.listContainer}>
-            <MoreFromLabelList/>
-          </View>
-          <View style={styles.footer}>
-          </View>
+          <Text style={styles.listHeaderText}>More from this artist</Text>
+        </View>
+
+        <View style={styles.listContainer}>
+          <MoreFromArtistList />
+        </View>
+
+        <View style={styles.listHeader}>
+          <Text style={styles.listHeaderText}>More from this Label</Text>
+        </View>
+
+        <View style={styles.listContainer}>
+          <MoreFromLabelList />
+        </View>
+        <View style={styles.footer}>
+        </View>
       </ScrollView>
     );
   }
 }
 
-export {sameartist, samelabel, sameid};
+export { sameartist, samelabel, sameid };
 
 AlbumDetailsScreen.navigationOptions = {
   header: null,

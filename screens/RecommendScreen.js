@@ -8,10 +8,11 @@ import {
     ActivityIndicator,
 } from 'react-native';
 
+import { withNavigation } from 'react-navigation';
 import { DeckSwiper } from 'native-base';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
-export default class RecommendScreen extends React.Component {
+class RecommendScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +20,8 @@ export default class RecommendScreen extends React.Component {
             client: undefined,
             records: undefined,
             refreshing: false,
-            isLoadingComplete: false
+            isLoadingComplete: false,
+            cart: [],
         };
         this.loadClient = this.loadClient.bind(this);
     }
@@ -71,9 +73,9 @@ export default class RecommendScreen extends React.Component {
     }
 
     render() {
-        console.log(this.state.isLoadingComplete)
-        console.log(this.state.records)
         const { isLoadingComplete } = this.state;
+        const { cart } = this.state;
+        const { navigation } = this.props;
         if (isLoadingComplete) {
             return (
                 <View style={styles.container}>
@@ -106,11 +108,13 @@ export default class RecommendScreen extends React.Component {
                                     >
                                         <Text style={styles.buttonText}>See Details</Text>
                                     </TouchableOpacity>
-                                    
+
                                     <TouchableOpacity
                                         style={styles.button}
                                         onPress={() => {
                                             /* TODO: Add to Cart */
+                                            this.state.cart.push(item);
+                                            console.log(cart);
                                         }}
                                     >
                                         <Text style={styles.buttonText}>+ Add to Cart</Text>
@@ -118,7 +122,7 @@ export default class RecommendScreen extends React.Component {
                                 </View>
                             </View>
                         }
-                    />   
+                    />
                 </View>
             );
         }
@@ -126,8 +130,8 @@ export default class RecommendScreen extends React.Component {
             return (
                 <View style={styles.container}>
                     <View style={styles.activityContainer}>
-                        <ActivityIndicator/>
-                    </View>   
+                        <ActivityIndicator />
+                    </View>
                 </View>
             );
         }
@@ -137,6 +141,8 @@ export default class RecommendScreen extends React.Component {
 RecommendScreen.navigationOptions = {
     title: 'Recommended',
 };
+
+export default withNavigation(RecommendScreen);
 
 const styles = StyleSheet.create({
     container: {

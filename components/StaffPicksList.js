@@ -21,7 +21,8 @@ class HomeList extends Component {
       client: undefined,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: false
+      isLoadingComplete: false,
+      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -73,7 +74,7 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -90,7 +91,7 @@ class HomeList extends Component {
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
           <View style={styles.itemTitleContainer}>
             <Text 
               style={styles.itemTitleText} 
