@@ -80,6 +80,7 @@ class StaffPicksList extends Component {
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
+            item: item,
             id: item.listing_id,
             title: item.title,
             artist: item.artist,

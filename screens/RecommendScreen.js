@@ -21,7 +21,7 @@ class RecommendScreen extends React.Component {
             records: undefined,
             refreshing: false,
             isLoadingComplete: false,
-            cart: [],
+            cart: global.cart,
         };
         this.loadClient = this.loadClient.bind(this);
     }
@@ -84,8 +84,19 @@ class RecommendScreen extends React.Component {
                         renderItem={item =>
                             <View style={styles.itemContainer}>
                                 <View style={styles.infoContainer}>
-                                    <Text style={styles.artistText}>{item.artist}</Text>
-                                    <Text style={styles.titleText}>{item.title}</Text>
+                                    <Text
+                                        style={styles.artistText}
+                                        numberOfLines={1}
+                                    >
+                                        {item.artist}
+                                    </Text>
+
+                                    <Text
+                                        style={styles.titleText}
+                                        numberOfLines={1}
+                                    >
+                                        {item.title}
+                                    </Text>
                                 </View>
 
                                 <View style={styles.imageContainer}>
@@ -97,6 +108,7 @@ class RecommendScreen extends React.Component {
                                         style={styles.button}
                                         onPress={() => {
                                             navigation.navigate('Details', {
+                                                item: item,
                                                 title: item.title,
                                                 artist: item.artist,
                                                 label: item.label,
@@ -112,9 +124,8 @@ class RecommendScreen extends React.Component {
                                     <TouchableOpacity
                                         style={styles.button}
                                         onPress={() => {
-                                            /* TODO: Add to Cart */
                                             this.state.cart.push(item);
-                                            console.log(cart);
+                                            console.log(this.state.cart)
                                         }}
                                     >
                                         <Text style={styles.buttonText}>+ Add to Cart</Text>
@@ -157,7 +168,7 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         paddingVertical: 10,
-        paddingLeft: 15,
+        paddingHorizontal: 15,
         borderLeftWidth: .5,
         borderTopWidth: .5,
         borderRightWidth: .5,

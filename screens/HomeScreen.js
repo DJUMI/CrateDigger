@@ -17,7 +17,7 @@ export default class HomeScreen extends React.Component {
       tasks: undefined,
       refreshing: false,
       search: "",
-      cart: [],
+      cart: global.cart,
     };
   }
 

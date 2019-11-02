@@ -27,7 +27,7 @@ class AlbumDetailsScreen extends React.Component {
       refreshing: false,
       isLoadingComplete: false,
       needRefresh: false,
-      cart: [],
+      cart: global.cart,
     };
     //this.loadClient = this.loadClient.bind(this);
   }
@@ -54,7 +54,8 @@ class AlbumDetailsScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { id, title, artist, label, format, price, image_url } = {
+    const { item, id, title, artist, label, format, price, image_url } = {
+      item: navigation.getParam('item'),
       id: navigation.getParam('id'),
       title: navigation.getParam('title'),
       artist: navigation.getParam('artist'),
@@ -84,9 +85,8 @@ class AlbumDetailsScreen extends React.Component {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            /* TODO: Add to Cart */
-            //this.state.cart.push(item);
-            //console.log(cart);
+            this.state.cart.push(item);
+            console.log(this.state.cart)
           }}
         >
           <Text style={styles.buttonText}>+ Add to Cart</Text>

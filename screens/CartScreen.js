@@ -5,10 +5,11 @@ import {
     View,
 } from 'react-native';
 
+import { withNavigation } from 'react-navigation';
 import CartList from '../components/CartList';
 
 
-export default class CartScreen extends React.Component {
+class CartScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,18 +36,8 @@ export default class CartScreen extends React.Component {
                         <Text style={styles.headerText}>Price</Text>
                     </View>
                 </View>
-                <CartList
-                    data={[
-                        { key: 'Devin' },
-                        { key: 'Jackson' },
-                        { key: 'James' },
-                        { key: 'Joel' },
-                        { key: 'John' },
-                        { key: 'Jillian' },
-                        { key: 'Jimmy' },
-                        { key: 'Julie' },
-                    ]}
-                />
+                
+                <CartList />
             </View>
 
         );
@@ -57,6 +48,8 @@ export default class CartScreen extends React.Component {
 CartScreen.navigationOptions = {
     header: null,
 };
+
+export default withNavigation(CartScreen);
 
 const styles = StyleSheet.create({
     container: {
