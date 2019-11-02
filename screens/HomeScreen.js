@@ -25,6 +25,10 @@ export default class HomeScreen extends React.Component {
     this.setState({ search });
   };
 
+  handleSubmit() {
+    this.setState({ search });
+  };
+
   render() {
     const { search } = this.state;
 
