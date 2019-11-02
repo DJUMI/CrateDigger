@@ -10,10 +10,9 @@ import {
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
-
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
-import { isEmptyStatement } from "@babel/types";
+
+import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
 
 class MoreFromArtistList extends Component {
   constructor(props) {
@@ -24,7 +23,6 @@ class MoreFromArtistList extends Component {
       records: undefined,
       refreshing: false,
       isLoadingComplete: false,
-      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }

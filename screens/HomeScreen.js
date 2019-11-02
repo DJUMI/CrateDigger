@@ -4,7 +4,9 @@ import {
   Text,
   View,
 } from 'react-native';
+
 import { SearchBar } from 'react-native-elements';
+
 import StaffPicksList from '../components/StaffPicksList';
 import WhatsNewList from '../components/WhatsNewList';
 

@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-import { samelabel, sameid } from '../screens/AlbumDetailsScreen';
-
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+
+import { samelabel, sameid } from '../screens/AlbumDetailsScreen';
 
 class MoreFromLabelList extends Component {
 

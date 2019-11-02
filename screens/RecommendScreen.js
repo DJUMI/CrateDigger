@@ -6,6 +6,7 @@ import {
     View,
     TouchableOpacity,
     ActivityIndicator,
+    Alert,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
@@ -124,8 +125,9 @@ class RecommendScreen extends React.Component {
                                     <TouchableOpacity
                                         style={styles.button}
                                         onPress={() => {
-                                            this.state.cart.push(item);
-                                            console.log(this.state.cart)
+                                            cart.push(item);
+                                            Alert.alert('Added!')
+                                            console.log(cart)
                                         }}
                                     >
                                         <Text style={styles.buttonText}>+ Add to Cart</Text>

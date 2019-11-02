@@ -29,6 +29,7 @@ class CartList extends Component {
 
     renderItem = ({ item }) => {
         const { navigation } = this.props;
+        //var num_in_cart = 1;
         return (
             <View style={styles.itemContainer}>
                 <TouchableOpacity
@@ -78,6 +79,7 @@ class CartList extends Component {
                         style={styles.button}
                         onPress={() => {
                             /* TODO: minus 1 to cart if 0 reload */
+                            //num_in_cart--;
                         }}
                     >
                         <Text style={styles.buttonText}>-</Text>
@@ -93,6 +95,7 @@ class CartList extends Component {
                             /* TODO: add 1 to cart if not enough inventory give warning */
                             //this.state.cart.push(item);
                             //console.log(this.state.cart)
+                            //num_in_cart++;
                         }}
                     >
                         <Text style={styles.buttonText}>+</Text>
@@ -175,12 +178,12 @@ const styles = StyleSheet.create({
     itemOtherText: {
         fontSize: 10,
         padding: 1,
-        flex:1,
+        width: 115,
     },
     itemTitleText: {
         fontSize: 12,
         padding: 1,
-        flex:1,
+        width: 115,
     },
     button: {
         padding: 15,

@@ -6,8 +6,8 @@ import {
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-import CartList from '../components/CartList';
 
+import CartList from '../components/CartList';
 
 class CartScreen extends React.Component {
     constructor(props) {

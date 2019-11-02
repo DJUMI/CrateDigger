@@ -6,9 +6,11 @@ import {
   Image,
   View,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
+
 import MoreFromArtistList from '../components/MoreFromArtistList';
 import MoreFromLabelList from '../components/MoreFromLabelList';
 
@@ -17,7 +19,6 @@ let samelabel;
 let sameid;
 
 class AlbumDetailsScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -29,27 +30,6 @@ class AlbumDetailsScreen extends React.Component {
       needRefresh: false,
       cart: global.cart,
     };
-    //this.loadClient = this.loadClient.bind(this);
-  }
-  componentDidMount () {
-    const {navigation} = this.props;
-    navigation.addListener ('willFocus', () =>
-      this.setState({needRefresh: true})
-    );
-    }
-
-  needRefresh() {
-    this.setState({
-      needRefresh: true,
-    });
-    this.render();
-    console.log("okaybutt");
-  }
-
-  cancelRefresh() {
-    this.setState({
-      needRefresh: false,
-    });
   }
 
   render() {
@@ -73,10 +53,15 @@ class AlbumDetailsScreen extends React.Component {
       <ScrollView style={styles.container}>
         <View style={styles.albumInfoContainer}>
           <Text style={styles.artistText}>{artist}</Text>
+
           <Text style={styles.titleText}>{title}</Text>
+
           <Text style={styles.labelText}>{label}</Text>
+
           <Text style={styles.labelText}>{format}</Text>
+
           <Text style={styles.labelText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
+
           <View style={styles.imageContainer}>
             <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 15 }} />
           </View>
@@ -86,6 +71,7 @@ class AlbumDetailsScreen extends React.Component {
           style={styles.button}
           onPress={() => {
             this.state.cart.push(item);
+            Alert.alert('Added!')
             console.log(this.state.cart)
           }}
         >

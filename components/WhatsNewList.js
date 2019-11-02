@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 class WhatsNewList extends Component {
