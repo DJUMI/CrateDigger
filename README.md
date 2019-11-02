@@ -10,13 +10,34 @@ A smartphone app that recreates the record store experience that lets you dig th
 * [Expo CLI](https://docs.expo.io/versions/latest/workflow/expo-cli/). Install by running the command `npm install -g expo-cli`
 * Expo app for Android or iOS.
 
-### Installing
+### Installing and Running
 
 Once Node.js and Expo CLI are downloaded and installed, `cd` into the Crate Digger directory and run the command `npm install` to download all dependencies.
 
 Then, run `npm start` or `expo start` to start the app.
 
 Once it has built, you can scan the QR code on the Expo app on your phone to open up the app (default is in development mode, but recommend switching to production mode).
+
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+*Explain what these tests test and why*
+
+```
+Give an example
+```
+
+### And coding style tests
+
+*Explain what these tests test and why*
+
+```
+Give an example
+```
 
 ## Built With
 
