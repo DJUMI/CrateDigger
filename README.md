@@ -19,26 +19,6 @@ Then, run `npm start` or `expo start` to start the app.
 Once it has built, you can scan the QR code on the Expo app on your phone to open up the app (default is in development mode, but recommend switching to production mode).
 
 
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-*Explain what these tests test and why*
-
-```
-Give an example
-```
-
-### And coding style tests
-
-*Explain what these tests test and why*
-
-```
-Give an example
-```
-
 ## Built With
 
 * [Node.js](https://nodejs.org/en/) - JavaScript runtime
