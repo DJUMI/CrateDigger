@@ -15,7 +15,7 @@ import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import { isEmptyStatement } from "@babel/types";
 
-class HomeList extends Component {
+class MoreFromArtistList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,6 +63,7 @@ class HomeList extends Component {
     );
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
+    const { id, artist } = this.props;
     records
       .find({ $and: [ {artist: sameartist }, {listing_id: {$ne: sameid}}] }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
@@ -89,7 +90,8 @@ class HomeList extends Component {
             format: item.format,
             price: item.price,
             image_url: item.image_url,
-          });
+            key: Math.random () * 10000
+          })
         }}
       >
         <View style={styles.itemInfoContainer}>
@@ -124,6 +126,7 @@ class HomeList extends Component {
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
+          keyExtractor={(item, listing_id) => listing_id.toString()}
         />  
       );
     }
@@ -139,7 +142,7 @@ class HomeList extends Component {
   }
 }
 
-export default withNavigation(HomeList);
+export default withNavigation(MoreFromArtistList);
 
 const styles = StyleSheet.create({
   itemContainer: {

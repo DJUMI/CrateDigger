@@ -14,7 +14,7 @@ import { samelabel, sameid } from '../screens/AlbumDetailsScreen';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
-class HomeList extends Component {
+class MoreFromLabelList extends Component {
 
   constructor(props) {
     super(props);
@@ -89,7 +89,9 @@ class HomeList extends Component {
             format: item.format,
             price: item.price,
             image_url: item.image_url,
-          });
+            key: Math.random () * 10000
+          })
+
         }}
       >
         <View style={styles.itemInfoContainer}>
@@ -124,6 +126,7 @@ class HomeList extends Component {
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
+          keyExtractor={(item, listing_id) => listing_id.toString()}
         />  
       );
     }
@@ -139,7 +142,7 @@ class HomeList extends Component {
   }
 }
 
-export default withNavigation(HomeList);
+export default withNavigation(MoreFromLabelList);
 
 const styles = StyleSheet.create({
   itemContainer: {

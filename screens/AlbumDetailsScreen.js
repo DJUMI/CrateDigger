@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import { withNavigation } from 'react-navigation';
 import MoreFromArtistList from '../components/MoreFromArtistList';
 import MoreFromLabelList from '../components/MoreFromLabelList';
 
@@ -15,7 +16,7 @@ let sameartist;
 let samelabel;
 let sameid;
 
-export default class AlbumDetailsScreen extends React.Component {
+class AlbumDetailsScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -25,9 +26,30 @@ export default class AlbumDetailsScreen extends React.Component {
       records: undefined,
       refreshing: false,
       isLoadingComplete: false,
+      needRefresh: false,
       cart: [],
     };
     //this.loadClient = this.loadClient.bind(this);
+  }
+  componentDidMount () {
+    const {navigation} = this.props;
+    navigation.addListener ('willFocus', () =>
+      this.setState({needRefresh: true})
+    );
+    }
+
+  needRefresh() {
+    this.setState({
+      needRefresh: true,
+    });
+    this.render();
+    console.log("okaybutt");
+  }
+
+  cancelRefresh() {
+    this.setState({
+      needRefresh: false,
+    });
   }
 
   render() {
@@ -75,7 +97,9 @@ export default class AlbumDetailsScreen extends React.Component {
         </View>
 
         <View style={styles.listContainer}>
-          <MoreFromArtistList />
+          <MoreFromArtistList
+            key={navigation.getParam('key')}
+          />
         </View>
 
         <View style={styles.listHeader}>
@@ -83,7 +107,9 @@ export default class AlbumDetailsScreen extends React.Component {
         </View>
 
         <View style={styles.listContainer}>
-          <MoreFromLabelList />
+          <MoreFromLabelList 
+            key={navigation.getParam('key')}
+          />
         </View>
         <View style={styles.footer}>
         </View>
@@ -97,6 +123,8 @@ export { sameartist, samelabel, sameid };
 AlbumDetailsScreen.navigationOptions = {
   header: null,
 };
+
+export default withNavigation(AlbumDetailsScreen);
 
 const styles = StyleSheet.create({
   container: {

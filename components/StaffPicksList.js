@@ -13,7 +13,7 @@ import { withNavigation } from 'react-navigation';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
-class HomeList extends Component {
+class StaffPicksList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -113,6 +113,7 @@ class HomeList extends Component {
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
+          keyExtractor={(item, listing_id) => listing_id.toString()}
         />  
       );
     }
@@ -128,7 +129,7 @@ class HomeList extends Component {
   }
 }
 
-export default withNavigation(HomeList);
+export default withNavigation(StaffPicksList);
 
 const styles = StyleSheet.create({
   itemContainer: {

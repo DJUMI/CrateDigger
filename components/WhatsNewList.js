@@ -113,6 +113,7 @@ class WhatsNewList extends Component {
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
+          keyExtractor={(item, listing_id) => listing_id.toString()}
         />  
       );
     }

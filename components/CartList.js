@@ -76,6 +76,7 @@ render() {
             <FlatList
             data={cart}
             renderItem={this.renderItem}
+            keyExtractor={(item, listing_id) => listing_id.toString()}
             />
         </View>
     );
