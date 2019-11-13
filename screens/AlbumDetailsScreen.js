@@ -1,93 +1,120 @@
 import React from 'react';
-import { 
+import {
   ScrollView,
   StyleSheet,
   Text,
   Image,
   View,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
-import HomeList from '../components/HomeList';
+import { withNavigation } from 'react-navigation';
 
-export default class AlbumDetailsScreen extends React.Component {
-  
+import MoreFromArtistList from '../components/MoreFromArtistList';
+import MoreFromLabelList from '../components/MoreFromLabelList';
+
+let sameartist;
+let samelabel;
+let sameid;
+
+class AlbumDetailsScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      records: undefined,
+      refreshing: false,
+      isLoadingComplete: false,
+      needRefresh: false,
+      cart: global.cart,
+    };
+  }
+
   render() {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
+    const { item, id, title, artist, label, format, price, image_url } = {
+      item: navigation.getParam('item'),
+      id: navigation.getParam('id'),
+      title: navigation.getParam('title'),
+      artist: navigation.getParam('artist'),
+      label: navigation.getParam('label'),
+      format: navigation.getParam('format'),
+      price: navigation.getParam('price'),
+      image_url: navigation.getParam('image_url'),
+    };
+
+    sameartist = artist;
+    samelabel = label;
+    sameid = id;
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.albumInfoContainer}>
-          <Text style={styles.artistText}/* TODO */>Artist Name</Text>
-          <Text style={styles.titleText}/* TODO */>Release Name</Text>
-          <Text style={styles.labelText}/* TODO */>Label Name</Text>
-          <Text style={styles.labelText}/* TODO */>Format</Text>
-          <Text style={styles.labelText}/* TODO */>Price</Text>
+          <Text style={styles.artistText}>{artist}</Text>
+
+          <Text style={styles.titleText}>{title}</Text>
+
+          <Text style={styles.labelText}>{label}</Text>
+
+          <Text style={styles.labelText}>{format}</Text>
+
+          <Text style={styles.labelText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
+
           <View style={styles.imageContainer}>
-            <Image source={require('../assets/images/vinyl.jpg')} style={{width: 175, height: 175, borderRadius: 15}}/* TODO: Later *//>
+            <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 15 }} />
           </View>
         </View>
-  
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              /* TODO: Add to Cart */
-            }}
-          >
-            <Text style={styles.buttonText}>+ Add to Cart</Text>
-          </TouchableOpacity>
-  
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            this.state.cart.push(item);
+            Alert.alert('Added!')
+            console.log(this.state.cart)
+          }}
+        >
+          <Text style={styles.buttonText}>+ Add to Cart</Text>
+        </TouchableOpacity>
+
         <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>More from this artist</Text>
-          </View>
-  
-          <View style={styles.listContainer}>
-            <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
-            />
-          </View>
-          
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>More from this Label</Text>
-          </View>
-  
-          <View style={styles.listContainer}>
-            <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
-            />
-          </View>
-          <View style={styles.footer}>
-          </View>
+          <Text style={styles.listHeaderText}>More from this artist</Text>
+        </View>
+
+        <View style={styles.listContainer}>
+          <MoreFromArtistList
+            key={navigation.getParam('key')}
+          />
+        </View>
+
+        <View style={styles.listHeader}>
+          <Text style={styles.listHeaderText}>More from this Label</Text>
+        </View>
+
+        <View style={styles.listContainer}>
+          <MoreFromLabelList 
+            key={navigation.getParam('key')}
+          />
+        </View>
+        <View style={styles.footer}>
+        </View>
       </ScrollView>
     );
   }
 }
 
+export { sameartist, samelabel, sameid };
+
 AlbumDetailsScreen.navigationOptions = {
   header: null,
 };
 
+export default withNavigation(AlbumDetailsScreen);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
     backgroundColor: '#E5EEED',
   },
   albumInfoContainer: {
@@ -104,7 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   imageContainer: {
-    //paddingVertical: 5,
   },
   button: {
     borderWidth: 1,

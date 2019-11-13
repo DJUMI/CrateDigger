@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
-class HomeList extends Component {
+class WhatsNewList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +20,8 @@ class HomeList extends Component {
       client: undefined,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: true
+      isLoadingComplete: false,
+      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -64,6 +65,7 @@ class HomeList extends Component {
       .asArray()
       .then(records => {
         this.setState({ records });
+        this.setState({ isLoadingComplete: true });
       })
       .catch(err => {
         console.warn(err);
@@ -71,12 +73,13 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
+            item: item,
             id: item.listing_id,
             title: item.title,
             artist: item.artist,
@@ -88,11 +91,11 @@ class HomeList extends Component {
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
           <View style={styles.itemTitleContainer}>
             <Text 
               style={styles.itemTitleText} 
-              numberOfLines='1'
+              numberOfLines={1}
             >
               {item.title}
             </Text>
@@ -114,10 +117,19 @@ class HomeList extends Component {
         />  
       );
     }
+    else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.activityContainer}>
+            <ActivityIndicator/>
+          </View>
+        </View>
+      );
+    }
   }
 }
 
-export default withNavigation(HomeList);
+export default withNavigation(WhatsNewList);
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -139,11 +151,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 150,
-    height: 30,
     padding: 5,
   },
   itemTitleText: {
     fontSize: 20,
-  }
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 85,
+  },
 })
 

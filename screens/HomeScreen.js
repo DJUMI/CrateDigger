@@ -7,67 +7,64 @@ import {
 
 import { SearchBar } from 'react-native-elements';
 
-import HomeList from '../components/HomeList';
+import StaffPicksList from '../components/StaffPicksList';
+import WhatsNewList from '../components/WhatsNewList';
 
 export default class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      tasks: undefined,
+      refreshing: false,
+      search: "",
+      cart: global.cart,
+    };
+  }
+
+  updateSearch = search => {
+    this.setState({ search });
+  }
 
   render() {
+    const { search } = this.state;
+
     return (
       <View style={styles.container}>
         <View style={styles.contentContainer}>
-  
           <View style={styles.getStartedContainer}>
             <Text style={styles.shopText}>JiggyJamz</Text>
             <Text style={styles.appNameText}>Crate Digger</Text>
           </View>
-          
+
           <SearchBar
             placeholder="Type here..."
             round
             lightTheme
-            /* TODO: implement search */
+            onChangeText={this.updateSearch}
+            value={search}
+            style={styles.input}
+            onChangeText={search => this.setState({ search })}
+            value={this.state.search}
+            onSubmitEditing={() => this.handleSubmit()}
           />
-          
+
           <View style={styles.listHeader}>
             <Text style={styles.listHeaderText}>What's New</Text>
           </View>
-  
-          <View style={styles.listContainer}/* TODO Later : return list of newest releases */>
-            <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
-            />
+
+          <View style={styles.listContainer}>
+            <WhatsNewList />
           </View>
-          
+
           <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>What's Hot</Text>
+            <Text style={styles.listHeaderText}>Staff Picks</Text>
           </View>
-  
-          <View style={styles.listContainer}/* TODO LATER: return list of most sold records in past month*/>
-            <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
-            />
+
+          <View style={styles.listContainer}>
+            <StaffPicksList />
           </View>
-            
-  
-  
         </View>
       </View>
     );
@@ -123,5 +120,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#727776',
     paddingTop: 5,
+  },
+  sectionContentContainer: {
+    paddingHorizontal: 15,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: "lightgray"
+  },
+  sectionContentText: {
+    color: "black",
+    fontSize: 15,
+    paddingBottom: 10,
+    paddingHorizontal: 10,
+    textAlign: "left"
   },
 });

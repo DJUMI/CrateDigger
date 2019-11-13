@@ -6,13 +6,16 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
-class HomeList extends Component {
+import { samelabel, sameid } from '../screens/AlbumDetailsScreen';
+
+class MoreFromLabelList extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +23,8 @@ class HomeList extends Component {
       client: undefined,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: true
+      isLoadingComplete: false,
+      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -60,10 +64,11 @@ class HomeList extends Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .find({ status: "For Sale" }, { sort: { listing_id: -1 }, limit: 20 })
+      .find({ $and: [ {label: samelabel }, {listing_id: {$ne: sameid}}] }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
+        this.setState({ isLoadingComplete: true });
       })
       .catch(err => {
         console.warn(err);
@@ -71,12 +76,13 @@ class HomeList extends Component {
   }
 
   renderItem = ({ item }) => {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
+            item: item,
             id: item.listing_id,
             title: item.title,
             artist: item.artist,
@@ -84,15 +90,17 @@ class HomeList extends Component {
             format: item.format,
             price: item.price,
             image_url: item.image_url,
-          });
+            key: Math.random () * 10000
+          })
+
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
           <View style={styles.itemTitleContainer}>
             <Text 
               style={styles.itemTitleText} 
-              numberOfLines='1'
+              numberOfLines={1}
             >
               {item.title}
             </Text>
@@ -105,6 +113,15 @@ class HomeList extends Component {
   render() {
     const { isLoadingComplete } = this.state;
     if (isLoadingComplete) {
+      if (this.state.records.length == 0) {
+        return (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              Nothing else from this label
+            </Text>
+          </View>
+        );
+      }
       return (
         <FlatList
           data={this.state.records}
@@ -114,10 +131,19 @@ class HomeList extends Component {
         />  
       );
     }
+    else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.activityContainer}>
+            <ActivityIndicator/>
+          </View>
+        </View>
+      );
+    }
   }
 }
 
-export default withNavigation(HomeList);
+export default withNavigation(MoreFromLabelList);
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -139,11 +165,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 150,
-    height: 30,
     padding: 5,
   },
   itemTitleText: {
     fontSize: 20,
-  }
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 85,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 15,
+  },
 })
 
