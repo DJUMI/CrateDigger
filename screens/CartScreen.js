@@ -1,13 +1,12 @@
 import React from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
 
 import CartList from '../components/CartList';
 
-<<<<<<< Updated upstream
 
 export default class CartScreen extends React.Component {
     constructor(props) {
@@ -21,11 +20,7 @@ export default class CartScreen extends React.Component {
             cart: [],
         };
     }
-=======
->>>>>>> Stashed changes
 
-export default class CartScreen extends React.Component {
-    
     render() {
         return (
             <View style={styles.container}>
@@ -34,7 +29,7 @@ export default class CartScreen extends React.Component {
                         <Text style={styles.headerText}>Item</Text>
                     </View>
                     <View style={styles.quantityContainer}>
-                        <Text style={styles.headerText}>Quantity</Text>  
+                        <Text style={styles.headerText}>Quantity</Text>
                     </View>
                     <View style={styles.priceContainer}>
                         <Text style={styles.headerText}>Price</Text>
@@ -42,7 +37,6 @@ export default class CartScreen extends React.Component {
                 </View>
                 <CartList
                     data={[
-<<<<<<< Updated upstream
                         { key: 'Devin' },
                         { key: 'Jackson' },
                         { key: 'James' },
@@ -51,38 +45,24 @@ export default class CartScreen extends React.Component {
                         { key: 'Jillian' },
                         { key: 'Jimmy' },
                         { key: 'Julie' },
-=======
-                      {key: 'Devin'},
-                      {key: 'Jackson'},
-                      {key: 'James'},
-                      {key: 'Joel'},
-                      {key: 'John'},
-                      {key: 'Jillian'},
-                      {key: 'Jimmy'},
-                      {key: 'Julie'},
->>>>>>> Stashed changes
                     ]}
                 />
             </View>
-        
+
         );
     }
-    
+
 }
 
 CartScreen.navigationOptions = {
     header: null,
-<<<<<<< Updated upstream
 };
-=======
-  };
->>>>>>> Stashed changes
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      paddingTop: 30,
-      backgroundColor: '#E5EEED',
+        flex: 1,
+        paddingTop: 30,
+        backgroundColor: '#E5EEED',
     },
     headerContainer: {
         flexDirection: 'row',
@@ -100,7 +80,7 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         flex: 2,
-        paddingLeft: 5, 
+        paddingLeft: 5,
     },
     quantityContainer: {
         flex: 1,
@@ -113,4 +93,4 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 15,
     },
-  })
+})

@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   ScrollView,
   StyleSheet,
   Text,
@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-<<<<<<< Updated upstream
 import { withNavigation } from 'react-navigation';
 import MoreFromArtistList from '../components/MoreFromArtistList';
 import MoreFromLabelList from '../components/MoreFromLabelList';
@@ -52,14 +51,8 @@ class AlbumDetailsScreen extends React.Component {
       needRefresh: false,
     });
   }
-=======
-import HomeList from '../components/HomeList';
->>>>>>> Stashed changes
 
-export default class AlbumDetailsScreen extends React.Component {
-  
   render() {
-<<<<<<< Updated upstream
     const { navigation } = this.props;
     const { id, title, artist, label, format, price, image_url } = {
       id: navigation.getParam('id'),
@@ -83,22 +76,10 @@ export default class AlbumDetailsScreen extends React.Component {
           <Text style={styles.labelText}>{label}</Text>
           <Text style={styles.labelText}>{format}</Text>
           <Text style={styles.labelText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
-=======
-    const { navigation, data } = this.props;
-    return (
-      <ScrollView style={styles.container}>
-        <View style={styles.albumInfoContainer}>
-          <Text style={styles.artistText}/* TODO */>Artist Name</Text>
-          <Text style={styles.titleText}/* TODO */>Release Name</Text>
-          <Text style={styles.labelText}/* TODO */>Label Name</Text>
-          <Text style={styles.labelText}/* TODO */>Format</Text>
-          <Text style={styles.labelText}/* TODO */>Price</Text>
->>>>>>> Stashed changes
           <View style={styles.imageContainer}>
-            <Image source={require('../assets/images/vinyl.jpg')} style={{width: 175, height: 175, borderRadius: 15}}/* TODO: Later *//>
+            <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 15 }} />
           </View>
         </View>
-<<<<<<< Updated upstream
 
         <TouchableOpacity
           style={styles.button}
@@ -110,70 +91,43 @@ export default class AlbumDetailsScreen extends React.Component {
           <Text style={styles.buttonText}>+ Add to Cart</Text>
         </TouchableOpacity>
 
-=======
-  
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              /* TODO: Add to Cart */
-            }}
-          >
-            <Text style={styles.buttonText}>+ Add to Cart</Text>
-          </TouchableOpacity>
-  
->>>>>>> Stashed changes
         <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>More from this artist</Text>
-          </View>
-  
-          <View style={styles.listContainer}>
-            <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
-            />
-          </View>
-          
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>More from this Label</Text>
-          </View>
-  
-          <View style={styles.listContainer}>
-            <HomeList
-              data={[
-                {key: 'Devin'},
-                {key: 'Jackson'},
-                {key: 'James'},
-                {key: 'Joel'},
-                {key: 'John'},
-                {key: 'Jillian'},
-                {key: 'Jimmy'},
-                {key: 'Julie'},
-              ]}
-            />
-          </View>
-          <View style={styles.footer}>
-          </View>
+          <Text style={styles.listHeaderText}>More from this artist</Text>
+        </View>
+
+        <View style={styles.listContainer}>
+          <MoreFromArtistList
+            key={navigation.getParam('key')}
+          />
+        </View>
+
+        <View style={styles.listHeader}>
+          <Text style={styles.listHeaderText}>More from this Label</Text>
+        </View>
+
+        <View style={styles.listContainer}>
+          <MoreFromLabelList 
+            key={navigation.getParam('key')}
+          />
+        </View>
+        <View style={styles.footer}>
+        </View>
       </ScrollView>
     );
   }
 }
 
+export { sameartist, samelabel, sameid };
+
 AlbumDetailsScreen.navigationOptions = {
   header: null,
 };
 
+export default withNavigation(AlbumDetailsScreen);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
     backgroundColor: '#E5EEED',
   },
   albumInfoContainer: {
@@ -190,7 +144,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   imageContainer: {
-    //paddingVertical: 5,
   },
   button: {
     borderWidth: 1,

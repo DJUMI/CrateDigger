@@ -10,17 +10,64 @@ import {
 
 import { withNavigation } from 'react-navigation';
 
+import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+
 class HomeList extends Component {
-  state = {
-    isLoadingComplete: true,
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      records: undefined,
+      refreshing: false,
+      isLoadingComplete: true
+    };
+    this.loadClient = this.loadClient.bind(this);
   }
 
-  componentDidMount = async () => {
-    this.setState(
-      {
-        isLoadingComplete: true,
-      },
+  componentDidMount() {
+    this.loadClient();
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+      const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+      this.loadData(app);
+    } else {
+      Stitch.initializeAppClient("crate-digger-stitch-sikln")
+      .then(app => this.loadData(app))
+      .catch(err => console.error(err));
+    }
+  };
+
+  loadClient() {
+    if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+      const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+      this.loadData(app);
+    } else {
+      Stitch.initializeAppClient("crate-digger-stitch-sikln")
+      .then(app => this.loadData(app))
+      .catch(err => console.error(err));
+    }
+  }
+
+  loadData(appClient) {
+    const mongoClient = appClient.getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
     );
+    const db = mongoClient.db("crate-digger");
+    const records = db.collection("music-0");
+    records
+      .find({ status: "For Sale" }, { sort: { listing_id: -1 }, limit: 20 })
+      .asArray()
+      .then(records => {
+        this.setState({ records });
+      })
+      .catch(err => {
+        console.warn(err);
+      });
   }
 
   renderItem = ({ item }) => {
@@ -29,14 +76,26 @@ class HomeList extends Component {
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
-          /* TODO: Navigate to the Details route with params */
-          navigation.navigate('Details', {/* props go here */});
+          navigation.navigate('Details', {
+            id: item.listing_id,
+            title: item.title,
+            artist: item.artist,
+            label: item.label,
+            format: item.format,
+            price: item.price,
+            image_url: item.image_url,
+          });
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO *//>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemTitleText}/* TODO */>Item Title</Text>
+            <Text 
+              style={styles.itemTitleText} 
+              numberOfLines='1'
+            >
+              {item.title}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -45,13 +104,13 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-    const { data } = this.props;
     if (isLoadingComplete) {
       return (
         <FlatList
-          data={data}
+          data={this.state.records}
           horizontal
           renderItem={this.renderItem}
+          keyExtractor={(item, listing_id) => listing_id.toString()}
         />  
       );
     }
@@ -78,10 +137,13 @@ const styles = StyleSheet.create({
   },
   itemTitleContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 30,
+    padding: 5,
   },
   itemTitleText: {
     fontSize: 20,
-    padding: 5,
   }
 })
 
