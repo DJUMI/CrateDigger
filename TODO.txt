@@ -7,7 +7,7 @@ Home Lists
 null image url
 
 Album details screen
-video url format and hyperlink - Jordan
+video url format and hyperlink - complete
 
 CartList
 ui: info clips - Jordan
@@ -19,12 +19,12 @@ reload every time added
 Dig Screen
 add genre filter
 add instructions
-need sameid/sameartist when navigating from to details - Jordan
+need sameid/sameartist when navigating from to details - complete
 
 Recommend Screen
 recommended query - Matias
 notice for no items in cart
-need sameid/sameartist when navigating from to details - Jordan
+need sameid/sameartist when navigating from to details - complete
 add instructions
 
 Search Screen
