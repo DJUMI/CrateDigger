@@ -110,12 +110,15 @@ class RecommendScreen extends React.Component {
                                         onPress={() => {
                                             navigation.navigate('Details', {
                                                 item: item,
+                                                id: item.listing_id,
                                                 title: item.title,
                                                 artist: item.artist,
                                                 label: item.label,
                                                 format: item.format,
+                                                styles: item.styles,
                                                 price: item.price,
                                                 image_url: item.image_url,
+                                                video_url: item.video_url,
                                             });
                                         }}
                                     >
@@ -152,7 +155,7 @@ class RecommendScreen extends React.Component {
 }
 
 RecommendScreen.navigationOptions = {
-    title: 'Recommended',
+    header: null,
 };
 
 export default withNavigation(RecommendScreen);
@@ -161,7 +164,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#E5EEED',
-        paddingTop: 55,
+        paddingTop: 90,
         paddingHorizontal: 10,
     },
     itemContainer: {

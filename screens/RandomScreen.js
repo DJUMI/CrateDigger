@@ -81,63 +81,68 @@ class RandomScreen extends React.Component {
     if (isLoadingComplete) {
       return (
         <View style={styles.container}>
-          <DeckSwiper
-            dataSource={this.state.records}
-            renderItem={item =>
-              <View style={styles.itemContainer}>
-                <View style={styles.infoContainer}>
-                  <Text 
-                    style={styles.artistText}
-                    numberOfLines={1}
-                  >
-                    {item.artist}
-                  </Text>
+          
+            <DeckSwiper
+              dataSource={this.state.records}
+              renderItem={item =>
+                <View style={styles.itemContainer}>
+                  <View style={styles.infoContainer}>
+                    <Text
+                      style={styles.artistText}
+                      numberOfLines={1}
+                    >
+                      {item.artist}
+                    </Text>
 
-                  <Text 
-                    style={styles.titleText}
-                    numberOfLines={1}
-                  >
-                    {item.title}
-                  </Text>
+                    <Text
+                      style={styles.titleText}
+                      numberOfLines={1}
+                    >
+                      {item.title}
+                    </Text>
+                  </View>
+
+                  <View style={styles.imageContainer}>
+                    <Image source={{ uri: item.image_url }} style={styles.image} />
+                  </View>
+
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        navigation.navigate('Details', {
+                          item: item,
+                          id: item.listing_id,
+                          title: item.title,
+                          artist: item.artist,
+                          label: item.label,
+                          format: item.format,
+                          styles: item.styles,
+                          price: item.price,
+                          image_url: item.image_url,
+                          video_url: item.video_url,
+                        });
+                      }}
+                    >
+                      <Text style={styles.buttonText}>See Details</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        cart.push(item);
+                        Alert.alert('Added!')
+                        console.log(cart)
+                      }}
+                    >
+                      <Text style={styles.buttonText}>+ Add to Cart</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-
-                <View style={styles.imageContainer}>
-                  <Image source={{ uri: item.image_url }} style={styles.image} />
-                </View>
-
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      navigation.navigate('Details', {
-                        item: item,
-                        title: item.title,
-                        artist: item.artist,
-                        label: item.label,
-                        format: item.format,
-                        price: item.price,
-                        image_url: item.image_url,
-                      });
-                    }}
-                  >
-                    <Text style={styles.buttonText}>See Details</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      cart.push(item);
-                      Alert.alert('Added!')
-                      console.log(cart)
-                    }}
-                  >
-                    <Text style={styles.buttonText}>+ Add to Cart</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            }
-          />
-        </View>
+              }
+            />
+          </View>
+     
       );
     }
     else {
@@ -153,7 +158,7 @@ class RandomScreen extends React.Component {
 }
 
 RandomScreen.navigationOptions = {
-  title: 'Random',
+  header: null,
 };
 
 export default withNavigation(RandomScreen);
@@ -162,7 +167,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E5EEED',
-    paddingTop: 55,
+    paddingTop: 90,
     paddingHorizontal: 10,
   },
   itemContainer: {
