@@ -1,0 +1,38 @@
+Home Screen
+general Search query - Issac
+add logo - Jordan
+add graffiti font - Jordan
+
+Home Lists
+null image url
+
+Album details screen
+video url format and hyperlink - Jordan
+
+CartList
+ui: info clips - Jordan
+implement buttons
+implement quantity
+don’t allow doubles - Meet
+reload every time added
+
+Dig Screen
+add genre filter
+add instructions
+need sameid/sameartist when navigating from to details - Jordan
+
+Recommend Screen
+recommended query - Matias
+notice for no items in cart
+need sameid/sameartist when navigating from to details - Jordan
+add instructions
+
+Search Screen
+ui implementation - Jingyi
+
+Miscellaneous
+change more queries to release_id
+global records, appclient
+Cart and List tests - Erik
+New color palette - Everyone
+Fix Main tab nav icons - Jordan
