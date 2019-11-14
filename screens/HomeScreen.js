@@ -11,6 +11,7 @@ import { SearchBar } from 'react-native-elements';
 
 import StaffPicksList from '../components/StaffPicksList';
 import WhatsNewList from '../components/WhatsNewList';
+import HomeList from '../components/HomeList';
 
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
@@ -49,7 +50,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles2.listContainer}>
-            <WhatsNewList />
+            <HomeList query={0} />
           </View>
 
           <View style={styles2.listHeader}>
@@ -57,7 +58,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles2.listContainer}>
-            <StaffPicksList />
+            <HomeList query={1} />
           </View>
 
           <View style={styles2.listHeader}>

@@ -98,7 +98,10 @@ class MoreFromArtistList extends Component {
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}||require("../assets/images/vinyl.jpg") } style={styles.imageContainer}/>
+          <Image 
+            source={{uri: item.image_url}}
+            style={styles.imageContainer}
+          />
           <View style={styles.itemTitleContainer}>
             <Text 
               style={styles.itemTitleText} 
