@@ -40,18 +40,9 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles2.container}>
         <ScrollView style={styles2.contentContainer}>
-          
-          {/*<SearchBar
-            placeholder="Type here..."
-            round
-            lightTheme
-            onChangeText={this.updateSearch}
-            value={search}
-            style={styles2.input}
-            onChangeText={search => this.setState({ search })}
-            value={this.state.search}
-            onSubmitEditing={search => navigation.navigate('Search Results', { search: search })}
-          />*/}
+          <View style={styles2.logoContainer}>
+            <Image source={require("../assets/images/logo.jpg")} style={styles2.imageContainer}/>
+          </View>
 
           <View style={styles2.listHeader}>
             <Text style={styles2.listHeaderText}>What's New</Text>
@@ -169,11 +160,19 @@ const styles2 = StyleSheet.create({
     backgroundColor: darkBlue,
     justifyContent: 'flex-end',
   },
-  contentContainer: {
+  logoContainer: {
+    alignItems: 'center',
     paddingTop: 25,
   },
+  imageContainer: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+  },
+  contentContainer: {
+  },
   listHeader: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     paddingVertical: 5,
   },
   listHeaderText: {

@@ -10,10 +10,12 @@ import {
 import { withNavigation } from 'react-navigation';
 import { DeckSwiper, Button, Text } from 'native-base';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+import ActionSheet from 'react-native-actionsheet';
 
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
+let genres = ['House', 'Techno', 'Hip-hop', 'Electro', 'Drum n Bass', 'Disco', 'None', 'Cancel'];
 
 class RandomScreen extends React.Component {
 
@@ -26,6 +28,8 @@ class RandomScreen extends React.Component {
       refreshing: false,
       isLoadingComplete: false,
       cart: global.cart,
+      genre: null,
+      recommended: false,
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -76,6 +80,10 @@ class RandomScreen extends React.Component {
       });
   }
 
+  showActionSheet = () => {
+    this.ActionSheet.show()
+  }
+
   render() {
     const { isLoadingComplete } = this.state;
     const { cart } = this.state;
@@ -83,7 +91,6 @@ class RandomScreen extends React.Component {
     if (isLoadingComplete) {
       return (
         <View style={styles2.container}>
-
           <DeckSwiper
             dataSource={this.state.records}
             renderItem={item =>
@@ -120,7 +127,7 @@ class RandomScreen extends React.Component {
                         artist: item.artist,
                         label: item.label,
                         format: item.format,
-                        styles2: item.styles2,
+                        styles: item.styles,
                         price: item.price,
                         image_url: item.image_url,
                         video_url: item.video_url,
@@ -145,8 +152,41 @@ class RandomScreen extends React.Component {
               </View>
             }
           />
-        </View>
+          <View style={styles2.filterButtonContainer}>
+            <Button
+              style={styles2.genreButton}
+              onPress={this.showActionSheet}
+            >
+              <Text style={styles2.filterButtonText}>Genre</Text>
+            </Button>
+            
+            <ActionSheet
+              ref={o => this.ActionSheet = o}
+              options={genres}
+              cancelButtonIndex={7}
+              destructiveButtonIndex={6}
+              style={styles2.actionSheet}
+              onPress={(index) => { 
+                if(index==6) this.setState({genre: null})
+                else this.setState({genre: genres[index]})
+              }}
+            />
 
+            <Button
+              style={
+                this.state.recommended
+                        ? styles2.recommendedButtonOn
+                        : styles2.recommendedButton
+                
+              }
+              onPress={() => {
+                this.setState({recommended: !this.state.recommended})
+              }}
+            >
+              <Text style={styles2.filterButtonText}>Recommended</Text>
+            </Button>
+          </View>
+        </View>
       );
     }
     else {
@@ -284,6 +324,44 @@ const styles2 = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: nearWhite,
+  },
+  filterButtonContainer: {
+    paddingVertical: 10,
+    marginTop: 450,
+    flexDirection: 'row',
+    paddingHorizontal: 40,
+    justifyContent: 'space-between',
+  },
+  genreButton: {
+    borderWidth: 1,
+    borderColor: nearWhite,
+    backgroundColor: darkBlue,
+    width: 100,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  recommendedButton: {
+    borderWidth: 1,
+    borderColor: nearWhite,
+    backgroundColor: darkBlue,
+    width: 135,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  recommendedButtonOn: {
+    borderWidth: 1,
+    borderColor: nearWhite,
+    backgroundColor: seaGreen,
+    width: 135,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  filterButtonText: {
+    fontSize: 15,
     color: nearWhite,
   },
   activityContainer: {

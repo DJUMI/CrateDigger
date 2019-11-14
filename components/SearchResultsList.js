@@ -11,6 +11,8 @@ import {
 import { withNavigation } from 'react-navigation';
 
 import { SearchBar, Icon } from 'react-native-elements';
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
 
 class SearchResultsList extends Component {
   state = {
@@ -22,17 +24,6 @@ class SearchResultsList extends Component {
       {
         isLoadingComplete: true,
       },
-    );
-  }
-
-  renderHeader = () => {
-    return (
-      <SearchBar
-      placeholder="Type here..."
-      round
-      lightTheme
-      /* TODO: implement search*/
-      />
     );
   }
 
@@ -49,17 +40,40 @@ class SearchResultsList extends Component {
         <View style={styles.itemInfoContainer}>
           <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemOtherText}/* TODO */>Artist Name</Text>
-            <Text style={styles.itemTitleText}/* TODO */>Item Title</Text>
-            <Text style={styles.itemOtherText}/* TODO */>Label Name Year</Text>
-            <Text style={styles.itemOtherText}/* TODO */>Format</Text>
+            <Text 
+              style={styles.itemOtherText}
+              numberOfLines={1}
+            >
+              Artist Name
+            </Text>
+
+            <Text 
+              style={styles.itemTitleText}
+              numberOfLines={1}
+            >
+              Item Title
+            </Text>
+
+            <Text 
+              style={styles.itemOtherText}
+              numberOfLines={1}
+            >
+              Label Name Year
+            </Text>
+
+            <Text 
+              style={styles.itemOtherText}
+              numberOfLines={1}
+            >
+              Format
+            </Text>
           </View>
           <View style={styles.arrowContainer}>      
             <Icon 
               name='chevron-thin-right'
               type='entypo'
               size= '40'
-              color= '#727776' /> 
+              color= {nearWhite} /> 
           </View>
         </View>
       </TouchableOpacity>
@@ -74,7 +88,6 @@ class SearchResultsList extends Component {
         <FlatList
           data={data}
           renderItem={this.renderItem}
-          ListHeaderComponent={this.renderHeader}
           keyExtractor={(item, listing_id) => listing_id.toString()}
         />  
       );
@@ -91,35 +104,40 @@ const styles = StyleSheet.create({
   itemInfoContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: '#E5EEED',
-    paddingVertical: 1,
+    backgroundColor: darkBlue,
+    paddingVertical: 5,
     borderBottomWidth: 1,
-    borderBottomColor: '#727776',
+    borderBottomColor: nearWhite,
   },
   imageContainer: {
-    borderRadius: 15,
+    borderRadius: 2,
     width: 90,
     height: 90,
     marginLeft: 5,
+    alignSelf: 'center',
   },
   itemTitleContainer: {
     height: 90,
     alignItems: 'flex-start',
     justifyContent: 'center',
     paddingLeft: 5,
+    width: 240,
   },
   itemOtherText: {
     fontSize: 15,
     padding: 1,
+    color: nearWhite,
   },
   itemTitleText: {
     fontSize: 20,
     padding: 1,
+    color: nearWhite,
   },
   arrowContainer: {
     flex: 1,
     alignItems: 'flex-end',
     justifyContent: 'center',
     height: 90,
+    marginRight: 5,
   },
 })

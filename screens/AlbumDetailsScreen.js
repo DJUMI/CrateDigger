@@ -258,6 +258,7 @@ const styles2 = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: nearWhite,
   },
   listHeader: {
     alignItems: 'center',
