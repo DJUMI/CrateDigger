@@ -8,9 +8,13 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 
+import { SearchBar } from 'react-native-elements';
+
 export default class SearchScreen extends React.Component {
     render() {
         const { navigation, data } = this.props;
+
+        
         return(
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <View style={styles.headerContainer}>

@@ -9,6 +9,9 @@ import { withNavigation } from 'react-navigation';
 
 import CartList from '../components/CartList';
 
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
+
 class CartScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -55,20 +58,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 30,
-        backgroundColor: '#E5EEED',
+        backgroundColor: darkBlue,
     },
     headerContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         paddingVertical: 5,
-        borderBottomColor: '#727776',
+        borderBottomColor: nearWhite,
         borderBottomWidth: 1,
     },
     itemContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         paddingVertical: 5,
-        borderBottomColor: '#727776',
+        borderBottomColor: nearWhite,
         borderBottomWidth: 1,
     },
     infoContainer: {
@@ -85,5 +88,6 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 15,
+        color: nearWhite
     },
 })

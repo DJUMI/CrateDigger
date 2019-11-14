@@ -1,17 +1,19 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
   Image,
   View,
-  TouchableOpacity,
   ActivityIndicator,
   Alert,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-import { DeckSwiper } from 'native-base';
+import { DeckSwiper, Button, Text } from 'native-base';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
+let seaGreen = '#009F93';
 
 class RandomScreen extends React.Component {
 
@@ -80,75 +82,77 @@ class RandomScreen extends React.Component {
     const { navigation } = this.props;
     if (isLoadingComplete) {
       return (
-        <View style={styles.container}>
-          
-            <DeckSwiper
-              dataSource={this.state.records}
-              renderItem={item =>
-                <View style={styles.itemContainer}>
-                  <View style={styles.infoContainer}>
-                    <Text
-                      style={styles.artistText}
-                      numberOfLines={1}
-                    >
-                      {item.artist}
-                    </Text>
+        <View style={styles2.container}>
 
-                    <Text
-                      style={styles.titleText}
-                      numberOfLines={1}
-                    >
-                      {item.title}
-                    </Text>
-                  </View>
+          <DeckSwiper
+            dataSource={this.state.records}
+            renderItem={item =>
+              <View style={styles2.itemContainer}>
+                <View style={styles2.infoContainer}>
+                  <Text
+                    style={styles2.artistText}
+                    numberOfLines={1}
+                  >
+                    {item.artist}
+                  </Text>
 
-                  <View style={styles.imageContainer}>
-                    <Image source={{ uri: item.image_url }} style={styles.image} />
-                  </View>
-
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        navigation.navigate('Details', {
-                          item: item,
-                          id: item.listing_id,
-                          title: item.title,
-                          artist: item.artist,
-                          label: item.label,
-                          format: item.format,
-                          styles: item.styles,
-                          price: item.price,
-                          image_url: item.image_url,
-                          video_url: item.video_url,
-                        });
-                      }}
-                    >
-                      <Text style={styles.buttonText}>See Details</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        cart.push(item);
-                        Alert.alert('Added!')
-                        console.log(cart)
-                      }}
-                    >
-                      <Text style={styles.buttonText}>+ Add to Cart</Text>
-                    </TouchableOpacity>
-                  </View>
+                  <Text
+                    style={styles2.titleText}
+                    numberOfLines={1}
+                  >
+                    {item.title}
+                  </Text>
                 </View>
-              }
-            />
-          </View>
-     
+
+                <View style={styles2.imageContainer}>
+                  <Image source={{ uri: item.image_url }} style={styles2.image} />
+                </View>
+
+                <View style={styles2.buttonContainer}>
+                  <Button
+                    rounded
+                    style={styles2.button}
+                    onPress={() => {
+                      navigation.navigate('Details', {
+                        item: item,
+                        id: item.listing_id,
+                        title: item.title,
+                        artist: item.artist,
+                        label: item.label,
+                        format: item.format,
+                        styles2: item.styles2,
+                        price: item.price,
+                        image_url: item.image_url,
+                        video_url: item.video_url,
+                      });
+                    }}
+                  >
+                    <Text style={styles2.buttonText}>See Details</Text>
+                  </Button>
+
+                  <Button
+                    rounded
+                    style={styles2.button}
+                    onPress={() => {
+                      cart.push(item);
+                      Alert.alert('Added!')
+                      console.log(cart)
+                    }}
+                  >
+                    <Text style={styles2.buttonText}>+ Add to Cart</Text>
+                  </Button>
+                </View>
+              </View>
+            }
+          />
+        </View>
+
       );
     }
     else {
       return (
-        <View style={styles.container}>
-          <View style={styles.activityContainer}>
+        <View style={styles2.container}>
+          <View style={styles2.activityContainer}>
             <ActivityIndicator />
           </View>
         </View>
@@ -163,7 +167,7 @@ RandomScreen.navigationOptions = {
 
 export default withNavigation(RandomScreen);
 
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E5EEED',
@@ -230,4 +234,61 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+})*/
+
+const styles2 = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: darkBlue,
+    paddingTop: 90,
+    paddingHorizontal: 10,
+  },
+  itemContainer: {
+    flex: 1,
+    backgroundColor: '#ACB3B2',
+  },
+  infoContainer: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    height: 70,
+  },
+  artistText: {
+    fontSize: 20,
+    color: darkBlue,
+  },
+  titleText: {
+    fontSize: 25,
+    color: darkBlue,
+  },
+  imageContainer: {
+    alignItems: 'center',
+  },
+  image: {
+    flex: 1,
+    alignSelf: 'stretch',
+    width: null,
+    height: 300,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+  },
+  button: {
+    backgroundColor: seaGreen,
+    width: 140,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: nearWhite,
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

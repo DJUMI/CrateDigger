@@ -2,7 +2,6 @@ import React from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Text,
   Image,
   View,
   TouchableOpacity,
@@ -11,6 +10,7 @@ import {
 
 import { withNavigation } from 'react-navigation';
 import { Linking } from 'expo';
+import { Button, Text } from 'native-base';
 
 import MoreFromArtistList from '../components/MoreFromArtistList';
 import MoreFromLabelList from '../components/MoreFromLabelList';
@@ -18,6 +18,10 @@ import MoreFromLabelList from '../components/MoreFromLabelList';
 let sameartist;
 let samelabel;
 let sameid;
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
+let seaGreen = '#009F93';
+
 
 class AlbumDetailsScreen extends React.Component {
   constructor(props) {
@@ -53,70 +57,81 @@ class AlbumDetailsScreen extends React.Component {
     sameid = id;
 
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.albumInfoContainer}>
-          <View style={styles.albumInfoTextContainer}>
-            <Text style={styles.artistText}>{artist}</Text>
+      <ScrollView style={styles2.container}>
+        <View style={styles2.albumInfoContainer}>
+          <View style={styles2.albumInfoTextContainer}>
+            <Text style={styles2.infoText}>{artist}</Text>
 
-            <Text style={styles.titleText}>{title}</Text>
+            <Text style={styles2.titleText}>{title}</Text>
 
-            <Text style={styles.labelText}>{label}</Text>
+            <Text style={styles2.infoText}>{label}</Text>
 
-            <Text style={styles.labelText}>{format}</Text>
+            <Text style={styles2.infoText}>{format}</Text>
 
-            <Text style={styles.labelText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
+            <Text style={styles2.infoText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
 
-            <Text style={styles.labelText}>{genre}</Text>
+            <Text style={styles2.infoText}>{genre}</Text>
           </View>
 
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 15 }} />
+          <View style={styles2.imageContainer}>
+            <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 2 }} />
           </View>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
+        <View style={styles2.buttonContainer}>
+          {/*<TouchableOpacity
+            style={styles2.button}
             onPress={() => {
               this.state.cart.push(item);
               Alert.alert('Added!')
               console.log(this.state.cart)
             }}
           >
-            <Text style={styles.buttonText}>+ Add to Cart</Text>
-          </TouchableOpacity>
+            <Text style={styles2.buttonText}>+ Add to Cart</Text>
+          </TouchableOpacity>*/}
+          <Button 
+            rounded
+            style={styles2.button}
+            onPress={() => {
+              this.state.cart.push(item);
+              Alert.alert('Added!')
+              console.log(this.state.cart)
+            }}>
+              <Text style={styles2.buttonText}>+ Add to Cart</Text>
+            </Button>
 
-          <TouchableOpacity
-            style={styles.button}
+          <Button
+            rounded
+            style={styles2.button}
             onPress={() => {
               Linking.openURL(video_url)
             }}
           >
-            <Text style={styles.buttonText}>Listen</Text>
-          </TouchableOpacity>
+            <Text style={styles2.buttonText}>Listen</Text>
+          </Button>
         </View>
 
 
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>More from this artist</Text>
+        <View style={styles2.listHeader}>
+          <Text style={styles2.listHeaderText}>More from this artist</Text>
         </View>
 
-        <View style={styles.listContainer}>
+        <View style={styles2.listContainer}>
           <MoreFromArtistList
             key={navigation.getParam('key')}
           />
         </View>
 
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>More from this Label</Text>
+        <View style={styles2.listHeader}>
+          <Text style={styles2.listHeaderText}>More from this Label</Text>
         </View>
 
-        <View style={styles.listContainer}>
+        <View style={styles2.listContainer}>
           <MoreFromLabelList
             key={navigation.getParam('key')}
           />
         </View>
-        <View style={styles.footer}>
+        <View style={styles2.footer}>
         </View>
       </ScrollView>
     );
@@ -131,7 +146,7 @@ AlbumDetailsScreen.navigationOptions = {
 
 export default withNavigation(AlbumDetailsScreen);
 
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E5EEED',
@@ -146,13 +161,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 2,
   },
-  artistText: {
+  infoText: {
     fontSize: 17,
   },
   titleText: {
     fontSize: 22,
   },
-  labelText: {
+  infoText: {
     fontSize: 17,
   },
   imageContainer: {
@@ -197,5 +212,68 @@ const styles = StyleSheet.create({
   footer: {
     height: 50,
     backgroundColor: '#E5EEED',
+  },
+}); */
+
+const styles2 = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: darkBlue,
+  },
+  albumInfoContainer: {
+    margin: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+  },
+  albumInfoTextContainer: {
+    flex: 1,
+    paddingRight: 3,
+  },
+  infoText: {
+    fontSize: 17,
+    color: nearWhite,
+  },
+  titleText: {
+    fontSize: 22,
+    color: nearWhite,
+  },
+  imageContainer: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    justifyContent: 'space-between',
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: seaGreen,
+    width: 140,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  listHeader: {
+    alignItems: 'center',
+    paddingVertical: 5,
+  },
+  listHeaderText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: nearWhite,
+  },
+  listContainer: {
+    height: 195,
+    paddingTop: 5,
+    marginBottom: 10,
+  },
+  footer: {
+    height: 50,
   },
 });

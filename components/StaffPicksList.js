@@ -12,6 +12,8 @@ import {
 import { withNavigation } from 'react-navigation';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
+let nearWhite = '#fafafa';
+
 class StaffPicksList extends Component {
   constructor(props) {
     super(props);
@@ -85,8 +87,10 @@ class StaffPicksList extends Component {
             artist: item.artist,
             label: item.label,
             format: item.format,
+            styles: item.styles,
             price: item.price,
             image_url: item.image_url,
+            video_url: item.video_url,
           });
         }}
       >
@@ -143,7 +147,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   imageContainer: {
-    borderRadius: 15,
+    borderRadius: 2,
     width: 150,
     height: 150,
   },
@@ -151,11 +155,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 150,
-    height: 30,
-    padding: 5,
+    paddingHorizontal: 1,
+    paddingVertical: 7,
   },
   itemTitleText: {
-    fontSize: 20,
+    fontSize: 15,
+    color: nearWhite,
   },
   activityContainer: {
     flex: 1,

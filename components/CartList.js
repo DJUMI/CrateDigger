@@ -10,6 +10,9 @@ import {
 
 import { withNavigation } from 'react-navigation';
 
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
+
 class CartList extends Component {
     constructor(props) {
         super(props);
@@ -42,8 +45,10 @@ class CartList extends Component {
                             artist: item.artist,
                             label: item.label,
                             format: item.format,
+                            styles: item.format,
                             price: item.price,
                             image_url: item.image_url,
+                            video_url: item.video_url,
                             key: Math.random() * 10000
                         })
                     }}
@@ -165,7 +170,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     imageContainer: {
-        borderRadius: 15,
+        borderRadius: 2,
         width: 70,
         height: 70,
         marginLeft: 5,
@@ -179,17 +184,20 @@ const styles = StyleSheet.create({
         fontSize: 10,
         padding: 1,
         width: 115,
+        color: nearWhite,
     },
     itemTitleText: {
         fontSize: 12,
         padding: 1,
         width: 115,
+        color: nearWhite,
     },
     button: {
         padding: 15,
     },
     buttonText: {
         fontSize: 25,
+        color: nearWhite,
     },
     numContainer: {
         backgroundColor: 'white',
@@ -199,5 +207,6 @@ const styles = StyleSheet.create({
     },
     numText: {
         fontSize: 20,
+        color: darkBlue,
     },
 })

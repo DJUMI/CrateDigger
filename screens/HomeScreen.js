@@ -3,12 +3,17 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
+  Image,
 } from 'react-native';
 
 import { SearchBar } from 'react-native-elements';
 
 import StaffPicksList from '../components/StaffPicksList';
 import WhatsNewList from '../components/WhatsNewList';
+
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -22,6 +27,7 @@ export default class HomeScreen extends React.Component {
       cart: global.cart,
     };
   }
+  
 
   updateSearch = search => {
     this.setState({ search });
@@ -29,43 +35,64 @@ export default class HomeScreen extends React.Component {
 
   render() {
     const { search } = this.state;
+    const { navigation } = this.props;
 
     return (
-      <View style={styles.container}>
-        <View style={styles.contentContainer}>
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.shopText}>JiggyJamz</Text>
-            <Text style={styles.appNameText}>Crate Digger</Text>
-          </View>
-
-          <SearchBar
+      <View style={styles2.container}>
+        <ScrollView style={styles2.contentContainer}>
+          
+          {/*<SearchBar
             placeholder="Type here..."
             round
             lightTheme
             onChangeText={this.updateSearch}
             value={search}
-            style={styles.input}
+            style={styles2.input}
             onChangeText={search => this.setState({ search })}
             value={this.state.search}
-            onSubmitEditing={() => this.handleSubmit()}
-          />
+            onSubmitEditing={search => navigation.navigate('Search Results', { search: search })}
+          />*/}
 
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>What's New</Text>
+          <View style={styles2.listHeader}>
+            <Text style={styles2.listHeaderText}>What's New</Text>
           </View>
 
-          <View style={styles.listContainer}>
+          <View style={styles2.listContainer}>
             <WhatsNewList />
           </View>
 
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>Staff Picks</Text>
+          <View style={styles2.listHeader}>
+            <Text style={styles2.listHeaderText}>Staff Picks</Text>
           </View>
 
-          <View style={styles.listContainer}>
+          <View style={styles2.listContainer}>
             <StaffPicksList />
           </View>
-        </View>
+
+          <View style={styles2.listHeader}>
+            <Text style={styles2.listHeaderText}>New House</Text>
+          </View>
+
+          <View style={styles2.listContainer}>
+            <WhatsNewList />
+          </View>
+
+          <View style={styles2.listHeader}>
+            <Text style={styles2.listHeaderText}>New Techno</Text>
+          </View>
+
+          <View style={styles2.listContainer}>
+            <WhatsNewList />
+          </View>
+
+          <View style={styles2.listHeader}>
+            <Text style={styles2.listHeaderText}>New Hip-Hop</Text>
+          </View>
+
+          <View style={styles2.listContainer}>
+            <WhatsNewList />
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -74,7 +101,7 @@ export default class HomeScreen extends React.Component {
 HomeScreen.navigationOptions = {
   header: null,
 };
-
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -83,7 +110,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30,
-    justifyContent: 'flex-end',
+    
   },
   getStartedContainer: {
     alignItems: 'center',
@@ -132,5 +159,31 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingHorizontal: 10,
     textAlign: "left"
+  },
+});
+*/
+
+const styles2 = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: darkBlue,
+    justifyContent: 'flex-end',
+  },
+  contentContainer: {
+    paddingTop: 25,
+  },
+  listHeader: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  listHeaderText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: nearWhite,
+  },
+  listContainer: {
+    height: 195,
+    paddingTop: 5,
+    marginBottom: 10,
   },
 });
