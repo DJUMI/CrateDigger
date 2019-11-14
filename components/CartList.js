@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 class CartList extends Component {
+<<<<<<< Updated upstream
     constructor(props) {
         super(props);
         this.state = {
@@ -20,6 +21,11 @@ class CartList extends Component {
           cart: global.cart,
         };
       }
+=======
+  state = {
+    isLoadingComplete: true,
+  }
+>>>>>>> Stashed changes
 
     componentDidMount = async () => {
         this.setState({ isLoadingComplete: true });
@@ -30,11 +36,19 @@ class CartList extends Component {
         return (
             <View style={styles.itemContainer}>
                 <View style={styles.infoContainer}>
+<<<<<<< Updated upstream
                     <Image source={{ uri: item.image_url }} style={styles.imageContainer}/* TODO *//>
                     <View style={styles.itemTitleContainer}>
                         <Text style={styles.itemOtherText}>{item.artist}</Text>
                         <Text style={styles.itemTitleText}>{item.title}</Text>
                         <Text style={styles.itemOtherText}>{item.format}</Text>
+=======
+                    <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
+                    <View style={styles.itemTitleContainer}>
+                        <Text style={styles.itemOtherText}/* TODO */>Artist Name</Text>
+                        <Text style={styles.itemTitleText}/* TODO */>Item Title</Text>
+                        <Text style={styles.itemOtherText}/* TODO */>Format</Text>
+>>>>>>> Stashed changes
                     </View>
                 </View>
                 <View style={styles.quantityContainer}>
@@ -61,7 +75,11 @@ class CartList extends Component {
                 <View style={styles.priceContainer}>
                 <View style={styles.numContainer}>
                         
+<<<<<<< Updated upstream
                         <Text style={styles.numText}>${parseFloat(Math.round(item.price * 100) / 100).toFixed(2)}</Text>
+=======
+                        <Text style={styles.numText}/* TODO */>$12.99</Text>
+>>>>>>> Stashed changes
                     </View>
                 </View>
             </View>
@@ -70,6 +88,7 @@ class CartList extends Component {
     }   
 
 render() {
+<<<<<<< Updated upstream
     const { cart } = this.state;
     return (
         <View style={styles.container}>
@@ -77,6 +96,14 @@ render() {
             data={cart}
             renderItem={this.renderItem}
             keyExtractor={(item, listing_id) => listing_id.toString()}
+=======
+    const { data } = this.props;
+    return (
+        <View style={styles.container}>
+            <FlatList
+            data={data}
+            renderItem={this.renderItem}
+>>>>>>> Stashed changes
             />
         </View>
     );
