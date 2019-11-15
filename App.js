@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Stitch, AnonymousCredential } from "mongodb-stitch-react-native-sdk";  
 
@@ -50,6 +51,10 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
+      Asset.loadAsync([
+        require('./assets/images/vinylstock.jpg'),
+        require('./assets/images/logo.jpg'),
+      ]),
       Font.loadAsync({
         ...Icon.Ionicons.font,
         "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")

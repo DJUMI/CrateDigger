@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
     FlatList,
     Image,
+    StyleSheet,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
@@ -32,7 +32,7 @@ class SearchScreen extends React.Component {
             query: '',
             refreshing: false,
             records: undefined,
-            tasks: undefined,  
+            tasks: undefined,
         };
         this.loadClient = this.loadClient.bind(this);
     }
@@ -74,7 +74,7 @@ class SearchScreen extends React.Component {
                 $or: [{ label: { $regex: query, '$options': 'i' } },
                 { artist: { $regex: query, '$options': 'i' } },
                 { title: { $regex: query, '$options': 'i' } }]
-            }, { limit: 20 })
+            }, { limit: 50 })
             .asArray()
             .then(records => {
                 this.setState({ records });
@@ -124,7 +124,7 @@ class SearchScreen extends React.Component {
             >
                 <View style={styles.itemInfoContainer}>
                     <Image source={{ uri: item.image_url }} style={styles.imageContainer} />
-                    
+
                     <View style={styles.itemTitleContainer}>
                         <Text
                             style={styles.itemOtherText}
@@ -169,6 +169,7 @@ class SearchScreen extends React.Component {
 
     render() {
         const { query, records, isLoadingComplete } = this.state;
+
         if (isLoadingComplete) {
             //no search results
             if (!records.length) {
@@ -224,7 +225,7 @@ class SearchScreen extends React.Component {
                             <View style={styles.emptyContainer}>
                                 <Text style={styles.emptyText}>
                                     No Results
-                            </Text>
+                                </Text>
                             </View>
                         </Drawer>
                     </View>
@@ -449,5 +450,5 @@ const styles = StyleSheet.create({
     },
     filterButtonText: {
         fontSize: 15,
-    }
+    },
 });

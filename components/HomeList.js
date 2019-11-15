@@ -52,27 +52,21 @@ class HomeList extends Component {
     switch (query) {
       case 'Whats New':
         this.setState({ query: { status: "For Sale" } });
-        console.log(this.state.query);
         break;
       case 'Staff Picks':
         this.setState({ query: { label: "RCA" } });
-        console.log(this.state.query);
         break;
       case 'New House':
-        this.setState(/*TODO*/);
-        console.log(this.state.query);
+        this.setState({query: {styles: { $regex: /house/, '$options': 'i' }} });
         break;
       case 'New Techno':
-        this.setState(/*TODO*/);
-        console.log(this.state.query);
+        this.setState({query: {styles: { $regex: /techno/, '$options': 'i' }} });
         break;
       case 'New Hip-Hop':
-        this.setState(/*TODO*/);
-        console.log(this.state.query);
+        this.setState({query: {styles: { $regex: /hip hop/, '$options': 'i' }} });
         break;
       case 'New Electro':
-        this.setState(/*TODO*/);
-        console.log(this.state.query);
+        this.setState({query: {styles: { $regex: /electro/, '$options': 'i' }} });
         break;
     }
   }
@@ -110,7 +104,7 @@ class HomeList extends Component {
 
   renderItem = ({ item }) => {
     const { navigation } = this.props;
-
+    
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -131,10 +125,17 @@ class HomeList extends Component {
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image
-            source={{ uri: item.image_url }}
-            style={styles.imageContainer}
-          />
+          {item.image_url ?
+            <Image
+              source={{ uri: item.image_url }}
+              style={styles.imageContainer}
+            /> :
+            <Image
+              source={require('../assets/images/vinylstock.jpg')}
+              style={styles.imageContainer}
+            />
+          }
+          
 
           <View style={styles.itemTitleContainer}>
             <Text
@@ -151,7 +152,18 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
+    const { isTest, testData } = this.state;
     if (isLoadingComplete) {
+      if (isTest) {
+        return (
+          <FlatList
+            data={testData}
+            horizontal
+            renderItem={this.renderItem}
+            keyExtractor={(listing_id) => listing_id.toString()}
+          />
+        );
+      }
       if (!this.state.records.length) {
         return (
           <View style={styles.emptyContainer}>

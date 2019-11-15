@@ -26,6 +26,7 @@ class AlbumDetailsScreen extends React.Component {
     super(props);
     this.state = {
       cart: global.cart,
+      hasVideo: true,
     };
   }
 
@@ -47,7 +48,7 @@ class AlbumDetailsScreen extends React.Component {
     sameartist = artist;
     sameid = id;
     samelabel = label;
-    
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.albumInfoContainer}>
@@ -66,12 +67,23 @@ class AlbumDetailsScreen extends React.Component {
           </View>
 
           <View style={styles.imageContainer}>
-            <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 2 }} />
+            {image_url ?
+              <Image
+                source={{ uri: image_url }}
+                style={styles.image}
+              /> :
+              <Image
+                onLoadStart={() => console.log('null image load start')}
+                onLoadEnd={() => console.log('null image load end')}
+                source={require('../assets/images/vinylstock.jpg')}
+                style={styles.image}
+              />
+            }
           </View>
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button 
+          <Button
             rounded
             style={styles.button}
             onPress={() => {
@@ -83,15 +95,29 @@ class AlbumDetailsScreen extends React.Component {
             <Text style={styles.buttonText}>+ Add to Cart</Text>
           </Button>
 
-          <Button
-            rounded
-            style={styles.button}
-            onPress={() => {
-              Linking.openURL(video_url)
-            }}
-          >
-            <Text style={styles.buttonText}>Listen</Text>
-          </Button>
+          {video_url ?
+            <Button
+              rounded
+              style={styles.button}
+              onPress={() => {
+                Linking.openURL(video_url)
+              }}
+            >
+              <Text style={styles.buttonText}>Listen</Text>
+            </Button> :
+
+            <Button
+              disabled
+              rounded
+              style={styles.buttonDisabled}
+              onPress={() => {
+                Linking.openURL(video_url)
+              }}
+            >
+              <Text style={styles.buttonDisabledText}>Listen</Text>
+            </Button>
+          }
+
         </View>
 
 
@@ -155,6 +181,11 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
   },
+  image: {
+    width: 175, 
+    height: 175, 
+    borderRadius: 2   
+  },
   buttonContainer: {
     flexDirection: 'row',
     paddingVertical: 10,
@@ -173,6 +204,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: nearWhite,
+  },
+  buttonDisabled: {
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: darkBlue,
+    width: 140,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonDisabledText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: 'black',
   },
   listHeader: {
     alignItems: 'center',
