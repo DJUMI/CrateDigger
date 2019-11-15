@@ -6,6 +6,9 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Stitch, AnonymousCredential } from "mongodb-stitch-react-native-sdk";  
 
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
+
 import AppNavigator from './navigation/AppNavigator';
 export default class App extends React.Component {
   constructor(props) {
@@ -34,7 +37,7 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+          {Platform.OS === "ios" && <StatusBar backgroundColor="blue" barStyle="default" />}
           <AppNavigator />
         </View>
       );
@@ -105,6 +108,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: darkBlue,
   }
 });

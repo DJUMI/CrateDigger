@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -25,6 +25,11 @@ const HomeStack = createStackNavigator(
     Home: HomeScreen,
     Details: AlbumDetailsScreen,
     SearchResults: SearchResultsScreen,
+  },
+  {
+    cardStyle: {
+      paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+    }
   },
   config
 );
