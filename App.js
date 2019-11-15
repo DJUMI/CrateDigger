@@ -4,12 +4,10 @@ import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Stitch, AnonymousCredential } from "mongodb-stitch-react-native-sdk";
+import { Stitch, AnonymousCredential } from "mongodb-stitch-react-native-sdk";  
 
-import './global.js'
 import AppNavigator from './navigation/AppNavigator';
 export default class App extends React.Component {
-  //global.cart=[];
   constructor(props) {
     super(props);
     this.state = {

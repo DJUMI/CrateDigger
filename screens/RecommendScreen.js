@@ -1,16 +1,19 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     Image,
     View,
-    TouchableOpacity,
     ActivityIndicator,
+    Alert,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-import { DeckSwiper } from 'native-base';
+import { DeckSwiper, Button, Text } from 'native-base';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
+let seaGreen = '#009F93';
 
 class RecommendScreen extends React.Component {
     constructor(props) {
@@ -79,13 +82,25 @@ class RecommendScreen extends React.Component {
         if (isLoadingComplete) {
             return (
                 <View style={styles.container}>
+
                     <DeckSwiper
                         dataSource={this.state.records}
                         renderItem={item =>
                             <View style={styles.itemContainer}>
                                 <View style={styles.infoContainer}>
-                                    <Text style={styles.artistText}>{item.artist}</Text>
-                                    <Text style={styles.titleText}>{item.title}</Text>
+                                    <Text
+                                        style={styles.artistText}
+                                        numberOfLines={1}
+                                    >
+                                        {item.artist}
+                                    </Text>
+
+                                    <Text
+                                        style={styles.titleText}
+                                        numberOfLines={1}
+                                    >
+                                        {item.title}
+                                    </Text>
                                 </View>
 
                                 <View style={styles.imageContainer}>
@@ -93,36 +108,44 @@ class RecommendScreen extends React.Component {
                                 </View>
 
                                 <View style={styles.buttonContainer}>
-                                    <TouchableOpacity
+                                    <Button
+                                        rounded
                                         style={styles.button}
                                         onPress={() => {
                                             navigation.navigate('Details', {
+                                                item: item,
+                                                id: item.listing_id,
                                                 title: item.title,
                                                 artist: item.artist,
                                                 label: item.label,
                                                 format: item.format,
+                                                styles2: item.styles2,
                                                 price: item.price,
                                                 image_url: item.image_url,
+                                                video_url: item.video_url,
                                             });
                                         }}
                                     >
                                         <Text style={styles.buttonText}>See Details</Text>
-                                    </TouchableOpacity>
+                                    </Button>
 
-                                    <TouchableOpacity
+                                    <Button
+                                        rounded
                                         style={styles.button}
                                         onPress={() => {
-                                            this.state.cart.push(item);
-                                            console.log(this.state.cart)
+                                            cart.push(item);
+                                            Alert.alert('Added!')
+                                            console.log(cart)
                                         }}
                                     >
                                         <Text style={styles.buttonText}>+ Add to Cart</Text>
-                                    </TouchableOpacity>
+                                    </Button>
                                 </View>
                             </View>
                         }
                     />
                 </View>
+
             );
         }
         else {
@@ -138,76 +161,64 @@ class RecommendScreen extends React.Component {
 }
 
 RecommendScreen.navigationOptions = {
-    title: 'Recommended',
+    header: null,
 };
 
 export default withNavigation(RecommendScreen);
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#E5EEED',
-        paddingTop: 55,
-        paddingHorizontal: 10,
+      flex: 1,
+      backgroundColor: darkBlue,
+      paddingTop: 90,
+      paddingHorizontal: 10,
     },
     itemContainer: {
-        flex: 1,
-        backgroundColor: '#ACB3B2',
+      flex: 1,
+      backgroundColor: '#ACB3B2',
     },
     infoContainer: {
-        paddingVertical: 10,
-        paddingLeft: 15,
-        borderLeftWidth: .5,
-        borderTopWidth: .5,
-        borderRightWidth: .5,
-        borderColor: '#727776',
-        height: 70,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      height: 70,
     },
     artistText: {
-        fontSize: 20,
+      fontSize: 20,
+      color: darkBlue,
     },
     titleText: {
-        fontSize: 25,
+      fontSize: 25,
+      color: darkBlue,
     },
     imageContainer: {
-        alignItems: 'center',
+      alignItems: 'center',
     },
     image: {
-        flex: 1,
-        alignSelf: 'stretch',
-        width: null,
-        height: 300,
+      flex: 1,
+      alignSelf: 'stretch',
+      width: null,
+      height: 300,
     },
     buttonContainer: {
-        flexDirection: 'row',
-        padding: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderLeftWidth: .5,
-        borderBottomWidth: .5,
-        borderRightWidth: .5,
-        borderColor: '#727776',
-        height: 70,
+      flexDirection: 'row',
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      justifyContent: 'space-between',
     },
     button: {
-        borderWidth: 1,
-        borderColor: '#800909',
-        backgroundColor: '#DF3561',
-        margin: 15,
-        width: 130,
-        height: 25,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10,
-        paddingTop: 2,
+      backgroundColor: seaGreen,
+      width: 140,
+      flexDirection: 'row',
+      justifyContent: 'center',
     },
     buttonText: {
-        flex: 1,
-        fontSize: 15,
+      fontSize: 15,
+      fontWeight: 'bold',
+      color: nearWhite,
     },
     activityContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
-})
+  });

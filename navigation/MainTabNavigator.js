@@ -11,6 +11,9 @@ import RandomScreen from '../screens/RandomScreen';
 import RecommendScreen from '../screens/RecommendScreen';
 import SearchScreen from '../screens/SearchScreen';
 
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
+let seaGreen = '#009F93';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -29,14 +32,7 @@ const HomeStack = createStackNavigator(
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'} />
   ),
 };
 
@@ -96,6 +92,7 @@ RecommendStack.path = '';
 const CartStack = createStackNavigator(
   {
     Cart: CartScreen,
+    Details: AlbumDetailsScreen,
   },
   config
 );
@@ -152,12 +149,18 @@ SearchResultsScreen.navigationOptions = {
 
 
 
-const tabNavigator = createBottomTabNavigator({
-  HomeStack,
+const tabNavigator = createBottomTabNavigator({ 
   SearchStack,
+  HomeStack,
+  
   RandomStack,
-  RecommendStack,
   CartStack,
+}, {
+  tabBarOptions: {
+    activeTintColor: seaGreen,
+    activeIconColor: seaGreen,
+    style: {backgroundColor: darkBlue}
+  },
 });
 
 tabNavigator.path = '';

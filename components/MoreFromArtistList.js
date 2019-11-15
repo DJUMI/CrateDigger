@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
+import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+
 import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
 
-import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
-import { isEmptyStatement } from "@babel/types";
+let nearWhite = '#fafafa';
 
 class MoreFromArtistList extends Component {
   constructor(props) {
@@ -24,7 +25,6 @@ class MoreFromArtistList extends Component {
       records: undefined,
       refreshing: false,
       isLoadingComplete: false,
-      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -83,19 +83,25 @@ class MoreFromArtistList extends Component {
         style={styles.itemContainer}
         onPress={() => {
           navigation.navigate('Details', {
+            item: item,
             id: item.listing_id,
             title: item.title,
             artist: item.artist,
             label: item.label,
             format: item.format,
             price: item.price,
+            styles: item.styles,
             image_url: item.image_url,
+            video_url: item.video_url,
             key: Math.random () * 10000
           })
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
+          <Image 
+            source={{uri: item.image_url}}
+            style={styles.imageContainer}
+          />
           <View style={styles.itemTitleContainer}>
             <Text 
               style={styles.itemTitleText} 
@@ -156,7 +162,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   imageContainer: {
-    borderRadius: 15,
+    borderRadius: 2,
     width: 150,
     height: 150,
   },
@@ -164,11 +170,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 150,
-    height: 30,
-    padding: 5,
+    paddingHorizontal: 1,
+    paddingVertical: 7,
   },
   itemTitleText: {
-    fontSize: 20,
+    fontSize: 15,
+    color: nearWhite,
   },
   activityContainer: {
     flex: 1,
@@ -183,6 +190,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 15,
+    color: nearWhite,
   },
 })
 
