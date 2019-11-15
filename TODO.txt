@@ -1,5 +1,5 @@
 Home Screen
-general Search query - Issac
+general Search query - Issac (single line: complete. Filters: incomplete)
 add logo - Jordan
 add graffiti font - Jordan
 
@@ -22,7 +22,7 @@ add instructions
 need sameid/sameartist when navigating from to details - complete
 
 Recommend Screen
-recommended query - Matias
+recommended query - Isaac
 notice for no items in cart
 need sameid/sameartist when navigating from to details - complete
 add instructions
@@ -31,7 +31,7 @@ Search Screen
 ui implementation - Jingyi
 
 Miscellaneous
-change more queries to release_id
+change more queries to release_id - Isaac
 global records, appclient
 Cart and List tests - Erik
 New color palette - Everyone
