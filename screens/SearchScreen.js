@@ -1,10 +1,7 @@
 import React from 'react';
 import {
-  StyleSheet,
-  Text,
+  StyleSheet, 
   View,
-  TextInput,
-  TouchableOpacity,
   Button
 } from 'react-native';
 import SearchResultsList from '../components/SearchResultsList';
@@ -132,24 +129,7 @@ const styles = StyleSheet.create({
 
        
     },
-    buttonContainer:{
-       height:35,
-      
-       marginTop:10,
-       backgroundColor:'#7f8c8d',
-       alignItems:"center",
-       justifyContent:"center",
-       
-    },
-    animatedBox: {
-        flex: 1,
-        backgroundColor: "#38C8EC",
-        padding: 10
-      },
-   buttonText:{
-       color:'#FFFFFF',
-       fontSize:15
-   },
+    
    searchresultscontainer:{
        flex:1,
        paddingTop:5
