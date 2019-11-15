@@ -1,28 +1,30 @@
 import React, { Component } from "react";
 import {
+  ActivityIndicator,
+  FlatList,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  FlatList,
-  ActivityIndicator,
 } from 'react-native';
 
-import { withNavigation } from 'react-navigation';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+import { withNavigation } from 'react-navigation';
 
 import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
+
+let nearWhite = '#fafafa';
 
 class MoreFromArtistList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUserId: undefined,
       client: undefined,
+      currentUserId: undefined,
+      isLoadingComplete: false,
       records: undefined,
       refreshing: false,
-      isLoadingComplete: false,
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -38,8 +40,8 @@ class MoreFromArtistList extends Component {
       this.loadData(app);
     } else {
       Stitch.initializeAppClient("crate-digger-stitch-sikln")
-      .then(app => this.loadData(app))
-      .catch(err => console.error(err));
+        .then(app => this.loadData(app))
+        .catch(err => console.error(err));
     }
   };
 
@@ -49,8 +51,8 @@ class MoreFromArtistList extends Component {
       this.loadData(app);
     } else {
       Stitch.initializeAppClient("crate-digger-stitch-sikln")
-      .then(app => this.loadData(app))
-      .catch(err => console.error(err));
+        .then(app => this.loadData(app))
+        .catch(err => console.error(err));
     }
   }
 
@@ -61,9 +63,9 @@ class MoreFromArtistList extends Component {
     );
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
-    const { id, artist } = this.props;
+
     records
-      .find({ $and: [ {artist: sameartist }, {listing_id: {$ne: sameid}}] }, { sort: { listing_id: -1 }, limit: 20 })
+      .find({ $and: [{ artist: sameartist }, { listing_id: { $ne: sameid } }] }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -88,16 +90,22 @@ class MoreFromArtistList extends Component {
             label: item.label,
             format: item.format,
             price: item.price,
+            styles: item.styles,
             image_url: item.image_url,
-            key: Math.random () * 10000
+            video_url: item.video_url,
+            key: item.listing_id,
           })
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
+          <Image
+            source={{ uri: item.image_url }}
+            style={styles.imageContainer}
+          />
+
           <View style={styles.itemTitleContainer}>
-            <Text 
-              style={styles.itemTitleText} 
+            <Text
+              style={styles.itemTitleText}
               numberOfLines={1}
             >
               {item.title}
@@ -111,7 +119,7 @@ class MoreFromArtistList extends Component {
   render() {
     const { isLoadingComplete } = this.state;
     if (isLoadingComplete) {
-      if (this.state.records.length == 0) {
+      if (!this.state.records.length) {
         return (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>
@@ -125,15 +133,15 @@ class MoreFromArtistList extends Component {
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
-          keyExtractor={(item, listing_id) => listing_id.toString()}
-        />  
+          keyExtractor={(listing_id) => listing_id.toString()}
+        />
       );
     }
     else {
       return (
         <View style={styles.container}>
           <View style={styles.activityContainer}>
-            <ActivityIndicator/>
+            <ActivityIndicator />
           </View>
         </View>
       );
@@ -145,17 +153,17 @@ export default withNavigation(MoreFromArtistList);
 
 const styles = StyleSheet.create({
   itemContainer: {
-   flex: 1,
-   paddingTop: 5,
-   alignItems: 'center',
-   justifyContent: 'center',
+    flex: 1,
+    paddingTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   itemInfoContainer: {
     alignItems: 'center',
     marginRight: 15,
   },
   imageContainer: {
-    borderRadius: 15,
+    borderRadius: 2,
     width: 150,
     height: 150,
   },
@@ -163,10 +171,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 150,
-    padding: 5,
+    paddingHorizontal: 1,
+    paddingVertical: 7,
   },
   itemTitleText: {
-    fontSize: 20,
+    fontSize: 15,
+    color: nearWhite,
   },
   activityContainer: {
     flex: 1,
@@ -181,6 +191,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 15,
+    color: nearWhite,
   },
 })
 

@@ -1,21 +1,26 @@
-import { AppLoading } from 'expo';
-import { Asset } from 'expo-asset';
-import * as Font from 'expo-font';
-import React, { useState } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Stitch, AnonymousCredential } from "mongodb-stitch-react-native-sdk";
+import React from 'react';
+import { 
+  Platform, 
+  StatusBar, 
+  StyleSheet, 
+  View 
+} from 'react-native';
 
-import './global.js'
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
+import { Stitch, AnonymousCredential } from "mongodb-stitch-react-native-sdk";  
+
 import AppNavigator from './navigation/AppNavigator';
+import './global';
+
 export default class App extends React.Component {
-  //global.cart=[];
   constructor(props) {
     super(props);
     this.state = {
       currentUserId: undefined,
       client: undefined,
-      isLoadingComplete: false
+      isLoadingComplete: false,
+      cart: global.cart,
     };
     this._loadClient = this._loadClient.bind(this);
   }
@@ -60,22 +65,6 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 
-  // _loadClient() {
-  //   Stitch.initializeDefaultAppClient("crate-digger-stitch-sikln").then(client => {
-  //     this.setState({ client });
-  //     this.state.client.auth
-  //       .loginWithCredential(new AnonymousCredential())
-  //       .then(user => {
-  //         console.log(`Successfully logged in as user ${user.id}`);
-  //         this.setState({ currentUserId: user.id });
-  //         this.setState({ currentUserId: client.auth.user.id });
-  //       })
-  //       .catch(err => {
-  //         console.log(`Failed to log in anonymously: ${err}`);
-  //         this.setState({ currentUserId: undefined });
-  //       });
-  //   });
-  // }
   _loadClient() {
     Stitch.initializeDefaultAppClient("crate-digger-stitch-sikln")
     .then(client => {

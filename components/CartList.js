@@ -1,25 +1,24 @@
 import React, { Component } from "react";
 import {
+    FlatList,
     Image,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
-    FlatList,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
+
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
 
 class CartList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUserId: undefined,
-            client: undefined,
-            records: undefined,
-            refreshing: false,
-            isLoadingComplete: false,
             cart: global.cart,
+            isLoadingComplete: false,   
         };
     }
 
@@ -29,7 +28,7 @@ class CartList extends Component {
 
     renderItem = ({ item }) => {
         const { navigation } = this.props;
-        //var num_in_cart = 1;
+
         return (
             <View style={styles.itemContainer}>
                 <TouchableOpacity
@@ -42,30 +41,32 @@ class CartList extends Component {
                             artist: item.artist,
                             label: item.label,
                             format: item.format,
+                            styles: item.styles,
                             price: item.price,
                             image_url: item.image_url,
-                            key: Math.random() * 10000
+                            video_url: item.video_url,
+                            key: item.listing_id,
                         })
                     }}
                 >
                     <Image source={{ uri: item.image_url }} style={styles.imageContainer} />
 
                     <View style={styles.itemTitleContainer}>
-                        <Text 
+                        <Text
                             style={styles.itemOtherText}
                             numberOfLines={1}
                         >
                             {item.artist}
                         </Text>
 
-                        <Text 
+                        <Text
                             style={styles.itemTitleText}
                             numberOfLines={1}
                         >
                             {item.title}
                         </Text>
 
-                        <Text 
+                        <Text
                             style={styles.itemOtherText}
                             numberOfLines={1}
                         >
@@ -79,7 +80,6 @@ class CartList extends Component {
                         style={styles.button}
                         onPress={() => {
                             /* TODO: minus 1 to cart if 0 reload */
-                            //num_in_cart--;
                         }}
                     >
                         <Text style={styles.buttonText}>-</Text>
@@ -93,9 +93,6 @@ class CartList extends Component {
                         style={styles.button}
                         onPress={() => {
                             /* TODO: add 1 to cart if not enough inventory give warning */
-                            //this.state.cart.push(item);
-                            //console.log(this.state.cart)
-                            //num_in_cart++;
                         }}
                     >
                         <Text style={styles.buttonText}>+</Text>
@@ -108,7 +105,6 @@ class CartList extends Component {
                     </View>
                 </View>
             </View>
-
         );
     }
 
@@ -119,12 +115,11 @@ class CartList extends Component {
                 <FlatList
                     data={cart}
                     renderItem={this.renderItem}
-                    keyExtractor={(item, listing_id) => listing_id.toString()}
+                    keyExtractor={(listing_id) => listing_id.toString()}
                 />
             </View>
         );
     }
-
 }
 
 export default withNavigation(CartList);
@@ -134,14 +129,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         paddingVertical: 5,
-        borderBottomColor: '#727776',
+        borderBottomColor: nearWhite,
         borderBottomWidth: 1,
     },
     itemContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         paddingVertical: 5,
-        borderBottomColor: '#727776',
+        borderBottomColor: nearWhite,
         borderBottomWidth: 1,
     },
     infoContainer: {
@@ -165,7 +160,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     imageContainer: {
-        borderRadius: 15,
+        borderRadius: 2,
         width: 70,
         height: 70,
         marginLeft: 5,
@@ -176,20 +171,23 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     },
     itemOtherText: {
-        fontSize: 10,
+        fontSize: 13,
         padding: 1,
         width: 115,
+        color: nearWhite,
     },
     itemTitleText: {
-        fontSize: 12,
+        fontSize: 15,
         padding: 1,
         width: 115,
+        color: nearWhite,
     },
     button: {
         padding: 15,
     },
     buttonText: {
         fontSize: 25,
+        color: nearWhite,
     },
     numContainer: {
         backgroundColor: 'white',
@@ -199,5 +197,6 @@ const styles = StyleSheet.create({
     },
     numText: {
         fontSize: 20,
+        color: darkBlue,
     },
 })

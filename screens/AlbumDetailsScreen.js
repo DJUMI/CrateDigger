@@ -1,82 +1,99 @@
 import React from 'react';
 import {
+  Alert,
+  Image,
   ScrollView,
   StyleSheet,
-  Text,
-  Image,
   View,
-  TouchableOpacity,
-  Alert,
 } from 'react-native';
 
+import { Linking } from 'expo';
+import { Button, Text } from 'native-base';
 import { withNavigation } from 'react-navigation';
 
 import MoreFromArtistList from '../components/MoreFromArtistList';
 import MoreFromLabelList from '../components/MoreFromLabelList';
 
 let sameartist;
-let samelabel;
 let sameid;
+let samelabel;
+let darkBlue = '#0b121c';
+let nearWhite = '#fafafa';
+let seaGreen = '#009F93';
 
 class AlbumDetailsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUserId: undefined,
-      client: undefined,
-      records: undefined,
-      refreshing: false,
-      isLoadingComplete: false,
-      needRefresh: false,
       cart: global.cart,
     };
   }
 
   render() {
     const { navigation } = this.props;
-    const { item, id, title, artist, label, format, price, image_url } = {
+    const { item, id, title, artist, label, format, genre, price, image_url, video_url } = {
       item: navigation.getParam('item'),
       id: navigation.getParam('id'),
       title: navigation.getParam('title'),
       artist: navigation.getParam('artist'),
       label: navigation.getParam('label'),
       format: navigation.getParam('format'),
+      genre: navigation.getParam('styles'),
       price: navigation.getParam('price'),
       image_url: navigation.getParam('image_url'),
+      video_url: navigation.getParam('video_url'),
     };
 
     sameartist = artist;
-    samelabel = label;
     sameid = id;
-
+    samelabel = label;
+    
     return (
       <ScrollView style={styles.container}>
         <View style={styles.albumInfoContainer}>
-          <Text style={styles.artistText}>{artist}</Text>
+          <View style={styles.albumInfoTextContainer}>
+            <Text style={styles.infoText}>{artist}</Text>
 
-          <Text style={styles.titleText}>{title}</Text>
+            <Text style={styles.titleText}>{title}</Text>
 
-          <Text style={styles.labelText}>{label}</Text>
+            <Text style={styles.infoText}>{label}</Text>
 
-          <Text style={styles.labelText}>{format}</Text>
+            <Text style={styles.infoText}>{format}</Text>
 
-          <Text style={styles.labelText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
+            <Text style={styles.infoText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
+
+            <Text style={styles.infoText}>{genre}</Text>
+          </View>
 
           <View style={styles.imageContainer}>
-            <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 15 }} />
+            <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 2 }} />
           </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            this.state.cart.push(item);
-            Alert.alert('Added!')
-            console.log(this.state.cart)
-          }}
-        >
-          <Text style={styles.buttonText}>+ Add to Cart</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <Button 
+            rounded
+            style={styles.button}
+            onPress={() => {
+              this.state.cart.push(item);
+              Alert.alert('Added!')
+              console.log(this.state.cart)
+            }}
+          >
+            <Text style={styles.buttonText}>+ Add to Cart</Text>
+          </Button>
+
+          <Button
+            rounded
+            style={styles.button}
+            onPress={() => {
+              Linking.openURL(video_url)
+            }}
+          >
+            <Text style={styles.buttonText}>Listen</Text>
+          </Button>
+        </View>
+
 
         <View style={styles.listHeader}>
           <Text style={styles.listHeaderText}>More from this artist</Text>
@@ -93,7 +110,7 @@ class AlbumDetailsScreen extends React.Component {
         </View>
 
         <View style={styles.listContainer}>
-          <MoreFromLabelList 
+          <MoreFromLabelList
             key={navigation.getParam('key')}
           />
         </View>
@@ -115,58 +132,63 @@ export default withNavigation(AlbumDetailsScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E5EEED',
+    backgroundColor: darkBlue,
   },
   albumInfoContainer: {
     margin: 5,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
   },
-  artistText: {
-    fontSize: 20,
+  albumInfoTextContainer: {
+    flex: 1,
+    paddingRight: 3,
+  },
+  infoText: {
+    fontSize: 17,
+    color: nearWhite,
   },
   titleText: {
-    fontSize: 25,
-  },
-  labelText: {
-    fontSize: 20,
+    fontSize: 22,
+    color: nearWhite,
   },
   imageContainer: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    justifyContent: 'space-between',
   },
   button: {
     borderWidth: 1,
-    borderColor: '#800909',
-    backgroundColor: '#DF3561',
-    marginBottom: 5,
-    marginLeft: 40,
-    width: 120,
-    height: 20,
-    alignItems: 'center',
-    borderRadius: 10,
+    borderColor: 'black',
+    backgroundColor: seaGreen,
+    width: 140,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   buttonText: {
-    flex: 1,
     fontSize: 15,
+    fontWeight: 'bold',
+    color: nearWhite,
   },
   listHeader: {
     alignItems: 'center',
-    backgroundColor: '#E5EEED',
     paddingVertical: 5,
   },
   listHeaderText: {
     fontSize: 25,
     fontWeight: 'bold',
+    color: nearWhite,
   },
   listContainer: {
     height: 195,
-    backgroundColor: '#ACB3B2',
-    borderTopWidth: 1,
-    borderTopColor: '#727776',
-    borderBottomWidth: 1,
-    borderBottomColor: '#727776',
     paddingTop: 5,
+    marginBottom: 10,
   },
   footer: {
     height: 50,
-    backgroundColor: '#E5EEED',
   },
 });
