@@ -28,7 +28,7 @@ const HomeStack = createStackNavigator(
   },
   {
     cardStyle: {
-      paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+      // paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
     }
   },
   config

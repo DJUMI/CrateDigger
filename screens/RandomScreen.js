@@ -285,7 +285,7 @@ const styles2 = StyleSheet.create({
   },
   itemContainer: {
     flex: 1,
-    backgroundColor: '#ACB3B2',
+    backgroundColor: darkBlue,
   },
   infoContainer: {
     paddingVertical: 10,
@@ -294,14 +294,15 @@ const styles2 = StyleSheet.create({
   },
   artistText: {
     fontSize: 20,
-    color: darkBlue,
+    color: nearWhite,
   },
   titleText: {
     fontSize: 25,
-    color: darkBlue,
+    color: nearWhite,
   },
   imageContainer: {
     alignItems: 'center',
+    paddingVertical: 20,
   },
   image: {
     flex: 1,
@@ -327,7 +328,7 @@ const styles2 = StyleSheet.create({
     color: nearWhite,
   },
   filterButtonContainer: {
-    paddingVertical: 10,
+    paddingVertical: 60,
     marginTop: 450,
     flexDirection: 'row',
     paddingHorizontal: 40,
