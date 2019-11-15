@@ -33,6 +33,7 @@ Search Screen
         implement sorting filters
     Bugs
         filter button and drawer should be on same side
+        search list needs a loading icon
 
 Dig Screen
     Features
