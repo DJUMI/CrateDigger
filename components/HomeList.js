@@ -59,19 +59,19 @@ class HomeList extends Component {
         console.log(this.state.query);
         break;
       case 'New House':
-        this.setState(/*TODO*/);
+        this.setState({query: {styles: { $regex: /house/, '$options': 'i' }} });
         console.log(this.state.query);
         break;
       case 'New Techno':
-        this.setState(/*TODO*/);
+        this.setState({query: {styles: { $regex: /techno/, '$options': 'i' }} });
         console.log(this.state.query);
         break;
       case 'New Hip-Hop':
-        this.setState(/*TODO*/);
+        this.setState({query: {styles: { $regex: /hip hop/, '$options': 'i' }} });
         console.log(this.state.query);
         break;
       case 'New Electro':
-        this.setState(/*TODO*/);
+        this.setState({query: {styles: { $regex: /electro/, '$options': 'i' }} });
         console.log(this.state.query);
         break;
     }
