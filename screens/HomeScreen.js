@@ -50,7 +50,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles2.listContainer}>
-            <HomeList query={0} />
+            <HomeList query={'Whats New'} />
           </View>
 
           <View style={styles2.listHeader}>
@@ -58,7 +58,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles2.listContainer}>
-            <HomeList query={1} />
+            <HomeList query={'Staff Picks'} />
           </View>
 
           <View style={styles2.listHeader}>
@@ -66,7 +66,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles2.listContainer}>
-            <WhatsNewList />
+            <HomeList query={'New House'} />
           </View>
 
           <View style={styles2.listHeader}>
@@ -74,7 +74,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles2.listContainer}>
-            <WhatsNewList />
+            <HomeList query={'New Techno'} />
           </View>
 
           <View style={styles2.listHeader}>
@@ -82,7 +82,15 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles2.listContainer}>
-            <WhatsNewList />
+            <HomeList query={'New Hip-Hop'} />
+          </View>
+
+          <View style={styles2.listHeader}>
+            <Text style={styles2.listHeaderText}>New Electro</Text>
+          </View>
+
+          <View style={styles2.listContainer}>
+            <HomeList query={'New Electro'} />
           </View>
         </ScrollView>
       </View>

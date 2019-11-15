@@ -42,30 +42,46 @@ class HomeList extends Component {
       this.loadData(app, this.state.query);
     } else {
       Stitch.initializeAppClient("crate-digger-stitch-sikln")
-      .then(app => this.loadData(app, this.state.query))
-      .catch(err => console.error(err));
+        .then(app => this.loadData(app, this.state.query))
+        .catch(err => console.error(err));
     }
   };
 
   setQuery() {
     const { query } = this.props;
     console.log(query);
-    switch(query) {
-      case 0:
-        this.setState({query: { status: "For Sale" }});
+    switch (query) {
+      case 'Whats New':
+        this.setState({ query: { status: "For Sale" } });
         console.log(this.state.query);
         break;
-      case 1:
-        this.setState({query: { label: "RCA" }});
+      case 'Staff Picks':
+        this.setState({ query: { label: "RCA" } });
         console.log(this.state.query);
         break;
-      case 2:
+      case 'New House':
+        this.setState(/*TODO*/);
+        console.log(this.state.query);
+        break;
+      case 'New Techno':
+        this.setState(/*TODO*/);
+        console.log(this.state.query);
+        break;
+      case 'New Hip-Hop':
+        this.setState(/*TODO*/);
+        console.log(this.state.query);
+        break;
+      case 'New Electro':
+        this.setState(/*TODO*/);
+        console.log(this.state.query);
+        break;
+      /*case 2:
         this.setState({query: { $and: [ {artist: sameartist }, {listing_id: {$ne: sameid}}] }});
         console.log(this.state.query);
         break;
       case 3:
-        this.setState({query: { $and: [ {label: samelabel }, {listing_id: {$ne: sameid}}]}});
-    }  
+        this.setState({query: { $and: [ {label: samelabel }, {listing_id: {$ne: sameid}}]}});*/
+    }
   }
 
   loadClient() {
@@ -74,8 +90,8 @@ class HomeList extends Component {
       this.loadData(app, this.state.query);
     } else {
       Stitch.initializeAppClient("crate-digger-stitch-sikln")
-      .then(app => this.loadData(app, this.state.query))
-      .catch(err => console.error(err));
+        .then(app => this.loadData(app, this.state.query))
+        .catch(err => console.error(err));
     }
   }
 
@@ -117,18 +133,18 @@ class HomeList extends Component {
             styles: item.styles,
             image_url: item.image_url,
             video_url: item.video_url,
-            key: Math.random () * 10000
+            key: Math.random() * 10000
           })
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image 
-            source={{uri: item.image_url}}
+          <Image
+            source={{ uri: item.image_url }}
             style={styles.imageContainer}
           />
           <View style={styles.itemTitleContainer}>
-            <Text 
-              style={styles.itemTitleText} 
+            <Text
+              style={styles.itemTitleText}
               numberOfLines={1}
             >
               {item.title}
@@ -157,14 +173,14 @@ class HomeList extends Component {
           horizontal
           renderItem={this.renderItem}
           keyExtractor={(listing_id) => listing_id.toString()}
-        />  
+        />
       );
     }
     else {
       return (
         <View style={styles.container}>
           <View style={styles.activityContainer}>
-            <ActivityIndicator/>
+            <ActivityIndicator />
           </View>
         </View>
       );
@@ -176,10 +192,10 @@ export default withNavigation(HomeList);
 
 const styles = StyleSheet.create({
   itemContainer: {
-   flex: 1,
-   paddingTop: 5,
-   alignItems: 'center',
-   justifyContent: 'center',
+    flex: 1,
+    paddingTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   itemInfoContainer: {
     alignItems: 'center',
