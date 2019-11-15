@@ -49,7 +49,16 @@ class CartList extends Component {
                         })
                     }}
                 >
-                    <Image source={{ uri: item.image_url }} style={styles.imageContainer} />
+                    {item.image_url ?
+                    <Image
+                      source={{ uri: item.image_url }}
+                      style={styles.imageContainer}
+                    /> :
+                    <Image
+                      source={require('../assets/images/vinylstock.jpg')}
+                      style={styles.imageContainer}
+                    />
+                  }
 
                     <View style={styles.itemTitleContainer}>
                         <Text

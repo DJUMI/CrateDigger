@@ -111,7 +111,16 @@ class DigScreen extends React.Component {
                 </View>
 
                 <View style={styles.imageContainer}>
-                  <Image source={{ uri: item.image_url }} style={styles.image} />
+                  {item.image_url ?
+                    <Image
+                      source={{ uri: item.image_url }}
+                      style={styles.image}
+                    /> :
+                    <Image
+                      source={require('../assets/images/vinylstock.jpg')}
+                      style={styles.image}
+                    />
+                  }
                 </View>
 
                 <View style={styles.buttonContainer}>

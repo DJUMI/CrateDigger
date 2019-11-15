@@ -73,8 +73,6 @@ class AlbumDetailsScreen extends React.Component {
                 style={styles.image}
               /> :
               <Image
-                onLoadStart={() => console.log('null image load start')}
-                onLoadEnd={() => console.log('null image load end')}
                 source={require('../assets/images/vinylstock.jpg')}
                 style={styles.image}
               />
