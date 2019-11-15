@@ -16,7 +16,12 @@ export default class FilterScreen extends React.Component {
         super(props);
         this.state = {
             checkedItems: false,
-            checked: false,
+            checked1: false,
+            checked2: false,
+            checked3: false,
+            checked4: false,
+            checked5: false,
+            checked6: false,
             value: 100,
         };
     }
@@ -30,12 +35,12 @@ export default class FilterScreen extends React.Component {
                 <View style={styles.checkBoxContainer}>
                     <CheckBox
                         checkedColor={darkBlue}
-                        checked={this.state.checked}
+                        checked={this.state.checked1}
                         containerStyle={styles.checkBox}
                         iconRight
                         onPress={() => {
                             this.setState({
-                                checked: !this.state.checked
+                                checked1: !this.state.checked1
                             })
                         }}
                         right
@@ -46,12 +51,12 @@ export default class FilterScreen extends React.Component {
 
                     <CheckBox
                         checkedColor={darkBlue}
-                        checked={this.state.checked}
+                        checked={this.state.checked2}
                         containerStyle={styles.checkBox}
                         iconRight
                         onPress={() => {
                             this.setState({
-                                checked: !this.state.checked
+                                checked2: !this.state.checked2
                             })
                         }}
                         right
@@ -62,12 +67,12 @@ export default class FilterScreen extends React.Component {
 
                     <CheckBox
                         checkedColor={darkBlue}
-                        checked={this.state.checked}
+                        checked={this.state.checked3}
                         containerStyle={styles.checkBox}
                         iconRight
                         onPress={() => {
                             this.setState({
-                                checked: !this.state.checked
+                                checked3: !this.state.checked3
                             })
                         }}
                         right
@@ -80,12 +85,12 @@ export default class FilterScreen extends React.Component {
                 <View style={styles.checkBoxContainer}>
                     <CheckBox
                         checkedColor={darkBlue}
-                        checked={this.state.checked}
+                        checked={this.state.checked4}
                         containerStyle={styles.checkBox}
                         iconRight
                         onPress={() => {
                             this.setState({
-                                checked: !this.state.checked
+                                checked4: !this.state.checked4
                             })
                         }}
                         right
@@ -96,12 +101,12 @@ export default class FilterScreen extends React.Component {
 
                     <CheckBox
                         checkedColor={darkBlue}
-                        checked={this.state.checked}
+                        checked={this.state.checked5}
                         containerStyle={styles.checkBox}
                         iconRight
                         onPress={() => {
                             this.setState({
-                                checked: !this.state.checked
+                                checked5: !this.state.checked5
                             })
                         }}
                         right
@@ -112,12 +117,12 @@ export default class FilterScreen extends React.Component {
 
                     <CheckBox
                         checkedColor={darkBlue}
-                        checked={this.state.checked}
+                        checked={this.state.checked6}
                         containerStyle={styles.checkBox}
                         iconRight
                         onPress={() => {
                             this.setState({
-                                checked: !this.state.checked
+                                checked6: !this.state.checked6
                             })
                         }}
                         right
