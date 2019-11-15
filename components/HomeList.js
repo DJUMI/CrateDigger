@@ -9,8 +9,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import { withNavigation } from 'react-navigation';
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+import { withNavigation } from 'react-navigation';
 
 import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
 
@@ -20,12 +20,12 @@ class HomeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUserId: undefined,
       client: undefined,
-      records: undefined,
-      refreshing: false,
+      currentUserId: undefined,
       isLoadingComplete: false,
       query: null,
+      records: undefined,
+      refreshing: false,
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -49,8 +49,7 @@ class HomeList extends Component {
 
   setQuery() {
     const { query } = this.props;
-    console.log(query);
-    switch (query) { 
+    switch (query) {
       case 'Whats New':
         this.setState({ query: { status: "For Sale" } });
         console.log(this.state.query);
@@ -75,12 +74,6 @@ class HomeList extends Component {
         this.setState(/*TODO*/);
         console.log(this.state.query);
         break;
-      /*case 2:
-        this.setState({query: { $and: [ {artist: sameartist }, {listing_id: {$ne: sameid}}] }});
-        console.log(this.state.query);
-        break;
-      case 3:
-        this.setState({query: { $and: [ {label: samelabel }, {listing_id: {$ne: sameid}}]}});*/
     }
   }
 
@@ -102,8 +95,7 @@ class HomeList extends Component {
     );
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
-    const { id, artist } = this.props;
-    console.log(this.state.query);
+
     records
       .find(query, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
@@ -118,6 +110,7 @@ class HomeList extends Component {
 
   renderItem = ({ item }) => {
     const { navigation } = this.props;
+
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -133,7 +126,7 @@ class HomeList extends Component {
             styles: item.styles,
             image_url: item.image_url,
             video_url: item.video_url,
-            key: Math.random() * 10000
+            key: item.listing_id,
           })
         }}
       >
@@ -142,6 +135,7 @@ class HomeList extends Component {
             source={{ uri: item.image_url }}
             style={styles.imageContainer}
           />
+
           <View style={styles.itemTitleContainer}>
             <Text
               style={styles.itemTitleText}

@@ -1,0 +1,57 @@
+Components
+
+Cart List
+    Features
+        implement buttons
+        implement quantity
+        show cart total
+    Bugs
+        cart allows doubles - Meet
+        cart doesn't reload when a new item is added
+
+Home List
+    Features
+        add queries for new items from specific genres
+        add queries for morefromartist and morefromlabel lists
+    Bugs
+        need placeholders for items without an image
+
+Screens
+
+Album Details Screen
+    Bugs
+        back navigation doesn't take you to previous details screen
+        navigating to new details should refresh to top of page not maintain scrollView position
+
+Filter Screen
+    implement check buttons
+    implement apply/clear buttons
+    add sorting filters
+
+Home Screen
+    Features
+        add graffiti font - Jordan
+
+Search Screen
+    Features
+        implement format/price filters - Issac
+        implement sorting filters
+    Bugs
+        filter button and drawer should be on same side
+
+Dig Screen
+    Features
+        add instructions
+        recommended query - Issac
+        notice for no items in Cart when recommended selected
+        implement genre filters
+    Bugs
+        button text needs to fit on one line(looks fine on iphone 6s but shows up on Android)
+
+Miscellaneous
+
+change queries to use release_id so duplicates aren't shown - Issac
+Cart and List tests - Erik
+New color palette - Everyone
+Fix tab nav icon colors
+Fix non-unique keys error

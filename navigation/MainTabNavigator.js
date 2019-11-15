@@ -1,18 +1,16 @@
 import React from 'react';
 import { Platform } from 'react-native';
+
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
 import AlbumDetailsScreen from '../screens/AlbumDetailsScreen';
-import SearchResultsScreen from '../screens/SearchResultsScreen';
 import CartScreen from '../screens/CartScreen';
-import RandomScreen from '../screens/RandomScreen';
-import RecommendScreen from '../screens/RecommendScreen';
+import DigScreen from '../screens/DigScreen';
+import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
+import TabBarIcon from '../components/TabBarIcon';
 
 let darkBlue = '#0b121c';
-let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
 
 const config = Platform.select({
@@ -24,7 +22,6 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     Details: AlbumDetailsScreen,
-    SearchResults: SearchResultsScreen,
   },
   config
 );
@@ -41,7 +38,7 @@ HomeStack.path = '';
 const SearchStack = createStackNavigator(
   {
     Search: SearchScreen,
-    SearchResults: SearchResultsScreen,
+    Details: AlbumDetailsScreen,
   },
   config
 );
@@ -55,39 +52,22 @@ SearchStack.navigationOptions = {
 
 SearchStack.path = '';
 
-const RandomStack = createStackNavigator(
+const DigStack = createStackNavigator(
   {
-    Random: RandomScreen,
+    Dig: DigScreen,
     Details: AlbumDetailsScreen,
   },
   config
 );
 
-RandomStack.navigationOptions = {
+DigStack.navigationOptions = {
   tabBarLabel: 'Dig',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
   ),
 };
 
-RandomStack.path = '';
-
-const RecommendStack = createStackNavigator(
-  {
-    Recommed: RecommendScreen,
-    Details: AlbumDetailsScreen,
-  },
-  config
-);
-
-RecommendStack.navigationOptions = {
-  tabBarLabel: 'Recommended',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
-  ),
-};
-
-RecommendStack.path = '';
+DigStack.path = '';
 
 const CartStack = createStackNavigator(
   {
@@ -126,40 +106,16 @@ AlbumDetailsScreen.navigationOptions = {
   title: 'Details'
 };
 
-const SearchResultsStack = createStackNavigator(
-  {
-    SearchResults: SearchResultsScreen,
-  },
-  config
-);
-
-SearchResultsStack.navigationOptions = {
-  tabBarLabel: 'Search Results',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
-  ),
-};
-
-SearchResultsStack.path = '';
-
-SearchResultsScreen.navigationOptions = {
-  title: 'Search Results'
-};
-
-
-
-
-const tabNavigator = createBottomTabNavigator({ 
-  SearchStack,
+const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  
-  RandomStack,
+  SearchStack,
+  DigStack,
   CartStack,
 }, {
   tabBarOptions: {
     activeTintColor: seaGreen,
     activeIconColor: seaGreen,
-    style: {backgroundColor: darkBlue}
+    style: { backgroundColor: darkBlue }
   },
 });
 
