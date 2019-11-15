@@ -79,6 +79,18 @@ class RecommendScreen extends React.Component {
         const { isLoadingComplete } = this.state;
         const { cart } = this.state;
         const { navigation } = this.props;
+        const { item, id, title, artist, label, format, genre, price, image_url, video_url } = {
+            item: navigation.getParam('item'),
+            id: navigation.getParam('id'),
+            title: navigation.getParam('title'),
+            artist: navigation.getParam('artist'),
+            label: navigation.getParam('label'),
+            format: navigation.getParam('format'),
+            genre: navigation.getParam('styles'),
+            price: navigation.getParam('price'),
+            image_url: navigation.getParam('image_url'),
+            video_url: navigation.getParam('video_url'),
+          };
         if (isLoadingComplete) {
             return (
                 <View style={styles2.container}>

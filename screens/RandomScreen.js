@@ -181,6 +181,19 @@ class RandomScreen extends React.Component {
               }
               onPress={() => {
                 this.setState({recommended: !this.state.recommended})
+                navigation.navigate('RecommendedScreen', {
+                  item: item,
+                  id: item.listing_id,
+                  title: item.title,
+                  artist: item.artist,
+                  label: item.label,
+                  format: item.format,
+                  price: item.price,
+                  styles: item.styles,
+                  image_url: item.image_url,
+                  video_url: item.video_url,
+                  key: Math.random() * 10000
+                })
               }}
             >
               <Text style={styles2.filterButtonText}>Recommended</Text>
@@ -318,7 +331,7 @@ const styles2 = StyleSheet.create({
   },
   button: {
     backgroundColor: seaGreen,
-    width: 140,
+    width: 160,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -347,7 +360,7 @@ const styles2 = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: darkBlue,
-    width: 135,
+    width: 160,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -356,7 +369,7 @@ const styles2 = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: seaGreen,
-    width: 135,
+    width: 160,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
