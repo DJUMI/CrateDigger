@@ -12,8 +12,6 @@ Cart List
 Home List
     Features
         add queries for morefromartist and morefromlabel lists
-    Bugs
-        need placeholders for items without an image
 
 Screens
 
