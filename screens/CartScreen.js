@@ -32,9 +32,11 @@ class CartScreen extends React.Component {
                     <View style={styles.infoContainer}>
                         <Text style={styles.headerText}>Item</Text>
                     </View>
+                    
                     <View style={styles.quantityContainer}>
                         <Text style={styles.headerText}>Quantity</Text>
                     </View>
+
                     <View style={styles.priceContainer}>
                         <Text style={styles.headerText}>Price</Text>
                     </View>

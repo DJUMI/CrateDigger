@@ -150,8 +150,9 @@ SearchResultsScreen.navigationOptions = {
 
 
 const tabNavigator = createBottomTabNavigator({ 
-  HomeStack,
   SearchStack,
+  HomeStack,
+  
   RandomStack,
   CartStack,
 }, {

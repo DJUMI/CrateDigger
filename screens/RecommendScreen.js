@@ -81,36 +81,36 @@ class RecommendScreen extends React.Component {
         const { navigation } = this.props;
         if (isLoadingComplete) {
             return (
-                <View style={styles2.container}>
+                <View style={styles.container}>
 
                     <DeckSwiper
                         dataSource={this.state.records}
                         renderItem={item =>
-                            <View style={styles2.itemContainer}>
-                                <View style={styles2.infoContainer}>
+                            <View style={styles.itemContainer}>
+                                <View style={styles.infoContainer}>
                                     <Text
-                                        style={styles2.artistText}
+                                        style={styles.artistText}
                                         numberOfLines={1}
                                     >
                                         {item.artist}
                                     </Text>
 
                                     <Text
-                                        style={styles2.titleText}
+                                        style={styles.titleText}
                                         numberOfLines={1}
                                     >
                                         {item.title}
                                     </Text>
                                 </View>
 
-                                <View style={styles2.imageContainer}>
-                                    <Image source={{ uri: item.image_url }} style={styles2.image} />
+                                <View style={styles.imageContainer}>
+                                    <Image source={{ uri: item.image_url }} style={styles.image} />
                                 </View>
 
-                                <View style={styles2.buttonContainer}>
+                                <View style={styles.buttonContainer}>
                                     <Button
                                         rounded
-                                        style={styles2.button}
+                                        style={styles.button}
                                         onPress={() => {
                                             navigation.navigate('Details', {
                                                 item: item,
@@ -126,19 +126,19 @@ class RecommendScreen extends React.Component {
                                             });
                                         }}
                                     >
-                                        <Text style={styles2.buttonText}>See Details</Text>
+                                        <Text style={styles.buttonText}>See Details</Text>
                                     </Button>
 
                                     <Button
                                         rounded
-                                        style={styles2.button}
+                                        style={styles.button}
                                         onPress={() => {
                                             cart.push(item);
                                             Alert.alert('Added!')
                                             console.log(cart)
                                         }}
                                     >
-                                        <Text style={styles2.buttonText}>+ Add to Cart</Text>
+                                        <Text style={styles.buttonText}>+ Add to Cart</Text>
                                     </Button>
                                 </View>
                             </View>
@@ -150,8 +150,8 @@ class RecommendScreen extends React.Component {
         }
         else {
             return (
-                <View style={styles2.container}>
-                    <View style={styles2.activityContainer}>
+                <View style={styles.container}>
+                    <View style={styles.activityContainer}>
                         <ActivityIndicator />
                     </View>
                 </View>
@@ -166,76 +166,7 @@ RecommendScreen.navigationOptions = {
 
 export default withNavigation(RecommendScreen);
 
-/*const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#E5EEED',
-        paddingTop: 90,
-        paddingHorizontal: 10,
-    },
-    itemContainer: {
-        flex: 1,
-        backgroundColor: '#ACB3B2',
-    },
-    infoContainer: {
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderLeftWidth: .5,
-        borderTopWidth: .5,
-        borderRightWidth: .5,
-        borderColor: '#727776',
-        height: 70,
-    },
-    artistText: {
-        fontSize: 20,
-    },
-    titleText: {
-        fontSize: 25,
-    },
-    imageContainer: {
-        alignItems: 'center',
-    },
-    image: {
-        flex: 1,
-        alignSelf: 'stretch',
-        width: null,
-        height: 300,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        padding: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderLeftWidth: .5,
-        borderBottomWidth: .5,
-        borderRightWidth: .5,
-        borderColor: '#727776',
-        height: 70,
-    },
-    button: {
-        borderWidth: 1,
-        borderColor: '#800909',
-        backgroundColor: '#DF3561',
-        margin: 15,
-        width: 130,
-        height: 25,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10,
-        paddingTop: 2,
-    },
-    buttonText: {
-        flex: 1,
-        fontSize: 15,
-    },
-    activityContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-}); */
-
-const styles2 = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: darkBlue,

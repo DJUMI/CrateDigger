@@ -6,25 +6,84 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
 
-import { SearchBar, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
+
+import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 
 class SearchResultsList extends Component {
-  state = {
-    isLoadingComplete: true,
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      records: undefined,
+      refreshing: false,
+      isLoadingComplete: false,
+      cart: [],
+      searchString: undefined
+    };
+    this.loadClient = this.loadClient.bind(this);
   }
 
-  componentDidMount = async () => {
-    this.setState(
-      {
-        isLoadingComplete: true,
-      },
+  componentDidMount() {
+    this.loadClient();
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+      const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+      this.loadData(app);
+    } else {
+      Stitch.initializeAppClient("crate-digger-stitch-sikln")
+        .then(app => this.loadData(app))
+        .catch(err => console.error(err));
+    }
+  };
+
+  loadClient() {
+    if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
+      const app = Stitch.getAppClient("crate-digger-stitch-sikln");
+      this.loadData(app);
+    } else {
+      Stitch.initializeAppClient("crate-digger-stitch-sikln")
+        .then(app => this.loadData(app))
+        .catch(err => console.error(err));
+    }
+  }
+
+  /* different queries for each combination of query. ADD REGEX*/
+  loadData(appClient) {
+    const mongoClient = appClient.getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
     );
+
+    searchString = 'RCA'
+    const db = mongoClient.db("crate-digger");
+    const records = db.collection("music-0");
+    records
+      .find({
+        $or: [{ label: { $regex: searchString, '$options': 'i' } },
+        { artist: { $regex: searchString, '$options': 'i' } },
+        { title: { $regex: searchString, '$options': 'i' } }]
+      })
+      .asArray()
+      .then(records => {
+        this.setState({ records });
+        this.setState({ isLoadingComplete: true });
+      })
+      .catch(err => {
+        console.warn(err);
+      });
   }
 
   renderItem = ({ item }) => {
@@ -33,47 +92,56 @@ class SearchResultsList extends Component {
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
-          /* TODO: Navigate to the Details route with params */
-          navigation.navigate('Details', {/* props go here */});
+          navigation.navigate('Details', {
+            id: item.listing_id,
+            title: item.title,
+            artist: item.artist,
+            label: item.label,
+            format: item.format,
+            price: item.price,
+            image_url: item.image_url,
+            key: Math.random() * 10000
+          })
+
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image source={require('../assets/images/vinyl.jpg')} style={styles.imageContainer}/* TODO *//>
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/* TODO */ />
           <View style={styles.itemTitleContainer}>
-            <Text 
+            <Text
               style={styles.itemOtherText}
               numberOfLines={1}
             >
-              Artist Name
+              {item.artist}
             </Text>
 
-            <Text 
+            <Text
               style={styles.itemTitleText}
               numberOfLines={1}
             >
-              Item Title
+              {item.title}
             </Text>
 
-            <Text 
+            <Text
               style={styles.itemOtherText}
               numberOfLines={1}
             >
               Label Name Year
             </Text>
 
-            <Text 
+            <Text
               style={styles.itemOtherText}
               numberOfLines={1}
             >
-              Format
+              {item.format}
             </Text>
           </View>
-          <View style={styles.arrowContainer}>      
-            <Icon 
+          <View style={styles.arrowContainer}>
+            <Icon
               name='chevron-thin-right'
               type='entypo'
-              size= '40'
-              color= {nearWhite} /> 
+              size='40'
+              color={nearWhite} />
           </View>
         </View>
       </TouchableOpacity>
@@ -82,14 +150,31 @@ class SearchResultsList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-    const { data } = this.props;
     if (isLoadingComplete) {
+      if (this.state.records.length == 0) {
+        return (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              No Results
+            </Text>
+          </View>
+        );
+      }
       return (
         <FlatList
-          data={data}
+          data={this.state.records}
           renderItem={this.renderItem}
-          keyExtractor={(item, listing_id) => listing_id.toString()}
+          keyExtractor={(listing_id) => listing_id.toString()}
         />  
+      );
+    }
+    else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.activityContainer}>
+            <ActivityIndicator/>
+          </View>
+        </View>
       );
     }
   }
@@ -99,7 +184,7 @@ export default withNavigation(SearchResultsList);
 
 const styles = StyleSheet.create({
   itemContainer: {
-   flex: 1,
+    flex: 1,
   },
   itemInfoContainer: {
     flexDirection: 'row',
@@ -139,5 +224,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 90,
     marginRight: 5,
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 20,
   },
 })

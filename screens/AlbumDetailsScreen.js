@@ -14,6 +14,7 @@ import { Button, Text } from 'native-base';
 
 import MoreFromArtistList from '../components/MoreFromArtistList';
 import MoreFromLabelList from '../components/MoreFromLabelList';
+import HomeList from '../components/HomeList';
 
 let sameartist;
 let samelabel;
@@ -79,7 +80,8 @@ class AlbumDetailsScreen extends React.Component {
         </View>
 
         <View style={styles2.buttonContainer}>
-          {/*<TouchableOpacity
+          <Button 
+            rounded
             style={styles2.button}
             onPress={() => {
               this.state.cart.push(item);
@@ -88,17 +90,7 @@ class AlbumDetailsScreen extends React.Component {
             }}
           >
             <Text style={styles2.buttonText}>+ Add to Cart</Text>
-          </TouchableOpacity>*/}
-          <Button 
-            rounded
-            style={styles2.button}
-            onPress={() => {
-              this.state.cart.push(item);
-              Alert.alert('Added!')
-              console.log(this.state.cart)
-            }}>
-              <Text style={styles2.buttonText}>+ Add to Cart</Text>
-            </Button>
+          </Button>
 
           <Button
             rounded
