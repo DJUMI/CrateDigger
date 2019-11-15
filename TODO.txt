@@ -11,7 +11,6 @@ Cart List
 
 Home List
     Features
-        add queries for new items from specific genres
         add queries for morefromartist and morefromlabel lists
     Bugs
         need placeholders for items without an image
@@ -22,6 +21,7 @@ Album Details Screen
     Bugs
         back navigation doesn't take you to previous details screen
         navigating to new details should refresh to top of page not maintain scrollView position
+        need to disable listen button if video_url is null - Jordan
 
 Filter Screen
     implement check buttons
@@ -37,7 +37,7 @@ Search Screen
         implement format/price filters - Issac
         implement sorting filters
     Bugs
-        filter button and drawer should be on same side
+        need to display something when no search is entered
 
 Dig Screen
     Features
