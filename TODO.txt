@@ -18,9 +18,7 @@ Home List
 Screens
 
 Album Details Screen
-    Bugs
-        back navigation doesn't take you to previous details screen
-        navigating to new details should refresh to top of page not maintain scrollView position
+    style nav header
 
 Filter Screen
     implement check buttons

@@ -83,7 +83,7 @@ class MoreFromLabelList extends Component {
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
-          navigation.navigate('Details', {
+          navigation.push('Details', {
             item: item,
             id: item.listing_id,
             title: item.title,
