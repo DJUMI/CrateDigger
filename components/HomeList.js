@@ -9,8 +9,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import { withNavigation } from 'react-navigation';
+import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
 
@@ -20,12 +20,12 @@ class HomeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      client: undefined,
       currentUserId: undefined,
-      isLoadingComplete: false,
-      query: null,
+      client: undefined,
       records: undefined,
       refreshing: false,
+      isLoadingComplete: false,
+      query: null,
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -49,7 +49,8 @@ class HomeList extends Component {
 
   setQuery() {
     const { query } = this.props;
-    switch (query) {
+    console.log(query);
+    switch (query) { 
       case 'Whats New':
         this.setState({ query: { status: "For Sale" } });
         console.log(this.state.query);
@@ -58,22 +59,28 @@ class HomeList extends Component {
         this.setState({ query: { label: "RCA" } });
         console.log(this.state.query);
         break;
-      case 'New House':
-        this.setState({query: {styles: { $regex: /house/, '$options': 'i' }} });
+      // case 'New House':
+      //   this.setState(/*TODO*/);
+      //   console.log(this.state.query);
+      //   break;
+      // case 'New Techno':
+      //   this.setState(/*TODO*/);
+      //   console.log(this.state.query);
+      //   break;
+      // case 'New Hip-Hop':
+      //   this.setState(/*TODO*/);
+      //   console.log(this.state.query);
+      //   break;
+      // case 'New Electro':
+      //   this.setState(/*TODO*/);
+      //   console.log(this.state.query);
+      //   break;
+      /*case 2:
+        this.setState({query: { $and: [ {artist: sameartist }, {listing_id: {$ne: sameid}}] }});
         console.log(this.state.query);
         break;
-      case 'New Techno':
-        this.setState({query: {styles: { $regex: /techno/, '$options': 'i' }} });
-        console.log(this.state.query);
-        break;
-      case 'New Hip-Hop':
-        this.setState({query: {styles: { $regex: /hip hop/, '$options': 'i' }} });
-        console.log(this.state.query);
-        break;
-      case 'New Electro':
-        this.setState({query: {styles: { $regex: /electro/, '$options': 'i' }} });
-        console.log(this.state.query);
-        break;
+      case 3:
+        this.setState({query: { $and: [ {label: samelabel }, {listing_id: {$ne: sameid}}]}});*/
     }
   }
 
@@ -95,7 +102,8 @@ class HomeList extends Component {
     );
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
-
+    const { id, artist } = this.props;
+    console.log(this.state.query);
     records
       .find(query, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
@@ -110,7 +118,6 @@ class HomeList extends Component {
 
   renderItem = ({ item }) => {
     const { navigation } = this.props;
-
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -126,7 +133,7 @@ class HomeList extends Component {
             styles: item.styles,
             image_url: item.image_url,
             video_url: item.video_url,
-            key: item.listing_id,
+            key: Math.random() * 10000
           })
         }}
       >
@@ -135,7 +142,6 @@ class HomeList extends Component {
             source={{ uri: item.image_url }}
             style={styles.imageContainer}
           />
-
           <View style={styles.itemTitleContainer}>
             <Text
               style={styles.itemTitleText}

@@ -16,15 +16,25 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      tasks: undefined,
+      refreshing: false,
+      search: "",
+      cart: global.cart,
     };
+  }
+  
+  updateSearch = search => {
+    this.setState({ search });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView style={styles.contentContainer}>
           <View style={styles.logoContainer}>
-            <Image source={require("../assets/images/logo.jpg")} style={styles.imageContainer} />
+            <Image source={require("../assets/images/logo.jpg")} style={styles.imageContainer}/>
           </View>
 
           <View style={styles.listHeader}>
@@ -41,40 +51,7 @@ export default class HomeScreen extends React.Component {
 
           <View style={styles.listContainer}>
             <HomeList query={'Staff Picks'} />
-          </View>
-        
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>New House</Text>
-          </View>
-
-          <View style={styles.listContainer}>
-            <HomeList query={'New House'} />
-          </View>
-
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>New Techno</Text>
-          </View>
-
-          <View style={styles.listContainer}>
-            <HomeList query={'New Techno'} />
-          </View>
-
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>New Hip-Hop</Text>
-          </View>
-
-          <View style={styles.listContainer}>
-            <HomeList query={'New Hip-Hop'} />
-          </View>
-
-          <View style={styles.listHeader}>
-            <Text style={styles.listHeaderText}>New Electro</Text>
-          </View>
-
-          <View style={styles.listContainer}>
-            <HomeList query={'New Electro'} />
-          </View>
-          
+          </View>   
         </ScrollView>
       </View>
     );
@@ -99,6 +76,8 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     borderRadius: 50,
+  },
+  contentContainer: {
   },
   listHeader: {
     paddingHorizontal: 15,

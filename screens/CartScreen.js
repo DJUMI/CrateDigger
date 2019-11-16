@@ -16,6 +16,12 @@ class CartScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentUserId: undefined,
+            client: undefined,
+            tasks: undefined,
+            refreshing: false,
+            search: "",
+            cart: [],
         };
     }
 
@@ -26,7 +32,7 @@ class CartScreen extends React.Component {
                     <View style={styles.infoContainer}>
                         <Text style={styles.headerText}>Item</Text>
                     </View>
-
+                    
                     <View style={styles.quantityContainer}>
                         <Text style={styles.headerText}>Quantity</Text>
                     </View>
@@ -35,12 +41,13 @@ class CartScreen extends React.Component {
                         <Text style={styles.headerText}>Price</Text>
                     </View>
                 </View>
-
+                
                 <CartList />
             </View>
 
         );
     }
+
 }
 
 CartScreen.navigationOptions = {

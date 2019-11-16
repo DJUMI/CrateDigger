@@ -1,22 +1,23 @@
 import React, { Component } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
-import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import { withNavigation } from 'react-navigation';
+import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 
 import { samelabel, sameid } from '../screens/AlbumDetailsScreen';
 
 let nearWhite = '#fafafa';
 
 class MoreFromLabelList extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +26,7 @@ class MoreFromLabelList extends Component {
       records: undefined,
       refreshing: false,
       isLoadingComplete: false,
+      cart: [],
     };
     this.loadClient = this.loadClient.bind(this);
   }
@@ -40,8 +42,8 @@ class MoreFromLabelList extends Component {
       this.loadData(app);
     } else {
       Stitch.initializeAppClient("crate-digger-stitch-sikln")
-        .then(app => this.loadData(app))
-        .catch(err => console.error(err));
+      .then(app => this.loadData(app))
+      .catch(err => console.error(err));
     }
   };
 
@@ -51,8 +53,8 @@ class MoreFromLabelList extends Component {
       this.loadData(app);
     } else {
       Stitch.initializeAppClient("crate-digger-stitch-sikln")
-        .then(app => this.loadData(app))
-        .catch(err => console.error(err));
+      .then(app => this.loadData(app))
+      .catch(err => console.error(err));
     }
   }
 
@@ -63,9 +65,8 @@ class MoreFromLabelList extends Component {
     );
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
-
     records
-      .find({ $and: [{ label: samelabel }, { listing_id: { $ne: sameid } }] }, { sort: { listing_id: -1 }, limit: 20 })
+      .find({ $and: [ {label: samelabel }, {listing_id: {$ne: sameid}}] }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -78,7 +79,6 @@ class MoreFromLabelList extends Component {
 
   renderItem = ({ item }) => {
     const { navigation } = this.props;
-
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -94,20 +94,16 @@ class MoreFromLabelList extends Component {
             price: item.price,
             image_url: item.image_url,
             video_url: item.video_url,
-            key: item.listing_id,
+            key: Math.random () * 10000
           })
 
         }}
       >
         <View style={styles.itemInfoContainer}>
-          <Image
-            source={{ uri: item.image_url }}
-            style={styles.imageContainer}
-          />
-
+          <Image source={{uri:item.image_url}} style={styles.imageContainer}/>
           <View style={styles.itemTitleContainer}>
-            <Text
-              style={styles.itemTitleText}
+            <Text 
+              style={styles.itemTitleText} 
               numberOfLines={1}
             >
               {item.title}
@@ -120,9 +116,8 @@ class MoreFromLabelList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-
     if (isLoadingComplete) {
-      if (!this.state.records.length) {
+      if (this.state.records.length == 0) {
         return (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>
@@ -136,15 +131,15 @@ class MoreFromLabelList extends Component {
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
-          keyExtractor={(listing_id) => listing_id.toString()}
-        />
+          keyExtractor={(item, listing_id) => listing_id.toString()}
+        />  
       );
     }
     else {
       return (
         <View style={styles.container}>
           <View style={styles.activityContainer}>
-            <ActivityIndicator />
+            <ActivityIndicator/>
           </View>
         </View>
       );
@@ -156,10 +151,10 @@ export default withNavigation(MoreFromLabelList);
 
 const styles = StyleSheet.create({
   itemContainer: {
-    flex: 1,
-    paddingTop: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+   flex: 1,
+   paddingTop: 5,
+   alignItems: 'center',
+   justifyContent: 'center',
   },
   itemInfoContainer: {
     alignItems: 'center',

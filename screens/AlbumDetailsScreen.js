@@ -1,37 +1,47 @@
 import React from 'react';
 import {
-  Alert,
-  Image,
   ScrollView,
   StyleSheet,
+  Image,
   View,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 
+import { withNavigation } from 'react-navigation';
 import { Linking } from 'expo';
 import { Button, Text } from 'native-base';
-import { withNavigation } from 'react-navigation';
 
 import MoreFromArtistList from '../components/MoreFromArtistList';
 import MoreFromLabelList from '../components/MoreFromLabelList';
+import HomeList from '../components/HomeList';
 
 let sameartist;
-let sameid;
 let samelabel;
+let sameid;
+let samerelaseid;
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
+
 
 class AlbumDetailsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      records: undefined,
+      refreshing: false,
+      isLoadingComplete: false,
+      needRefresh: false,
       cart: global.cart,
     };
   }
 
   render() {
     const { navigation } = this.props;
-    const { item, id, title, artist, label, format, genre, price, image_url, video_url } = {
+    const { item, id, title, artist, release_id, label, format, genre, price, image_url, video_url } = {
       item: navigation.getParam('item'),
       id: navigation.getParam('id'),
       title: navigation.getParam('title'),
@@ -42,79 +52,88 @@ class AlbumDetailsScreen extends React.Component {
       price: navigation.getParam('price'),
       image_url: navigation.getParam('image_url'),
       video_url: navigation.getParam('video_url'),
+      release_id: navigation.getParam('reelase_id')
     };
 
     sameartist = artist;
-    sameid = id;
     samelabel = label;
-    
+    sameid = id;
+    samerelaseid = release_id;
+
+    console.log(release_id)
+    console.log(id)
+
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.albumInfoContainer}>
-          <View style={styles.albumInfoTextContainer}>
-            <Text style={styles.infoText}>{artist}</Text>
+      <ScrollView style={styles2.container}>
+        <View style={styles2.albumInfoContainer}>
+          <View style={styles2.albumInfoTextContainer}>
+            <Text style={styles2.infoText}>{artist}</Text>
 
-            <Text style={styles.titleText}>{title}</Text>
+            <Text style={styles2.titleText}>{title}</Text>
 
-            <Text style={styles.infoText}>{label}</Text>
+            <Text style={styles2.infoText}>{label}</Text>
 
-            <Text style={styles.infoText}>{format}</Text>
+            <Text style={styles2.infoText}>{format}</Text>
 
-            <Text style={styles.infoText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
+            <Text style={styles2.infoText}>${parseFloat(Math.round(price * 100) / 100).toFixed(2)}</Text>
 
-            <Text style={styles.infoText}>{genre}</Text>
+            <Text style={styles2.infoText}>{genre}</Text>
           </View>
 
-          <View style={styles.imageContainer}>
+          <View style={styles2.imageContainer}>
             <Image source={{ uri: image_url }} style={{ width: 175, height: 175, borderRadius: 2 }} />
           </View>
         </View>
 
-        <View style={styles.buttonContainer}>
+        <View style={styles2.buttonContainer}>
           <Button 
             rounded
-            style={styles.button}
+            style={styles2.button}
             onPress={() => {
               this.state.cart.push(item);
               Alert.alert('Added!')
               console.log(this.state.cart)
             }}
           >
-            <Text style={styles.buttonText}>+ Add to Cart</Text>
+            <Text style={styles2.buttonText}>+ Add to Cart</Text>
           </Button>
 
           <Button
             rounded
-            style={styles.button}
+            style={styles2.button}
             onPress={() => {
+              if(video_url == null) {
+                // not available
+              } else {
               Linking.openURL(video_url)
+              }
             }}
           >
-            <Text style={styles.buttonText}>Listen</Text>
+            <Text style={styles2.buttonText}>Listen</Text>
           </Button>
         </View>
 
 
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>More from this artist</Text>
+        <View style={styles2.listHeader}>
+          <Text style={styles2.listHeaderText}>More from this artist</Text>
         </View>
 
-        <View style={styles.listContainer}>
+        <View style={styles2.listContainer}>
           <MoreFromArtistList
             key={navigation.getParam('key')}
           />
         </View>
 
-        <View style={styles.listHeader}>
-          <Text style={styles.listHeaderText}>More from this Label</Text>
+        <View style={styles2.listHeader}>
+          <Text style={styles2.listHeaderText}>More from this Label</Text>
         </View>
 
-        <View style={styles.listContainer}>
+        <View style={styles2.listContainer}>
           <MoreFromLabelList
             key={navigation.getParam('key')}
           />
         </View>
-        <View style={styles.footer}>
+        <View style={styles2.footer}>
         </View>
       </ScrollView>
     );
@@ -129,7 +148,76 @@ AlbumDetailsScreen.navigationOptions = {
 
 export default withNavigation(AlbumDetailsScreen);
 
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#E5EEED',
+  },
+  albumInfoContainer: {
+    margin: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+  },
+  albumInfoTextContainer: {
+    flex: 1,
+    paddingRight: 2,
+  },
+  infoText: {
+    fontSize: 17,
+  },
+  titleText: {
+    fontSize: 22,
+  },
+  infoText: {
+    fontSize: 17,
+  },
+  imageContainer: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: '#800909',
+    backgroundColor: '#DF3561',
+    marginBottom: 5,
+    marginLeft: 40,
+    width: 120,
+    height: 20,
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  buttonText: {
+    flex: 1,
+    fontSize: 15,
+  },
+  listHeader: {
+    alignItems: 'center',
+    backgroundColor: '#E5EEED',
+    paddingVertical: 5,
+  },
+  listHeaderText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+  },
+  listContainer: {
+    height: 195,
+    backgroundColor: '#ACB3B2',
+    borderTopWidth: 1,
+    borderTopColor: '#727776',
+    borderBottomWidth: 1,
+    borderBottomColor: '#727776',
+    paddingTop: 5,
+  },
+  footer: {
+    height: 50,
+    backgroundColor: '#E5EEED',
+  },
+}); */
+
+const styles2 = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: darkBlue,
