@@ -12,14 +12,18 @@ Cart List
 Home List
     Features
         add queries for morefromartist and morefromlabel lists
+    Bugs
+        duplicates still showing
+
+More lists
+    Bugs
+        duplicates still showing
 
 Screens
 
 Album Details Screen
-    style nav header
 
 Filter Screen
-    implement check buttons
     implement apply/clear buttons
     add sorting filters
 

@@ -185,7 +185,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    paddingVertical: 10,
+    paddingBottom:15,
+    paddingTop: 10,
     paddingHorizontal: 30,
     justifyContent: 'space-between',
   },
