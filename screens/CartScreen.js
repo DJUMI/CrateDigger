@@ -37,8 +37,12 @@ class CartScreen extends React.Component {
                 </View>
 
                 <CartList />
-            </View>
 
+                {/*<View style={styles.footerContainer}>
+                    <Text style={styles.footerText}>Total:</Text>
+                    <Text style={styles.footerText}>{global.total}</Text>
+                </View>*/}
+            </View>
         );
     }
 }
@@ -84,5 +88,17 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 15,
         color: nearWhite
+    },
+    footerContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        alignSelf: 'flex-end',
+        paddingVertical: 5,
+        paddingRight: 5,
+    },
+    footerText: {
+        fontSize: 15,
+        color: nearWhite,
+        paddingRight: 10,
     },
 })

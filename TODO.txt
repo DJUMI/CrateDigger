@@ -31,9 +31,6 @@ Search Screen
     Features
         implement format/price filters - Issac
         implement sorting filters
-    Bugs
-        filter button and drawer should be on same side
-        search list needs a loading icon
 
 Dig Screen
     Features
@@ -46,8 +43,6 @@ Dig Screen
 
 Miscellaneous
 
-change queries to use release_id so duplicates aren't shown - Issac
 Cart and List tests - Erik
 New color palette - Everyone
 Fix tab nav icon colors
-Fix non-unique keys error

@@ -65,7 +65,7 @@ class MoreFromArtistList extends Component {
     const records = db.collection("music-0");
 
     records
-      .find({ $and: [{ artist: sameartist }, { listing_id: { $ne: sameid } }] }, { sort: { listing_id: -1 }, limit: 20 })
+      .find({ $and: [{ artist: sameartist }, { release_id: { $ne: sameid } }] }, { sort: { listing_id: -1 }, limit: 20 })
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -84,7 +84,8 @@ class MoreFromArtistList extends Component {
         onPress={() => {
           navigation.push('Details', {
             item: item,
-            id: item.listing_id,
+            listing_id: item.listing_id,
+            release_id: item.release_id,
             title: item.title,
             artist: item.artist,
             label: item.label,
@@ -139,7 +140,6 @@ class MoreFromArtistList extends Component {
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
-          keyExtractor={(listing_id) => listing_id.toString()}
         />
       );
     }

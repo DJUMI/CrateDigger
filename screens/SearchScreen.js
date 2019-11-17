@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    ActivityIndicator,
     FlatList,
     Image,
     StyleSheet,
@@ -29,6 +30,7 @@ class SearchScreen extends React.Component {
             drawerDisabled: false,
             drawerOpen: false,
             isLoadingComplete: false,
+            isSearching: false,
             query: '',
             refreshing: false,
             records: undefined,
@@ -37,7 +39,9 @@ class SearchScreen extends React.Component {
         this.loadClient = this.loadClient.bind(this);
     }
 
-    onRefresh = () => {
+    componentDidMount() { }
+
+    onRefresh() {
         this.setState({ refreshing: true });
         if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
             const app = Stitch.getAppClient("crate-digger-stitch-sikln");
@@ -47,7 +51,7 @@ class SearchScreen extends React.Component {
                 .then(app => this.loadData(app))
                 .catch(err => console.error(err));
         }
-    };
+    }
 
     loadClient() {
         if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
@@ -78,8 +82,8 @@ class SearchScreen extends React.Component {
             .asArray()
             .then(records => {
                 this.setState({ records });
-                console.log({ records });
                 this.setState({ isLoadingComplete: true });
+                this.setState({ isSearching: false });
             })
             .catch(err => {
                 console.warn(err);
@@ -88,19 +92,19 @@ class SearchScreen extends React.Component {
 
     handleSearch = text => {
         this.setState({ query: text });
-    }
+    };
 
     handleSubmit = () => {
-        this.setState({ needRefresh: true });
+        this.setState({ isSearching: true });
         this.onRefresh();
-    }
+    };
 
     closeDrawer = () => {
-        this._drawer.close()
+        this._drawer.close();
     };
 
     openDrawer = () => {
-        this._drawer.open()
+        this._drawer.open();
     };
 
     renderItem = ({ item }) => {
@@ -111,14 +115,17 @@ class SearchScreen extends React.Component {
                 style={styles.itemContainer}
                 onPress={() => {
                     navigation.navigate('Details', {
-                        id: item.listing_id,
+                        item: item,
+                        listing_id: item.listing_id,
+                        release_id: item.release_id,
                         title: item.title,
                         artist: item.artist,
                         label: item.label,
                         format: item.format,
+                        styles: item.styles,
                         price: item.price,
                         image_url: item.image_url,
-                        key: Math.random() * 10000
+                        video_url: item.video_url,
                     })
                 }}
             >
@@ -176,9 +183,67 @@ class SearchScreen extends React.Component {
     }
 
     render() {
-        const { query, records, isLoadingComplete } = this.state;
+        const { query, records, isLoadingComplete, isSearching } = this.state;
 
-        if (isLoadingComplete) {
+        //search is loading
+        if (isSearching) {
+            return (
+                <View style={styles.container}>
+                    <Drawer
+                        ref={(ref) => this._drawer = ref}
+                        type="displace"
+                        content={
+                            <FilterScreen closeDrawer={this.closeDrawer} />
+                        }
+                        acceptDoubleTap
+                        onOpen={() => {
+                            console.log('onopen')
+                            this.setState({ drawerOpen: true })
+                        }}
+                        onClose={() => {
+                            console.log('onclose')
+                            this.setState({ drawerOpen: false })
+                        }}
+                        captureGestures={false}
+                        tweenDuration={100}
+                        panThreshold={0.08}
+                        disabled={this.state.drawerDisabled}
+                        openDrawerOffset={(viewport) => {
+                            return 100
+                        }}
+                        closedDrawerOffset={() => 0}
+                        panOpenMask={0.2}
+                        negotiatePan
+                    >
+                        <View style={styles.headerContainer}>
+                            <SearchBar
+                                placeholder="Type here..."
+                                round
+                                darkTheme
+                                onChangeText={this.handleSearch}
+                                value={query}
+                                containerStyle={styles.searchBarContainer}
+                                onSubmitEditing={() => this.handleSubmit()}
+                            />
+
+                            <View style={styles.buttonContainer}>
+                                <Button
+                                    style={styles.filterButton}
+                                    onPress={() => { this._drawer.open() }}
+                                >
+                                    <Text style={styles.filterButtonText}>Filter</Text>
+                                </Button>
+                            </View>
+                        </View>
+                        
+                        <View style={styles.activityContainer}>
+                            <ActivityIndicator />
+                        </View>
+                    </Drawer>
+                </View>
+
+            );
+        } else if (isLoadingComplete) {
             //no search results
             if (!records.length) {
                 return (
@@ -293,7 +358,6 @@ class SearchScreen extends React.Component {
                                 <FlatList
                                     data={records}
                                     renderItem={this.renderItem}
-                                    keyExtractor={(listing_id) => listing_id.toString()}
                                 />
                             </ScrollView>
                         </Drawer>
@@ -458,5 +522,11 @@ const styles = StyleSheet.create({
     },
     filterButtonText: {
         fontSize: 15,
+    },
+    activityContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
+        paddingTop: 85,
     },
 });

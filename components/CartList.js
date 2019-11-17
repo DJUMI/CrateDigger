@@ -36,7 +36,8 @@ class CartList extends Component {
                     onPress={() => {
                         navigation.navigate('Details', {
                             item: item,
-                            id: item.listing_id,
+                            listing_id: item.listing_id,
+                            release_id: item.release_id,
                             title: item.title,
                             artist: item.artist,
                             label: item.label,
@@ -124,7 +125,6 @@ class CartList extends Component {
                 <FlatList
                     data={cart}
                     renderItem={this.renderItem}
-                    keyExtractor={(listing_id) => listing_id.toString()}
                 />
             </View>
         );

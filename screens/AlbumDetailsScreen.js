@@ -26,15 +26,15 @@ class AlbumDetailsScreen extends React.Component {
     super(props);
     this.state = {
       cart: global.cart,
-      hasVideo: true,
     };
   }
 
   render() {
     const { navigation } = this.props;
-    const { item, id, title, artist, label, format, genre, price, image_url, video_url } = {
+    const { item, listing_id, release_id, title, artist, label, format, genre, price, image_url, video_url } = {
       item: navigation.getParam('item'),
-      id: navigation.getParam('id'),
+      listing_id: navigation.getParam('listing_id'),
+      release_id: navigation.getParam('release_id'),
       title: navigation.getParam('title'),
       artist: navigation.getParam('artist'),
       label: navigation.getParam('label'),
@@ -46,7 +46,7 @@ class AlbumDetailsScreen extends React.Component {
     };
 
     sameartist = artist;
-    sameid = id;
+    sameid = release_id;
     samelabel = label;
 
     return (
@@ -87,7 +87,6 @@ class AlbumDetailsScreen extends React.Component {
             onPress={() => {
               this.state.cart.push(item);
               Alert.alert('Added!')
-              console.log(this.state.cart)
             }}
           >
             <Text style={styles.buttonText}>+ Add to Cart</Text>

@@ -37,7 +37,7 @@ class DigScreen extends React.Component {
     this.loadClient();
   }
 
-  onRefresh = () => {
+  onRefresh() {
     this.setState({ refreshing: true });
     if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
       const app = Stitch.getAppClient("crate-digger-stitch-sikln");
@@ -47,7 +47,7 @@ class DigScreen extends React.Component {
         .then(app => this.loadData(app))
         .catch(err => console.error(err));
     }
-  };
+  }
 
   loadClient() {
     if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
@@ -130,7 +130,8 @@ class DigScreen extends React.Component {
                     onPress={() => {
                       navigation.navigate('Details', {
                         item: item,
-                        id: item.listing_id,
+                        listing_id: item.listing_id,
+                        release_id: item.release_id,
                         title: item.title,
                         artist: item.artist,
                         label: item.label,
@@ -149,10 +150,9 @@ class DigScreen extends React.Component {
                     rounded
                     style={styles.button}
                     onPress={() => {
-                      cart.push(item);
+                      this.state.cart.push(item);
                       Alert.alert('Added!')
-                      console.log(cart)
-                    }}
+                      }}
                   >
                     <Text style={styles.buttonText}>+ Add to Cart</Text>
                   </Button>

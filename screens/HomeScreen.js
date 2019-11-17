@@ -1,10 +1,11 @@
 import React from 'react';
 import {
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  Image,
+  YellowBox,
 } from 'react-native';
 
 import HomeList from '../components/HomeList';
@@ -34,7 +35,7 @@ export default class HomeScreen extends React.Component {
           <View style={styles.listContainer}>
             <HomeList query={'Whats New'} />
           </View>
-
+          
           <View style={styles.listHeader}>
             <Text style={styles.listHeaderText}>Staff Picks</Text>
           </View>
@@ -84,6 +85,9 @@ export default class HomeScreen extends React.Component {
 HomeScreen.navigationOptions = {
   header: null,
 };
+
+//suppress some warnings
+console.disableYellowBox = true;
 
 const styles = StyleSheet.create({
   container: {

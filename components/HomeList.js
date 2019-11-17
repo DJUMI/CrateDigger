@@ -12,8 +12,6 @@ import {
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import { withNavigation } from 'react-navigation';
 
-import { sameartist, sameid } from '../screens/AlbumDetailsScreen';
-
 let nearWhite = '#fafafa';
 
 class HomeList extends Component {
@@ -23,7 +21,7 @@ class HomeList extends Component {
       client: undefined,
       currentUserId: undefined,
       isLoadingComplete: false,
-      query: null,
+      query: undefined,
       records: undefined,
       refreshing: false,
     };
@@ -35,7 +33,7 @@ class HomeList extends Component {
     this.loadClient();
   }
 
-  onRefresh = () => {
+  onRefresh() {
     this.setState({ refreshing: true });
     if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
       const app = Stitch.getAppClient("crate-digger-stitch-sikln");
@@ -45,7 +43,7 @@ class HomeList extends Component {
         .then(app => this.loadData(app, this.state.query))
         .catch(err => console.error(err));
     }
-  };
+  }
 
   setQuery() {
     const { query } = this.props;
@@ -67,7 +65,6 @@ class HomeList extends Component {
         break;
       case 'New Electro':
         this.setState({query: {styles: { $regex: /electro/, '$options': 'i' }} });
-        break;
     }
   }
 
@@ -111,7 +108,8 @@ class HomeList extends Component {
         onPress={() => {
           navigation.navigate('Details', {
             item: item,
-            id: item.listing_id,
+            listing_id: item.listing_id,
+            release_id: item.release_id,
             title: item.title,
             artist: item.artist,
             label: item.label,
@@ -152,18 +150,9 @@ class HomeList extends Component {
 
   render() {
     const { isLoadingComplete } = this.state;
-    const { isTest, testData } = this.state;
+   
     if (isLoadingComplete) {
-      if (isTest) {
-        return (
-          <FlatList
-            data={testData}
-            horizontal
-            renderItem={this.renderItem}
-            keyExtractor={(listing_id) => listing_id.toString()}
-          />
-        );
-      }
+      //list is empty
       if (!this.state.records.length) {
         return (
           <View style={styles.emptyContainer}>
@@ -173,15 +162,16 @@ class HomeList extends Component {
           </View>
         );
       }
+      //list
       return (
         <FlatList
           data={this.state.records}
           horizontal
           renderItem={this.renderItem}
-          keyExtractor={(listing_id) => listing_id.toString()}
         />
       );
     }
+    //list is loading
     else {
       return (
         <View style={styles.container}>
