@@ -23,7 +23,20 @@ const HomeStack = createStackNavigator(
     Home: HomeScreen,
     Details: AlbumDetailsScreen,
   },
-  config
+  {
+    defaultNavigationOptions: {
+      headerTitle: '',
+      headerBackTitleVisible: 'Back',
+      headerStyle: {
+        backgroundColor: darkBlue,
+        borderBottomWidth: 0,
+      },
+      headerTintColor: seaGreen,
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+  }, config
 );
 
 HomeStack.navigationOptions = {
@@ -39,6 +52,19 @@ const SearchStack = createStackNavigator(
   {
     Search: SearchScreen,
     Details: AlbumDetailsScreen,
+  },{
+    defaultNavigationOptions: {
+      headerTitle: '',
+      headerBackTitleVisible: 'Back',
+      headerStyle: {
+        backgroundColor: darkBlue,
+        borderBottomWidth: 0,
+      },
+      headerTintColor: seaGreen,
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
   },
   config
 );
@@ -57,6 +83,20 @@ const DigStack = createStackNavigator(
     Dig: DigScreen,
     Details: AlbumDetailsScreen,
   },
+  {
+    defaultNavigationOptions: {
+      headerTitle: '',
+      headerBackTitleVisible: 'Back',
+      headerStyle: {
+        backgroundColor: darkBlue,
+        borderBottomWidth: 0,
+      },
+      headerTintColor: seaGreen,
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+  },
   config
 );
 
@@ -74,6 +114,20 @@ const CartStack = createStackNavigator(
     Cart: CartScreen,
     Details: AlbumDetailsScreen,
   },
+  {
+    defaultNavigationOptions: {
+      headerTitle: '',
+      headerBackTitleVisible: 'Back',
+      headerStyle: {
+        backgroundColor: darkBlue,
+        borderBottomWidth: 0,
+      },
+      headerTintColor: seaGreen,
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+  },
   config
 );
 
@@ -89,16 +143,8 @@ CartStack.path = '';
 const AlbumDetailsStack = createStackNavigator(
   {
     Details: AlbumDetailsScreen,
-  },
-  config
+  }
 );
-
-AlbumDetailsStack.navigationOptions = {
-  tabBarLabel: 'Details',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-disc' : 'md-disc'} />
-  ),
-};
 
 AlbumDetailsStack.path = '';
 
