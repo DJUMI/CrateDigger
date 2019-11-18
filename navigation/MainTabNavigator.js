@@ -153,8 +153,9 @@ AlbumDetailsScreen.navigationOptions = {
 };
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
   SearchStack,
+  HomeStack,
+  
   DigStack,
   CartStack,
 }, {

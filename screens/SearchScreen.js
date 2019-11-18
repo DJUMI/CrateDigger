@@ -15,7 +15,7 @@ import { SearchBar, Icon } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 
-import FilterScreen from './FilterScreen';
+import FilterDrawer from '../components/FilterDrawer';
 
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
@@ -30,19 +30,20 @@ class SearchScreen extends React.Component {
             drawerDisabled: false,
             drawerOpen: false,
             isLoadingComplete: false,
-            isSearching: false,
             query: '',
-            refreshing: false,
+            mPrice: 100,
             records: undefined,
             tasks: undefined,
         };
         this.loadClient = this.loadClient.bind(this);
     }
 
-    componentDidMount() { }
+    componentDidMount() {
+        this.loadClient();
+    }
 
     onRefresh() {
-        this.setState({ refreshing: true });
+        this.setState({ isLoadingComplete: false });
         if (Stitch.hasAppClient("crate-digger-stitch-sikln")) {
             const app = Stitch.getAppClient("crate-digger-stitch-sikln");
             this.loadData(app);
@@ -69,16 +70,24 @@ class SearchScreen extends React.Component {
             RemoteMongoClient.factory,
             "mongodb-atlas"
         );
-        const query = this.state.query;
+        const { query, mPrice } = this.state;
+
         const db = mongoClient.db("crate-digger");
         const records = db.collection("music-0");
 
         records
             .find({
-                $or: [{ label: { $regex: query, '$options': 'i' } },
-                { artist: { $regex: query, '$options': 'i' } },
-                { title: { $regex: query, '$options': 'i' } }]
-            }, { limit: 50 })
+                $and: [{
+                    $or: [{ label: { $regex: query, '$options': 'i' } },
+                    { artist: { $regex: query, '$options': 'i' } },
+                    { title: { $regex: query, '$options': 'i' } }]
+                },
+                { price: { $lte: mPrice } }]
+            },
+                {
+                    sort: { listing_id: -1 },
+                    limit: 100
+                })
             .asArray()
             .then(records => {
                 this.setState({ records });
@@ -95,7 +104,7 @@ class SearchScreen extends React.Component {
     };
 
     handleSubmit = () => {
-        this.setState({ isSearching: true });
+        
         this.onRefresh();
     };
 
@@ -184,66 +193,7 @@ class SearchScreen extends React.Component {
 
     render() {
         const { query, records, isLoadingComplete, isSearching } = this.state;
-
-        //search is loading
-        if (isSearching) {
-            return (
-                <View style={styles.container}>
-                    <Drawer
-                        ref={(ref) => this._drawer = ref}
-                        type="displace"
-                        content={
-                            <FilterScreen closeDrawer={this.closeDrawer} />
-                        }
-                        acceptDoubleTap
-                        onOpen={() => {
-                            console.log('onopen')
-                            this.setState({ drawerOpen: true })
-                        }}
-                        onClose={() => {
-                            console.log('onclose')
-                            this.setState({ drawerOpen: false })
-                        }}
-                        captureGestures={false}
-                        tweenDuration={100}
-                        panThreshold={0.08}
-                        disabled={this.state.drawerDisabled}
-                        openDrawerOffset={(viewport) => {
-                            return 100
-                        }}
-                        closedDrawerOffset={() => 0}
-                        panOpenMask={0.2}
-                        negotiatePan
-                    >
-                        <View style={styles.headerContainer}>
-                            <SearchBar
-                                placeholder="Type here..."
-                                round
-                                darkTheme
-                                onChangeText={this.handleSearch}
-                                value={query}
-                                containerStyle={styles.searchBarContainer}
-                                onSubmitEditing={() => this.handleSubmit()}
-                            />
-
-                            <View style={styles.buttonContainer}>
-                                <Button
-                                    style={styles.filterButton}
-                                    onPress={() => { this._drawer.open() }}
-                                >
-                                    <Text style={styles.filterButtonText}>Filter</Text>
-                                </Button>
-                            </View>
-                        </View>
-                        
-                        <View style={styles.activityContainer}>
-                            <ActivityIndicator />
-                        </View>
-                    </Drawer>
-                </View>
-
-            );
-        } else if (isLoadingComplete) {
+        if (isLoadingComplete) {
             //no search results
             if (!records.length) {
                 return (
@@ -252,7 +202,7 @@ class SearchScreen extends React.Component {
                             ref={(ref) => this._drawer = ref}
                             type="displace"
                             content={
-                                <FilterScreen closeDrawer={this.closeDrawer} />
+                                <FilterDrawer closeDrawer={this.closeDrawer} />
                             }
                             acceptDoubleTap
                             onOpen={() => {
@@ -276,7 +226,7 @@ class SearchScreen extends React.Component {
                         >
                             <View style={styles.headerContainer}>
                                 <SearchBar
-                                    placeholder="Type here..."
+                                    placeholder="Search title, artist, or label..."
                                     round
                                     darkTheme
                                     onChangeText={this.handleSearch}
@@ -297,7 +247,7 @@ class SearchScreen extends React.Component {
 
                             <View style={styles.emptyContainer}>
                                 <Text style={styles.emptyText}>
-                                    No Results
+                                    Sorry there are no items that match your search.
                                 </Text>
                             </View>
                         </Drawer>
@@ -311,7 +261,7 @@ class SearchScreen extends React.Component {
                             ref={(ref) => this._drawer = ref}
                             type="displace"
                             content={
-                                <FilterScreen closeDrawer={this.closeDrawer} />
+                                <FilterDrawer closeDrawer={this.closeDrawer} />
                             }
                             acceptDoubleTap
                             onOpen={() => {
@@ -335,7 +285,7 @@ class SearchScreen extends React.Component {
                         >
                             <View style={styles.headerContainer}>
                                 <SearchBar
-                                    placeholder="Type here..."
+                                    placeholder="Search title, artist, or label..."
                                     round
                                     darkTheme
                                     onChangeText={this.handleSearch}
@@ -365,14 +315,14 @@ class SearchScreen extends React.Component {
                 );
             }
         } else {
-            //no search entered yet
+            //loading
             return (
                 <View style={styles.container}>
                     <Drawer
                         ref={(ref) => this._drawer = ref}
                         type="displace"
                         content={
-                            <FilterScreen closeDrawer={this.closeDrawer} />
+                            <FilterDrawer closeDrawer={this.closeDrawer} />
                         }
                         acceptDoubleTap
                         onOpen={() => {
@@ -396,7 +346,7 @@ class SearchScreen extends React.Component {
                     >
                         <View style={styles.headerContainer}>
                             <SearchBar
-                                placeholder="Type here..."
+                                placeholder="Search title, artist, or label..."
                                 round
                                 darkTheme
                                 onChangeText={this.handleSearch}
@@ -413,6 +363,10 @@ class SearchScreen extends React.Component {
                                     <Text style={styles.filterButtonText}>Filter</Text>
                                 </Button>
                             </View>
+                        </View>
+
+                        <View style={styles.activityContainer}>
+                            <ActivityIndicator />
                         </View>
                     </Drawer>
                 </View>

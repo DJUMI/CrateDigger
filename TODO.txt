@@ -5,13 +5,12 @@ Cart List
         implement buttons
         implement quantity
         show cart total
+        swap flatlist with react-native-swipe-list-view so we can delete on swipe
     Bugs
         cart allows doubles - Meet
         cart doesn't reload when a new item is added
 
 Home List
-    Features
-        add queries for morefromartist and morefromlabel lists
     Bugs
         duplicates still showing
 
@@ -35,6 +34,19 @@ Search Screen
     Features
         implement format/price filters - Issac
         implement sorting filters
+        add collation to support accents
+        add some sort of message before 1st Search
+        add default results
+        add auto-suggestions
+        save recent searches and display them when user taps searchbar
+        search within search to specify if searching by title,artist, or label
+        fix misspellings
+        highlight search input in results
+        add unique loading animation
+        remove filter button and add header that shows number of search results and filter button icon
+        add option to load more resuts
+        override keyboard to say search instead of return
+        add Label/release date
 
 Dig Screen
     Features
@@ -44,9 +56,12 @@ Dig Screen
         implement genre filters
     Bugs
         button text needs to fit on one line(looks fine on iphone 6s but shows up on Android)
+        need to handle animation when user swipes a new card before previous spring animation is finished
 
 Miscellaneous
 
 Cart and List tests - Erik
 New color palette - Everyone
 Fix tab nav icon colors
+Check if loading collection into async storage increases performance
+UI refactor to get rid of any fixed dimensions by using percentages and flex

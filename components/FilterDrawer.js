@@ -11,7 +11,7 @@ let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
 
-export default class FilterScreen extends React.Component {
+export default class FilterDrawer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,6 +22,9 @@ export default class FilterScreen extends React.Component {
             checked4: false,
             checked5: false,
             checked6: false,
+            checked7: true,
+            checked8: false,
+            checked9: false,
             value: 100,
         };
     }
@@ -30,6 +33,64 @@ export default class FilterScreen extends React.Component {
         let { closeDrawer } = this.props;
         return (
             <View style={styles.container}>
+                <Text style={styles.headerText}>Sort By</Text>
+
+                <View style={styles.checkBoxContainer}>
+                    <CheckBox
+                        checkedColor={darkBlue}
+                        checked={this.state.checked7}
+                        containerStyle={styles.checkBox}
+                        iconRight
+                        onPress={() => {
+                            this.setState({
+                                checked7: !this.state.checked7,
+                                checked8: false,
+                                checked9: false
+                            })
+                        }}
+                        right
+                        textStyle={styles.checkBoxText}
+                        title='Newest'
+                        uncheckedColor={darkBlue}
+                    />
+
+                    <CheckBox
+                        checkedColor={darkBlue}
+                        checked={this.state.checked8}
+                        containerStyle={styles.checkBox}
+                        iconRight
+                        onPress={() => {
+                            this.setState({
+                                checked7: false,
+                                checked8: !this.state.checked8,
+                                checked9: false
+                            })
+                        }}
+                        right
+                        textStyle={styles.checkBoxText}
+                        title='Price'
+                        uncheckedColor={darkBlue}
+                    />
+
+                    <CheckBox
+                        checkedColor={darkBlue}
+                        checked={this.state.checked9}
+                        containerStyle={styles.checkBox}
+                        iconRight
+                        onPress={() => {
+                            this.setState({
+                                checked7: false,
+                                checked8: false,
+                                checked9: !this.state.checked9
+                            })
+                        }}
+                        right
+                        textStyle={styles.checkBoxText}
+                        title='Release Date'
+                        uncheckedColor={darkBlue}
+                    />
+                </View>
+                
                 <Text style={styles.headerText}>Format</Text>
 
                 <View style={styles.checkBoxContainer}>
