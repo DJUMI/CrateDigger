@@ -11,7 +11,7 @@ import {
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import { Button, Text } from 'native-base';
 import Accordion from 'react-native-collapsible/Accordion';
-import { CheckBox, Icon, SearchBar, Slider } from 'react-native-elements';
+import { ButtonGroup, CheckBox, Icon, SearchBar, Slider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 
@@ -35,22 +35,20 @@ class SearchScreen extends React.Component {
                 'CD': false,
                 'Cass': false,
             },
-            checkedSort: {
-                'Newest': true,
-                'Price': false,
-                'Release Date': false,
-            },
+            checkedSort: 0,
             currentUserId: undefined,
             client: undefined,
             formatQuery: [],
             isLoadingComplete: false,
             query: '',
             records: undefined,
-            sortQuery: '',
+            sortQuery: { listing_id: -1 },
             tasks: undefined,
             value: 100,
         };
         this.loadClient = this.loadClient.bind(this);
+        this.updateSort = this.updateSort.bind(this);
+        this.updateFormat = this.updateFormat.bind(this);
     }
 
     componentDidMount() {
@@ -98,10 +96,13 @@ class SearchScreen extends React.Component {
                     { title: { $regex: query, '$options': 'i' } }]
                 },
                 { price: { $lte: value } },
+                /* $or: [{format: 'LP'},
+                    {format: '12\"'}
+                ]},*/
             ]
             },
                 {
-                    sort: { listing_id: -1 }, limit: 100,
+                    sort: sortQuery, limit: 100,
                 })
             .asArray()
             .then(records => {
@@ -115,32 +116,12 @@ class SearchScreen extends React.Component {
     }
 
     //this needs work
-    setFormatQuery() {
-        const { checkedFormats, formatQuery } = this.state;
-        for (let e in checkedFormats) {
-            if (checkedFormats[e]) {
-                formatQuery.push(['filter', e]);
-            }
-        }
-        
-    }
-    //this needs work
-    setSortQuery() {
-        const { checkedSort, sortQuery } =this.state;
-        for(let e in checkedSort) {
-            if (checkedSort[e]) {
-                this.setState({ sortQuery: e.toLowerCase()} );
-                console.log("e: ",e);
-                console.log("query: ", this.state.sortQuery);
-            }
-        }
-    }
-
     handleApply = () => {
-        this.setSortQuery();
-        this.setFormatQuery();
+        this.getSortQuery();
+        this.getFormatQuery();
         this.onRefresh();
         this.setState({activeSections: []});
+        console.log("handleApply: ",this.state.formatQuery);
     };
 
     handleClear = () => {
@@ -152,13 +133,10 @@ class SearchScreen extends React.Component {
                 'LP': false,
                 'CD': false,
                 'Cass': false,
-            }, checkedSort: {
-                'Newest': true,
-                'Price': false,
-                'Release Date': false,
-            }, value: 100
+            }, checkedSort: 0,
+            value: 100
         });
-        this.setState({activeSections: []});
+        this.handleApply();
     };
 
     handleSearch = text => {
@@ -168,10 +146,116 @@ class SearchScreen extends React.Component {
     handleSubmit = () => {
         this.onRefresh();
     };
+
     updateSections = activeSections => {
         this.setState({ activeSections });
     };
 
+    //sort filters
+    getSortQuery() {
+        const { checkedSort } = this.state;
+        if(!checkedSort) {
+            this.setState({ sortQuery: { listing_id: -1 }});
+        } else if (checkedSort == 1) { 
+            this.setState({ sortQuery: { price: -1 }});
+        } else {
+            this.setState({ sortQuery: { release_id: -1 }});
+        }
+        console.log("checkedSort: ", this.state.checkedSort);
+        console.log("sortQuery: ", this.state.sortQuery);
+    }
+
+    updateSort(index) {
+        this.setState({ checkedSort: index });
+    }
+
+    renderSort() {
+        const { checkedSort } = this.state;
+
+        return(
+            <View style={styles.checkBoxContainer}>
+                <CheckBox
+                    checkedColor={nearWhite}
+                    checked={checkedSort == 0}
+                    containerStyle={styles.checkBox}
+                    iconRight
+                    onPress={() => this.updateSort(0)}
+                    right
+                    textStyle={styles.checkBoxText}
+                    title='Newest'
+                    uncheckedColor={nearWhite}
+                />
+
+                <CheckBox
+                    checkedColor={nearWhite}
+                    checked={checkedSort == 1}
+                    containerStyle={styles.checkBox}
+                    iconRight
+                    onPress={() => this.updateSort(1)}
+                    right
+                    textStyle={styles.checkBoxText}
+                    title='Price'
+                    uncheckedColor={nearWhite}
+                />
+
+                <CheckBox
+                    checkedColor={nearWhite}
+                    checked={checkedSort == 2}
+                    containerStyle={styles.checkBox}
+                    iconRight
+                    onPress={() => this.updateSort(2)}
+                    right
+                    textStyle={styles.checkBoxText}
+                    title='Release Date'
+                    uncheckedColor={nearWhite}
+                />
+            </View>
+        );
+    }
+
+    //this needs work
+    getFormatQuery() {
+        this.setState({formatQuery: []})
+        const { checkedFormats, formatQuery } = this.state;
+        for (let e in checkedFormats) {
+            if (checkedFormats[e]) {
+                formatQuery.push(['filter', e]);
+            }
+        }
+        console.log("getFormatQuery: ",this.state.formatQuery); 
+    }
+    updateFormat(index) {
+
+    }
+
+    //format filters
+    renderFormatFilters(formats) {
+       
+        const checkedFormats = formats;
+        return checkedFormats.map((format, i) => {
+            return (
+                <CheckBox
+                    key={i}
+                    checkedColor={nearWhite}
+                    checked={this.state.checkedFormats[format]}
+                    containerStyle={styles.checkBox}
+                    iconRight
+                    onPress={() => {
+                        const val = !this.state.checkedFormats[format];
+                        const name = format;
+                        let updatedFormats = Object.assign({}, this.state.checkedFormats, { [name]: val })
+                        this.setState({ checkedFormats: updatedFormats })
+                    }}
+                    right
+                    textStyle={styles.checkBoxText}
+                    title={format}
+                    uncheckedColor={nearWhite}
+                />
+            )
+        })
+    }
+    
+    //header with search bar and drop down menu
     renderHeader = (content, index, isActive) => {
         if (isActive) {
             return (
@@ -204,55 +288,6 @@ class SearchScreen extends React.Component {
                 </View>
             );
         }
-
-    }
-
-    renderSort() {
-        const checkedSort = ['Newest', 'Price', 'Release Date'];
-        return checkedSort.map((sort, i) => {
-            return (
-                <CheckBox
-                    checkedColor={nearWhite}
-                    checked={this.state.checkedSort[sort]}
-                    containerStyle={styles.checkBox}
-                    iconRight
-                    onPress={() => {
-                        const val = !this.state.checkedSort[sort];
-                        const name = sort;
-                        let updatedSorts = Object.assign({}, this.state.checkedSort, { [name]: val })
-                        this.setState({ checkedSort: updatedSorts })
-                    }}
-                    right
-                    textStyle={styles.checkBoxText}
-                    title={sort}
-                    uncheckedColor={nearWhite}
-                />
-            )
-        })
-    }
-
-    renderFormatFilters(formats) {
-        const checkedFormats = formats;
-        return checkedFormats.map((format, i) => {
-            return (
-                <CheckBox
-                    checkedColor={nearWhite}
-                    checked={this.state.checkedFormats[format]}
-                    containerStyle={styles.checkBox}
-                    iconRight
-                    onPress={() => {
-                        const val = !this.state.checkedFormats[format];
-                        const name = format;
-                        let updatedFormats = Object.assign({}, this.state.checkedFormats, { [name]: val })
-                        this.setState({ checkedFormats: updatedFormats })
-                    }}
-                    right
-                    textStyle={styles.checkBoxText}
-                    title={format}
-                    uncheckedColor={nearWhite}
-                />
-            )
-        })
     }
 
     renderContent = section => {
@@ -260,9 +295,7 @@ class SearchScreen extends React.Component {
             <View style={styles.filterContentContainer}>
                 <Text style={styles.filterText}>Sort By</Text>
 
-                <View style={styles.checkBoxContainer}>
-                    {this.renderSort()}
-                </View>
+                {this.renderSort()}
 
                 <Text style={styles.filterText}>Format</Text>
 

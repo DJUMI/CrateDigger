@@ -44,6 +44,9 @@ Search Screen
         *add Label/release date
     Bugs
         *close keyboard when accordion opens
+        page finishes loading before drop down menu does
+        items that are just 12" don't show the "
+        dort filters don't get applied until button is hit twice
 
 Dig Screen
     Features
