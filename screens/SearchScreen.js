@@ -10,30 +10,45 @@ import {
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import { Button, Text } from 'native-base';
-import Drawer from 'react-native-drawer';
-import { SearchBar, Icon } from 'react-native-elements';
+import Accordion from 'react-native-collapsible/Accordion';
+import { CheckBox, Icon, SearchBar, Slider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 
-import FilterDrawer from '../components/FilterDrawer';
-
 let darkBlue = '#0b121c';
+let darkGray = '#393e42';
+let lightGray = '#43484d';
 let nearWhite = '#fafafa';
+let seaGreen = '#009F93';
 
 class SearchScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            activeSections: [],
             cart: global.cart,
+            checkedFormats: {
+                '7"': false,
+                '10"': false,
+                '12"': false,
+                'LP': false,
+                'CD': false,
+                'Cass': false,
+            },
+            checkedSort: {
+                'Newest': true,
+                'Price': false,
+                'Release Date': false,
+            },
             currentUserId: undefined,
             client: undefined,
-            drawerDisabled: false,
-            drawerOpen: false,
+            formatQuery: [],
             isLoadingComplete: false,
             query: '',
-            mPrice: 100,
             records: undefined,
+            sortQuery: '',
             tasks: undefined,
+            value: 100,
         };
         this.loadClient = this.loadClient.bind(this);
     }
@@ -70,7 +85,7 @@ class SearchScreen extends React.Component {
             RemoteMongoClient.factory,
             "mongodb-atlas"
         );
-        const { query, mPrice } = this.state;
+        const { query, value, formatQuery, sortQuery } = this.state;
 
         const db = mongoClient.db("crate-digger");
         const records = db.collection("music-0");
@@ -82,11 +97,11 @@ class SearchScreen extends React.Component {
                     { artist: { $regex: query, '$options': 'i' } },
                     { title: { $regex: query, '$options': 'i' } }]
                 },
-                { price: { $lte: mPrice } }]
+                { price: { $lte: value } },
+            ]
             },
                 {
-                    sort: { listing_id: -1 },
-                    limit: 100
+                    sort: { listing_id: -1 }, limit: 100,
                 })
             .asArray()
             .then(records => {
@@ -99,22 +114,202 @@ class SearchScreen extends React.Component {
             });
     }
 
+    //this needs work
+    setFormatQuery() {
+        const { checkedFormats, formatQuery } = this.state;
+        for (let e in checkedFormats) {
+            if (checkedFormats[e]) {
+                formatQuery.push(['filter', e]);
+            }
+        }
+        
+    }
+    //this needs work
+    setSortQuery() {
+        const { checkedSort, sortQuery } =this.state;
+        for(let e in checkedSort) {
+            if (checkedSort[e]) {
+                this.setState({ sortQuery: e.toLowerCase()} );
+                console.log("e: ",e);
+                console.log("query: ", this.state.sortQuery);
+            }
+        }
+    }
+
+    handleApply = () => {
+        this.setSortQuery();
+        this.setFormatQuery();
+        this.onRefresh();
+        this.setState({activeSections: []});
+    };
+
+    handleClear = () => {
+        this.setState({
+            checkedFormats: {
+                '7"': false,
+                '10"': false,
+                '12"': false,
+                'LP': false,
+                'CD': false,
+                'Cass': false,
+            }, checkedSort: {
+                'Newest': true,
+                'Price': false,
+                'Release Date': false,
+            }, value: 100
+        });
+        this.setState({activeSections: []});
+    };
+
     handleSearch = text => {
         this.setState({ query: text });
     };
 
     handleSubmit = () => {
-        
         this.onRefresh();
     };
-
-    closeDrawer = () => {
-        this._drawer.close();
+    updateSections = activeSections => {
+        this.setState({ activeSections });
     };
 
-    openDrawer = () => {
-        this._drawer.open();
-    };
+    renderHeader = (content, index, isActive) => {
+        if (isActive) {
+            return (
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>{this.state.records.length.toLocaleString()} Results</Text>
+
+                    <View style={styles.iconContainer}>
+                        <Icon
+                            name='chevron-thin-up'
+                            type='entypo'
+                            color={nearWhite}
+                        />
+                    </View>
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>{this.state.records.length.toLocaleString()} Results</Text>
+
+                    <View style={styles.iconContainer}>
+                        <Icon
+                            name='md-reorder'
+                            type='ionicon'
+                            color={nearWhite}
+                        />
+
+                        <Text style={styles.headerText}>Filter</Text>
+                    </View>
+                </View>
+            );
+        }
+
+    }
+
+    renderSort() {
+        const checkedSort = ['Newest', 'Price', 'Release Date'];
+        return checkedSort.map((sort, i) => {
+            return (
+                <CheckBox
+                    checkedColor={nearWhite}
+                    checked={this.state.checkedSort[sort]}
+                    containerStyle={styles.checkBox}
+                    iconRight
+                    onPress={() => {
+                        const val = !this.state.checkedSort[sort];
+                        const name = sort;
+                        let updatedSorts = Object.assign({}, this.state.checkedSort, { [name]: val })
+                        this.setState({ checkedSort: updatedSorts })
+                    }}
+                    right
+                    textStyle={styles.checkBoxText}
+                    title={sort}
+                    uncheckedColor={nearWhite}
+                />
+            )
+        })
+    }
+
+    renderFormatFilters(formats) {
+        const checkedFormats = formats;
+        return checkedFormats.map((format, i) => {
+            return (
+                <CheckBox
+                    checkedColor={nearWhite}
+                    checked={this.state.checkedFormats[format]}
+                    containerStyle={styles.checkBox}
+                    iconRight
+                    onPress={() => {
+                        const val = !this.state.checkedFormats[format];
+                        const name = format;
+                        let updatedFormats = Object.assign({}, this.state.checkedFormats, { [name]: val })
+                        this.setState({ checkedFormats: updatedFormats })
+                    }}
+                    right
+                    textStyle={styles.checkBoxText}
+                    title={format}
+                    uncheckedColor={nearWhite}
+                />
+            )
+        })
+    }
+
+    renderContent = section => {
+        return (
+            <View style={styles.filterContentContainer}>
+                <Text style={styles.filterText}>Sort By</Text>
+
+                <View style={styles.checkBoxContainer}>
+                    {this.renderSort()}
+                </View>
+
+                <Text style={styles.filterText}>Format</Text>
+
+                <View style={styles.checkBoxContainer}>
+                    {this.renderFormatFilters(['7"', '10"', '12"'])}
+                </View>
+                <View style={styles.checkBoxContainer}>
+                    {this.renderFormatFilters(['LP', 'CD', 'Cass'])}
+                </View>
+
+                <View style={styles.filterHeaderContainer}>
+                    <Text style={styles.filterText}>Max Price</Text>
+                    {this.state.value == 100 ? <Text style={styles.priceText}>100+</Text> : <Text style={styles.priceText}>{this.state.value}</Text>}
+                </View>
+
+                <View style={styles.sliderContainer}>
+                    <Slider
+                        minimumValue={1}
+                        maximumValue={100}
+                        minimumTrackTintColor={seaGreen}
+                        step={1}
+                        thumbTintColor={seaGreen}
+                        value={this.state.value}
+                        onValueChange={value => this.setState({ value })}
+                    />
+                </View>
+
+                <View style={styles.buttonContainer}>
+                    <Button
+                        rounded
+                        style={styles.button}
+                        onPress={this.handleApply}
+                    >
+                        <Text style={styles.buttonText}>Apply</Text>
+                    </Button>
+
+                    <Button
+                        rounded
+                        style={styles.button}
+                        onPress={this.handleClear}
+                    >
+                        <Text style={styles.buttonText}>Clear</Text>
+                    </Button>
+                </View>
+            </View>
+        );
+    }
 
     renderItem = ({ item }) => {
         const { navigation } = this.props;
@@ -192,125 +387,68 @@ class SearchScreen extends React.Component {
     }
 
     render() {
-        const { query, records, isLoadingComplete, isSearching } = this.state;
+        const { query, records, isLoadingComplete } = this.state;
+
         if (isLoadingComplete) {
             //no search results
             if (!records.length) {
                 return (
                     <View style={styles.container}>
-                        <Drawer
-                            ref={(ref) => this._drawer = ref}
-                            type="displace"
-                            content={
-                                <FilterDrawer closeDrawer={this.closeDrawer} />
-                            }
-                            acceptDoubleTap
-                            onOpen={() => {
-                                console.log('onopen')
-                                this.setState({ drawerOpen: true })
-                            }}
-                            onClose={() => {
-                                console.log('onclose')
-                                this.setState({ drawerOpen: false })
-                            }}
-                            captureGestures={false}
-                            tweenDuration={100}
-                            panThreshold={0.08}
-                            disabled={this.state.drawerDisabled}
-                            openDrawerOffset={(viewport) => {
-                                return 100
-                            }}
-                            closedDrawerOffset={() => 0}
-                            panOpenMask={0.2}
-                            negotiatePan
-                        >
-                            <View style={styles.headerContainer}>
-                                <SearchBar
-                                    placeholder="Search title, artist, or label..."
-                                    round
-                                    darkTheme
-                                    onChangeText={this.handleSearch}
-                                    value={query}
-                                    containerStyle={styles.searchBarContainer}
-                                    onSubmitEditing={() => this.handleSubmit()}
-                                />
+                        <SearchBar
+                            placeholder="Search title, artist, or label..."
+                            placeholderTextColor={nearWhite}
+                            round
+                            onChangeText={this.handleSearch}
+                            value={query}
+                            onSubmitEditing={this.handleSubmit}
+                        />
 
-                                <View style={styles.buttonContainer}>
-                                    <Button
-                                        style={styles.filterButton}
-                                        onPress={() => { this._drawer.open() }}
-                                    >
-                                        <Text style={styles.filterButtonText}>Filter</Text>
-                                    </Button>
-                                </View>
-                            </View>
+                        <Accordion
+                            activeSections={this.state.activeSections}
+                            containerStyle={styles.accordionContainer}
+                            sections={['0']}
+                            renderHeader={this.renderHeader}
+                            renderContent={this.renderContent}
+                            onChange={this.updateSections}
+                        />
 
-                            <View style={styles.emptyContainer}>
-                                <Text style={styles.emptyText}>
-                                    Sorry there are no items that match your search.
+                        <View style={styles.emptyContainer}>
+                            <Text style={styles.emptyText}>
+                                Sorry there are no items that match your search.
                                 </Text>
-                            </View>
-                        </Drawer>
+                        </View>
                     </View>
                 );
             } else {
                 //display results
                 return (
                     <View style={styles.container}>
-                        <Drawer
-                            ref={(ref) => this._drawer = ref}
-                            type="displace"
-                            content={
-                                <FilterDrawer closeDrawer={this.closeDrawer} />
-                            }
-                            acceptDoubleTap
-                            onOpen={() => {
-                                console.log('onopen')
-                                this.setState({ drawerOpen: true })
-                            }}
-                            onClose={() => {
-                                console.log('onclose')
-                                this.setState({ drawerOpen: false })
-                            }}
-                            captureGestures={false}
-                            tweenDuration={100}
-                            panThreshold={0.08}
-                            disabled={this.state.drawerDisabled}
-                            openDrawerOffset={(viewport) => {
-                                return 100
-                            }}
-                            closedDrawerOffset={() => 0}
-                            panOpenMask={0.2}
-                            negotiatePan
-                        >
-                            <View style={styles.headerContainer}>
-                                <SearchBar
-                                    placeholder="Search title, artist, or label..."
-                                    round
-                                    darkTheme
-                                    onChangeText={this.handleSearch}
-                                    value={query}
-                                    containerStyle={styles.searchBarContainer}
-                                    onSubmitEditing={() => this.handleSubmit()}
-                                />
 
-                                <View style={styles.buttonContainer}>
-                                    <Button
-                                        style={styles.filterButton}
-                                        onPress={() => { this._drawer.open() }}
-                                    >
-                                        <Text style={styles.filterButtonText}>Filter</Text>
-                                    </Button>
-                                </View>
-                            </View>
+                        <SearchBar
+                            placeholder="Search title, artist, or label..."
+                            placeholderTextColor={nearWhite}
+                            round
+                            onChangeText={this.handleSearch}
+                            value={query}
+                            onSubmitEditing={this.handleSubmit}
+                            containerStyle={styles.searchBarContainer}
+                        />
 
-                            <ScrollView>
-                                <FlatList
-                                    data={records}
-                                    renderItem={this.renderItem}
-                                />
-                            </ScrollView>
-                        </Drawer>
+                        <Accordion
+                            activeSections={this.state.activeSections}
+                            containerStyle={styles.accordionContainer}
+                            sections={['0']}
+                            renderHeader={this.renderHeader}
+                            renderContent={this.renderContent}
+                            onChange={this.updateSections}
+                        />
+
+                        <ScrollView>
+                            <FlatList
+                                data={records}
+                                renderItem={this.renderItem}
+                            />
+                        </ScrollView>
                     </View>
                 );
             }
@@ -318,57 +456,18 @@ class SearchScreen extends React.Component {
             //loading
             return (
                 <View style={styles.container}>
-                    <Drawer
-                        ref={(ref) => this._drawer = ref}
-                        type="displace"
-                        content={
-                            <FilterDrawer closeDrawer={this.closeDrawer} />
-                        }
-                        acceptDoubleTap
-                        onOpen={() => {
-                            console.log('onopen')
-                            this.setState({ drawerOpen: true })
-                        }}
-                        onClose={() => {
-                            console.log('onclose')
-                            this.setState({ drawerOpen: false })
-                        }}
-                        captureGestures={false}
-                        tweenDuration={100}
-                        panThreshold={0.08}
-                        disabled={this.state.drawerDisabled}
-                        openDrawerOffset={(viewport) => {
-                            return 100
-                        }}
-                        closedDrawerOffset={() => 0}
-                        panOpenMask={0.2}
-                        negotiatePan
-                    >
-                        <View style={styles.headerContainer}>
-                            <SearchBar
-                                placeholder="Search title, artist, or label..."
-                                round
-                                darkTheme
-                                onChangeText={this.handleSearch}
-                                value={query}
-                                containerStyle={styles.searchBarContainer}
-                                onSubmitEditing={() => this.handleSubmit()}
-                            />
+                    <SearchBar
+                        placeholder="Search title, artist, or label..."
+                        placeholderTextColor={nearWhite}
+                        round
+                        onChangeText={this.handleSearch}
+                        value={query}
+                        onSubmitEditing={this.handleSubmit}
+                    />
 
-                            <View style={styles.buttonContainer}>
-                                <Button
-                                    style={styles.filterButton}
-                                    onPress={() => { this._drawer.open() }}
-                                >
-                                    <Text style={styles.filterButtonText}>Filter</Text>
-                                </Button>
-                            </View>
-                        </View>
-
-                        <View style={styles.activityContainer}>
-                            <ActivityIndicator />
-                        </View>
-                    </Drawer>
+                    <View style={styles.activityContainer}>
+                        <ActivityIndicator />
+                    </View>
                 </View>
             );
         }
@@ -385,12 +484,86 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: darkBlue,
-    },
-    searchBarContainer: {
         paddingTop: 25,
     },
-    searchBar: {
-        backgroundColor: darkBlue,
+    searchBarContainer: {
+        borderWidth: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: lightGray,
+    },
+    accordionContainer: {
+        backgroundColor: darkGray,
+        borderRadius: 0,
+        margin: 0,
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomWidth: 1,
+        borderBottomColor: lightGray,
+        paddingBottom: 5,
+        paddingTop: 10,
+        paddingRight: 10,
+    },
+    headerText: {
+        color: nearWhite,
+        fontSize: 17,
+        paddingLeft: 10,
+    },
+    iconContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    filterContentContainer: {
+        backgroundColor: darkGray,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+    },
+    filterText: {
+        color: nearWhite,
+    },
+    checkBoxContainer: {
+        flexDirection: "row",
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    checkBox: {
+        flex: 1,
+        padding: 0,
+        borderWidth: 0,
+        backgroundColor: darkGray,
+    },
+    checkBoxText: {
+        color: nearWhite,
+        fontSize: 15,
+        fontWeight: 'normal',
+    },
+    filterHeaderContainer: {
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingRight: 15,
+    },
+    priceText: {
+        color: nearWhite,
+    },
+    sliderContainer: {
+        paddingHorizontal: 20,
+        paddingTop: 10,
+    },
+    buttonContainer: {
+        alignItems: 'center',
+        paddingTop: 30,
+    },
+    button: {
+        backgroundColor: seaGreen,
+        width: 140,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 30,
+    },
+    buttonText: {
+        fontWeight: 'bold',
     },
     itemContainer: {
         flex: 1,
@@ -438,7 +611,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 20,
     },
     emptyContainer: {
         alignContent: 'center',
@@ -448,39 +620,5 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: nearWhite,
         alignSelf: 'center',
-    },
-    headerContainer: {
-        paddingTop: 25,
-        flexDirection: 'row',
-    },
-    searchBarContainer: {
-        flex: 4,
-        borderRadius: 7,
-    },
-    drawerContainer: {
-        backgroundColor: darkBlue,
-    },
-    buttonContainer: {
-        flex: 1,
-        paddingHorizontal: 5,
-        justifyContent: 'center',
-    },
-    filterButton: {
-        borderWidth: 1,
-        borderColor: nearWhite,
-        backgroundColor: darkBlue,
-        alignSelf: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        padding: 2
-    },
-    filterButtonText: {
-        fontSize: 15,
-    },
-    activityContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignContent: 'center',
-        paddingTop: 85,
     },
 });

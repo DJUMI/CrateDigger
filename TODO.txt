@@ -23,8 +23,6 @@ Screens
 Album Details Screen
 
 Filter Screen
-    implement apply/clear buttons
-    add sorting filters
 
 Home Screen
     Features
@@ -32,21 +30,20 @@ Home Screen
 
 Search Screen
     Features
-        implement format/price filters - Issac
+        implement format filters - Issac
         implement sorting filters
         add collation to support accents
-        add some sort of message before 1st Search
-        add default results
         add auto-suggestions
         save recent searches and display them when user taps searchbar
         search within search to specify if searching by title,artist, or label
         fix misspellings
         highlight search input in results
         add unique loading animation
-        remove filter button and add header that shows number of search results and filter button icon
         add option to load more resuts
         override keyboard to say search instead of return
         add Label/release date
+    Bugs
+        close keyboard when accordion opens
 
 Dig Screen
     Features
