@@ -12,11 +12,11 @@ Cart List
 
 Home List
     Bugs
-        *duplicates still showing
+        *duplicates still showing - Issac
 
 More lists
     Bugs
-        *duplicates still showing
+        *duplicates still showing - Issac
 
 Screens
 
@@ -31,7 +31,6 @@ Home Screen
 Search Screen
     Features
         *implement format filters - Issac
-        *implement sorting filters
         add collation to support accents
         add auto-suggestions
         save recent searches and display them when user taps searchbar
@@ -46,14 +45,14 @@ Search Screen
         *close keyboard when accordion opens
         page finishes loading before drop down menu does
         items that are just 12" don't show the "
-        dort filters don't get applied until button is hit twice
+        sort filters don't get applied until button is hit twice
 
 Dig Screen
     Features
         add instructions
         *recommended query - Issac
         notice for no items in Cart when recommended selected
-        *implement genre filters
+        maybe just add recommended as an option in the action sheet and just have one filter button?
     Bugs
         button text needs to fit on one line(looks fine on iphone 6s but shows up on Android)
         need to handle animation when user swipes a new card before previous spring animation is finished

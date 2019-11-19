@@ -65,10 +65,11 @@ class DigScreen extends React.Component {
       RemoteMongoClient.factory,
       "mongodb-atlas"
     );
+    const { genre } = this.state;
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .aggregate([{ $match: { status: "For Sale" } }, { $sample: { size: 100 } }])
+      .aggregate([{ $match: { $and: [{ status: "For Sale" }, { styles: genre }] }}, { $sample: { size: 100 } }])
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -84,14 +85,17 @@ class DigScreen extends React.Component {
   }
 
   render() {
-    const { isLoadingComplete } = this.state;
+    const { genre, isLoadingComplete, records } = this.state;
     const { cart } = this.state;
     const { navigation } = this.props;
     if (isLoadingComplete) {
       return (
         <View style={styles.container}>
+          <View style={styles.headerContainer}>
+            {genre ? <Text style={styles.headerText}>{genre}</Text> : <Text style={styles.headerText}>All</Text>}
+          </View>
           <DeckSwiper
-            dataSource={this.state.records}
+            dataSource={records}
             renderItem={item =>
               <View style={styles.itemContainer}>
                 <View style={styles.infoContainer}>
@@ -177,6 +181,8 @@ class DigScreen extends React.Component {
               onPress={(index) => {
                 if (index == 6) this.setState({ genre: null })
                 else this.setState({ genre: genres[index] })
+                this.onRefresh();
+                console.log(this.state.genre);
               }}
             />
 
@@ -219,8 +225,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: darkBlue,
-    paddingTop: 90,
+    paddingTop: 15,
     paddingHorizontal: 10,
+  },
+  headerContainer: {
+    padding: 20,
+    alignSelf: 'center',
+  },
+  headerText: {  
+    color: nearWhite,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   itemContainer: {
     flex: 1,
