@@ -12,7 +12,7 @@ import { DeckSwiper, Button, Text } from 'native-base';
 import ActionSheet from 'react-native-actionsheet';
 import { withNavigation } from 'react-navigation';
 
-let genres = ['House', 'Techno', 'Hip-hop', 'Electro', 'Drum n Bass', 'Disco', 'None', 'Cancel'];
+let genres = ['House', 'Techno', 'Hip hop', 'Electro', 'Drum n Bass', 'Disco', 'None', 'Cancel'];
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
@@ -24,7 +24,8 @@ class DigScreen extends React.Component {
       cart: global.cart,
       client: undefined,
       currentUserId: undefined,
-      genre: null,
+      genre: '',
+      isInitialLoadComplete: false,
       isLoadingComplete: false,
       recommended: false,
       records: undefined,
@@ -66,13 +67,17 @@ class DigScreen extends React.Component {
       "mongodb-atlas"
     );
     const { genre } = this.state;
+    const query = new RegExp(genre);
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .aggregate([{ $match: { $and: [{ status: "For Sale" }, { styles: genre }] }}, { $sample: { size: 100 } }])
+      .aggregate([{ $match: { status: "For Sale" } }, { $sample: { size: 100 } }])
+      //.aggregate([{ $regexFindAll: { $and: [{ status: "For Sale" }, { styles: { $regex: query, '$options': 'i' } }] }}, { $sample: { size: 100 } }])
+      //.find({ $and: [{ status: "For Sale" }, { styles: { $regex: query, '$options': 'i' } }], limit: 10 })
       .asArray()
       .then(records => {
         this.setState({ records });
+        console.log("load length: ", this.state.records.length);
         this.setState({ isLoadingComplete: true });
       })
       .catch(err => {
@@ -156,7 +161,7 @@ class DigScreen extends React.Component {
                     onPress={() => {
                       this.state.cart.push(item);
                       Alert.alert('Added!')
-                      }}
+                    }}
                   >
                     <Text style={styles.buttonText}>+ Add to Cart</Text>
                   </Button>
@@ -179,10 +184,9 @@ class DigScreen extends React.Component {
               destructiveButtonIndex={6}
               style={styles.actionSheet}
               onPress={(index) => {
-                if (index == 6) this.setState({ genre: null })
+                if (index == 6) this.setState({ genre: '' })
                 else this.setState({ genre: genres[index] })
-                this.onRefresh();
-                console.log(this.state.genre);
+                this.loadClient();
               }}
             />
 
@@ -232,7 +236,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignSelf: 'center',
   },
-  headerText: {  
+  headerText: {
     color: nearWhite,
     fontSize: 20,
     fontWeight: 'bold',

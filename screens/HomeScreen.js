@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   View,
-  YellowBox,
 } from 'react-native';
 
 import HomeList from '../components/HomeList';

@@ -56,6 +56,9 @@ Dig Screen
     Bugs
         button text needs to fit on one line(looks fine on iphone 6s but shows up on Android)
         need to handle animation when user swipes a new card before previous spring animation is finished
+        hip-hop genre filter doesn't work
+        query needs some work, only displays items with no genre when no genre is selected 
+            and doesn't allow releases with multiple genres
 
 Miscellaneous
 
