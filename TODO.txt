@@ -1,3 +1,15 @@
+High Priority
+
+Features
+    new cart implementation - Meet
+    search screen filters
+    dig screen filters
+    dig screen recommendations
+Bugs
+    duplicates showing in lists
+    search screen sort/filter not applied immediately
+    more from label list doesn't work with multiple labels
+    
 Components
 
 Cart List
