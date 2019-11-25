@@ -9,6 +9,8 @@ Bugs
     duplicates showing in lists
     search screen sort/filter not applied immediately
     more from label list doesn't work with multiple labels
+    prop error - Jordan
+    font error - Jordan
     
 Components
 
