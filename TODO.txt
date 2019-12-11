@@ -39,13 +39,10 @@ Album Details Screen
 Filter Screen
 
 Home Screen
-    Features
-        add graffiti font - Jordan
 
 Search Screen
     Features
         Search results list still has "Label Name Year"
-        *implement format filters - Issac
         add collation to support accents
         add auto-suggestions
         save recent searches and display them when user taps searchbar
@@ -55,7 +52,7 @@ Search Screen
         add unique loading animation
         add option to load more resuts
         override keyboard to say search instead of return
-        *add Label/release date
+        *add Label/release date (NOTE: We don't have release date data)
     Bugs
         *close keyboard when accordion opens
         page finishes loading before drop down menu does
