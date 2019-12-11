@@ -12,7 +12,7 @@ import { DeckSwiper, Button, Text } from 'native-base';
 import ActionSheet from 'react-native-actionsheet';
 import { withNavigation } from 'react-navigation';
 
-let genres = ['House', 'Techno', 'Hip hop', 'Electro', 'Drum n Bass', 'Disco', 'None', 'Cancel'];
+let genres = ['House', 'Techno', 'Hip hop', 'Electro', 'Drum n Bass', 'Disco', 'All', 'All'];
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: darkBlue,
-    paddingTop: 15,
+    paddingTop: 30,
     paddingHorizontal: 10,
   },
   headerContainer: {
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flex: 1,
-    backgroundColor: '#ACB3B2',
+    backgroundColor: darkBlue,
   },
   infoContainer: {
     paddingVertical: 10,
@@ -252,13 +252,14 @@ const styles = StyleSheet.create({
   },
   artistText: {
     fontSize: 20,
-    color: darkBlue,
+    color: nearWhite,
   },
   titleText: {
     fontSize: 25,
-    color: darkBlue,
+    color: nearWhite,
   },
   imageContainer: {
+    paddingTop: 15,
     alignItems: 'center',
   },
   image: {
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: seaGreen,
-    width: 140,
+    width: 160,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -285,7 +286,7 @@ const styles = StyleSheet.create({
     color: nearWhite,
   },
   filterButtonContainer: {
-    paddingVertical: 10,
+    paddingVertical: 60,
     marginTop: 450,
     flexDirection: 'row',
     paddingHorizontal: 40,
@@ -304,7 +305,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: darkBlue,
-    width: 135,
+    width: 160,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -313,7 +314,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: seaGreen,
-    width: 135,
+    width: 160,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
