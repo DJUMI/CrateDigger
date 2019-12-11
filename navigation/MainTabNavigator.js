@@ -23,11 +23,11 @@ const HomeStack = createStackNavigator(
     Home: HomeScreen,
     Details: AlbumDetailsScreen,
   },
-  {
-    cardStyle: {
-      paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-    }
-  },
+  // {
+  //   cardStyle: {
+  //     paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+  //   }
+  // },
   {
     defaultNavigationOptions: {
       headerTitle: '',

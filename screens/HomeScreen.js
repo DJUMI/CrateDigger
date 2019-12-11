@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  StatusBar,
 } from 'react-native';
 
 import HomeList from '../components/HomeList';
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    paddingTop: 25,
+    paddingTop: StatusBar.currentHeight + 10,
   },
   imageContainer: {
     height: 100,

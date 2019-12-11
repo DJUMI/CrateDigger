@@ -3,6 +3,7 @@ import {
     StyleSheet,
     Text,
     View,
+    StatusBar,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
@@ -38,10 +39,10 @@ class CartScreen extends React.Component {
 
                 <CartList />
 
-                {/*<View style={styles.footerContainer}>
+                <View style={styles.footerContainer}>
                     <Text style={styles.footerText}>Total:</Text>
                     <Text style={styles.footerText}>{global.total}</Text>
-                </View>*/}
+                </View>
             </View>
         );
     }
@@ -56,13 +57,13 @@ export default withNavigation(CartScreen);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 30,
+        paddingTop: StatusBar.currentHeight + 10,
         backgroundColor: darkBlue,
     },
     headerContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        paddingVertical: 5,
+        // paddingVertical: 5,
         borderBottomColor: nearWhite,
         borderBottomWidth: 1,
     },
