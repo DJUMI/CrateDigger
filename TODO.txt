@@ -25,12 +25,10 @@ Cart List
         cart doesn't reload when a new item is added
 
 Home List
-    Bugs
-        *duplicates still showing - Issac
 
 More lists
-    Bugs
-        *duplicates still showing - Issac
+    Duplicates showing for artist?
+    Duplicates of lables [FIXED]
 
 Screens
 
