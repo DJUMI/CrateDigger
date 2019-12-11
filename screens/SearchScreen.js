@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     View,
+    StatusBar,
 } from 'react-native';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
@@ -523,7 +524,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: darkBlue,
-        paddingTop: 25,
+        paddingTop: StatusBar.currentHeight,
     },
     searchBarContainer: {
         borderWidth: 0,
@@ -606,6 +607,7 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         flex: 1,
+        paddingTop: 5,
     },
     itemInfoContainer: {
         flexDirection: 'row',
