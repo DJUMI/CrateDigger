@@ -174,8 +174,8 @@ tabNavigator.path = '';
 
 export default tabNavigator;
 
-const styles = StyleSheet.create({
-  statusBar: {
-    backgroundColor: 'blue'
-  }  
-})
+// const styles = StyleSheet.create({
+//   statusBar: {
+//     backgroundColor: 'blue'
+//   }  
+// })
