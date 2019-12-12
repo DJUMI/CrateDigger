@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    paddingTop: 25,
+    paddingTop: 35,
   },
   imageContainer: {
     height: 100,

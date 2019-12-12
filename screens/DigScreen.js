@@ -12,7 +12,7 @@ import { DeckSwiper, Button, Text } from 'native-base';
 import ActionSheet from 'react-native-actionsheet';
 import { withNavigation } from 'react-navigation';
 
-let genres = ['House', 'Techno', 'Hip-hop', 'Electro', 'Drum n Bass', 'Disco', 'All', 'All'];
+let genres = ['House', 'Techno', 'Hip-hop', 'Electro', 'Drum n Bass', 'Disco', 'None', 'Cancel'];
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
@@ -86,13 +86,12 @@ class DigScreen extends React.Component {
 
   render() {
     const { genre, isLoadingComplete, records } = this.state;
-    const { cart } = this.state;
     const { navigation } = this.props;
     if (isLoadingComplete) {
       return (
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-            {genre ? <Text style={styles.headerText}>{genre}</Text> : <Text style={styles.headerText}>All</Text>}
+            {/*genre ? <Text style={styles.headerText}>{genre}</Text> : <Text style={styles.headerText}>All</Text>*/}
           </View>
           <DeckSwiper
             dataSource={records}
@@ -164,7 +163,7 @@ class DigScreen extends React.Component {
               </View>
             }
           />
-          <View style={styles.filterButtonContainer}>
+          {/*<View style={styles.filterButtonContainer}>
             <Button
               style={styles.genreButton}
               onPress={this.showActionSheet}
@@ -199,7 +198,7 @@ class DigScreen extends React.Component {
             >
               <Text style={styles.filterButtonText}>Recommended</Text>
             </Button>
-          </View>
+          </View>*/}
         </View>
       );
     }
@@ -300,7 +299,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: darkBlue,
-    width: 160,
+    width: 135,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -309,7 +308,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: seaGreen,
-    width: 160,
+    width: 135,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',

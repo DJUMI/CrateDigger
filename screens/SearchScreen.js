@@ -527,7 +527,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: darkBlue,
-        paddingTop: 25,
+        paddingTop: 35,
     },
     searchBarContainer: {
         borderWidth: 0,
