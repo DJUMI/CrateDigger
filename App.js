@@ -58,7 +58,7 @@ export default class App extends React.Component {
         require('./assets/images/logo.jpg'),
       ]),
       Font.loadAsync({
-        ...Icon.Ionicons.font,
+        ...Ionicons.font,
         "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         Roboto: require('./assets/fonts/Roboto.ttf'),
         Roboto_medium: require("./assets/fonts/Roboto_medium.ttf"),
