@@ -20,10 +20,24 @@ export default class App extends React.Component {
     this.state = {
       currentUserId: undefined,
       client: undefined,
+      fontLoaded: false,
       isLoadingComplete: false,
       cart: global.cart,
     };
     this._loadClient = this._loadClient.bind(this);
+  }
+
+  async componentWillMount() {
+    try {
+      await Font.loadAsync({
+        ...Icon.Ionicons.font,
+        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
+        Roboto_medium: require("./node_modules/native-base/Fonts/Roboto_medium.ttf"),
+      });
+      this.setState({ fontLoaded: true });
+    } catch (error) {
+      console.log('error loading fonts', error);
+    }
   }
 
   componentDidMount() {
@@ -31,7 +45,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    if (!this.state.fontLoaded && !this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
           startAsync={this._loadResourcesAsync}
@@ -54,12 +68,7 @@ export default class App extends React.Component {
       Asset.loadAsync([
         require('./assets/images/vinylstock.jpg'),
         require('./assets/images/logo.jpg'),
-      ]),
-      Font.loadAsync({
-        ...Icon.Ionicons.font,
-        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
-        "Roboto_medium": require("./node_modules/native-base/Fonts/Roboto_medium.ttf"),
-      })
+      ])
     ]);
   };
 
@@ -96,7 +105,6 @@ export default class App extends React.Component {
       console.error(err)
     });
   }
-
 }
 
 const styles = StyleSheet.create({
