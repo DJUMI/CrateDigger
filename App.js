@@ -6,7 +6,6 @@ import {
   View 
 } from 'react-native';
 
-import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
@@ -58,7 +57,7 @@ export default class App extends React.Component {
         require('./assets/images/logo.jpg'),
       ]),
       Font.loadAsync({
-        ...Ionicons.font,
+        ...Icon.Ionicons.font,
         "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         Roboto: require('./assets/fonts/Roboto.ttf'),
         Roboto_medium: require("./assets/fonts/Roboto_medium.ttf"),
