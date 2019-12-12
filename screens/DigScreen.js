@@ -12,7 +12,7 @@ import { DeckSwiper, Button, Text } from 'native-base';
 import ActionSheet from 'react-native-actionsheet';
 import { withNavigation } from 'react-navigation';
 
-let genres = ['House', 'Techno', 'Hip hop', 'Electro', 'Drum n Bass', 'Disco', 'All', 'All'];
+let genres = ['House', 'Techno', 'Hip-hop', 'Electro', 'Drum n Bass', 'Disco', 'None', 'Cancel'];
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
@@ -24,8 +24,7 @@ class DigScreen extends React.Component {
       cart: global.cart,
       client: undefined,
       currentUserId: undefined,
-      genre: '',
-      isInitialLoadComplete: false,
+      genre: null,
       isLoadingComplete: false,
       recommended: false,
       records: undefined,
@@ -67,17 +66,13 @@ class DigScreen extends React.Component {
       "mongodb-atlas"
     );
     const { genre } = this.state;
-    const query = new RegExp(genre);
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .aggregate([{ $match: { status: "For Sale" } }, { $sample: { size: 100 } }])
-      //.aggregate([{ $regexFindAll: { $and: [{ status: "For Sale" }, { styles: { $regex: query, '$options': 'i' } }] }}, { $sample: { size: 100 } }])
-      //.find({ $and: [{ status: "For Sale" }, { styles: { $regex: query, '$options': 'i' } }], limit: 10 })
+      .aggregate([{ $match: { $and: [{ status: "For Sale" }, { styles: genre }] }}, { $sample: { size: 100 } }])
       .asArray()
       .then(records => {
         this.setState({ records });
-        console.log("load length: ", this.state.records.length);
         this.setState({ isLoadingComplete: true });
       })
       .catch(err => {
@@ -161,7 +156,7 @@ class DigScreen extends React.Component {
                     onPress={() => {
                       this.state.cart.push(item);
                       Alert.alert('Added!')
-                    }}
+                      }}
                   >
                     <Text style={styles.buttonText}>+ Add to Cart</Text>
                   </Button>
@@ -184,9 +179,10 @@ class DigScreen extends React.Component {
               destructiveButtonIndex={6}
               style={styles.actionSheet}
               onPress={(index) => {
-                if (index == 6) this.setState({ genre: '' })
+                if (index == 6) this.setState({ genre: null })
                 else this.setState({ genre: genres[index] })
-                this.loadClient();
+                this.onRefresh();
+                console.log(this.state.genre);
               }}
             />
 
@@ -229,21 +225,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: darkBlue,
-    paddingTop: 30,
+    paddingTop: 15,
     paddingHorizontal: 10,
   },
   headerContainer: {
     padding: 20,
     alignSelf: 'center',
   },
-  headerText: {
+  headerText: {  
     color: nearWhite,
     fontSize: 20,
     fontWeight: 'bold',
   },
   itemContainer: {
     flex: 1,
-    backgroundColor: darkBlue,
+    backgroundColor: '#ACB3B2',
   },
   infoContainer: {
     paddingVertical: 10,
@@ -252,14 +248,13 @@ const styles = StyleSheet.create({
   },
   artistText: {
     fontSize: 20,
-    color: nearWhite,
+    color: darkBlue,
   },
   titleText: {
     fontSize: 25,
-    color: nearWhite,
+    color: darkBlue,
   },
   imageContainer: {
-    paddingTop: 15,
     alignItems: 'center',
   },
   image: {
@@ -276,7 +271,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: seaGreen,
-    width: 160,
+    width: 140,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -286,7 +281,7 @@ const styles = StyleSheet.create({
     color: nearWhite,
   },
   filterButtonContainer: {
-    paddingVertical: 60,
+    paddingVertical: 10,
     marginTop: 450,
     flexDirection: 'row',
     paddingHorizontal: 40,
@@ -305,7 +300,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: darkBlue,
-    width: 160,
+    width: 135,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -314,7 +309,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: seaGreen,
-    width: 160,
+    width: 135,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',

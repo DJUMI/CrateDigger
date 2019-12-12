@@ -6,7 +6,6 @@ import {
     StyleSheet,
     TouchableOpacity,
     View,
-    StatusBar,
 } from 'react-native';
 
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
@@ -80,7 +79,7 @@ class SearchScreen extends React.Component {
     }
 
     loadData(appClient) {
-        console.log("loadData start")
+        this.getFormatQuery();
         const mongoClient = appClient.getServiceClient(
             RemoteMongoClient.factory,
             "mongodb-atlas"
@@ -98,6 +97,7 @@ class SearchScreen extends React.Component {
                     { title: { $regex: query, '$options': 'i' } }]
                 },
                 { price: { $lte: value } },
+                { $or: formatQuery}
                 /* $or: [{format: 'LP'},
                     {format: '12\"'}
                 ]},*/
@@ -109,7 +109,6 @@ class SearchScreen extends React.Component {
             .asArray()
             .then(records => {
                 this.setState({ records });
-                console.log("loadData end")
                 this.setState({ isLoadingComplete: true });
                 this.setState({ isSearching: false });
             })
@@ -120,10 +119,11 @@ class SearchScreen extends React.Component {
 
     //this needs work
     handleApply = () => {
-        console.log("handleApply start");
         this.getSortQuery();
+        // this.getFormatQuery();
+        this.onRefresh();
         this.setState({activeSections: []});
-        //console.log("handleApply: ",this.state.formatQuery);
+        console.log("handleApply: ",this.state.formatQuery);
     };
 
     handleClear = () => {
@@ -155,9 +155,7 @@ class SearchScreen extends React.Component {
 
     //sort filters
     getSortQuery() {
-        console.log("getSortQuery start");
         const { checkedSort } = this.state;
-        console.log("checkedSort: ", this.state.checkedSort);
         if(!checkedSort) {
             this.setState({ sortQuery: { listing_id: -1 }});
         } else if (checkedSort == 1) { 
@@ -165,8 +163,8 @@ class SearchScreen extends React.Component {
         } else {
             this.setState({ sortQuery: { release_id: -1 }});
         }
+        console.log("checkedSort: ", this.state.checkedSort);
         console.log("sortQuery: ", this.state.sortQuery);
-        this.getFormatQuery();
     }
 
     updateSort(index) {
@@ -217,19 +215,24 @@ class SearchScreen extends React.Component {
         );
     }
 
-    //this needs work
+
     getFormatQuery() {
-        console.log("getFormatQuery start");
-        console.log("sortQuery from getFormatQuery(): ", this.state.sortQuery);
         this.setState({formatQuery: []})
         const { checkedFormats, formatQuery } = this.state;
         for (let e in checkedFormats) {
             if (checkedFormats[e]) {
-                formatQuery.push(['filter', e]);
+                formatQuery.push({ format: { $regex: e, '$options': 'i' }}) 
             }
         }
-        console.log("getFormatQuery: ",this.state.formatQuery);
-        this.onRefresh();
+
+        // if no format is selected, display results of all formats
+        if (formatQuery.length < 1) {
+            for (let e in checkedFormats) {
+                formatQuery.push({ format: { $regex: e, '$options': 'i' }}) 
+            }
+        }
+    
+        // console.log("getFormatQuery: ",this.state.formatQuery); 
     }
     updateFormat(index) {
 
@@ -524,7 +527,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: darkBlue,
-        paddingTop: StatusBar.currentHeight,
+        paddingTop: 25,
     },
     searchBarContainer: {
         borderWidth: 0,
@@ -607,7 +610,6 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         flex: 1,
-        paddingTop: 5,
     },
     itemInfoContainer: {
         flexDirection: 'row',
