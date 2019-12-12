@@ -421,7 +421,7 @@ class SearchScreen extends React.Component {
                         <Icon
                             name='chevron-thin-right'
                             type='entypo'
-                            size='40'
+                            size= {40}
                             color={nearWhite} />
                     </View>
                 </View>

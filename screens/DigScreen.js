@@ -12,7 +12,7 @@ import { DeckSwiper, Button, Text } from 'native-base';
 import ActionSheet from 'react-native-actionsheet';
 import { withNavigation } from 'react-navigation';
 
-let genres = ['House', 'Techno', 'Hip-hop', 'Electro', 'Drum n Bass', 'Disco', 'None', 'Cancel'];
+let genres = ['House', 'Techno', 'Hip-hop', 'Electro', 'Drum n Bass', 'Disco', 'All', 'All'];
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: darkBlue,
-    width: 135,
+    width: 160,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: nearWhite,
     backgroundColor: seaGreen,
-    width: 135,
+    width: 160,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
