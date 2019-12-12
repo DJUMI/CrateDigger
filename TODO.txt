@@ -6,7 +6,6 @@ Features
     dig screen filters
     dig screen recommendations
 Bugs
-    duplicates showing in lists
     search screen sort/filter not applied immediately
     more from label list doesn't work with multiple labels
     prop error - Jordan
@@ -27,8 +26,6 @@ Cart List
 Home List
 
 More lists
-    Duplicates showing for artist?
-    Duplicates of lables [FIXED]
 
 Screens
 
@@ -73,6 +70,5 @@ Dig Screen
 Miscellaneous
 
 Cart and List tests - Erik
-New color palette - Everyone
 Check if loading collection into async storage increases performance
 UI refactor to get rid of any fixed dimensions by using percentages and flex
