@@ -6,6 +6,7 @@ import {
   View 
 } from 'react-native';
 
+import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
@@ -25,19 +26,6 @@ export default class App extends React.Component {
       cart: global.cart,
     };
     this._loadClient = this._loadClient.bind(this);
-  }
-
-  async componentWillMount() {
-    try {
-      await Font.loadAsync({
-        ...Icon.Ionicons.font,
-        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
-        Roboto_medium: require("./node_modules/native-base/Fonts/Roboto_medium.ttf"),
-      });
-      this.setState({ fontLoaded: true });
-    } catch (error) {
-      console.log('error loading fonts', error);
-    }
   }
 
   componentDidMount() {
@@ -68,7 +56,13 @@ export default class App extends React.Component {
       Asset.loadAsync([
         require('./assets/images/vinylstock.jpg'),
         require('./assets/images/logo.jpg'),
-      ])
+      ]),
+      Font.loadAsync({
+        ...Icon.Ionicons.font,
+        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
+        Roboto: require('./assets/fonts/Roboto.ttf'),
+        Roboto_medium: require("./assets/fonts/Roboto_medium.ttf"),
+      })
     ]);
   };
 
