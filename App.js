@@ -57,7 +57,8 @@ export default class App extends React.Component {
       ]),
       Font.loadAsync({
         ...Icon.Ionicons.font,
-        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
+        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
+        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       })
     ]);
   };

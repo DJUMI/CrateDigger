@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Platform } from 'react-native';
 
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
@@ -23,11 +23,6 @@ const HomeStack = createStackNavigator(
     Home: HomeScreen,
     Details: AlbumDetailsScreen,
   },
-  // {
-  //   cardStyle: {
-  //     paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-  //   }
-  // },
   {
     defaultNavigationOptions: {
       headerTitle: '',
@@ -173,9 +168,3 @@ const tabNavigator = createBottomTabNavigator({
 tabNavigator.path = '';
 
 export default tabNavigator;
-
-// const styles = StyleSheet.create({
-//   statusBar: {
-//     backgroundColor: 'blue'
-//   }  
-// })
