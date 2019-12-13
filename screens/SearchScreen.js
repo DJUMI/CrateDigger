@@ -42,13 +42,12 @@ class SearchScreen extends React.Component {
             isLoadingComplete: false,
             query: '',
             records: undefined,
-            sortQuery: { listing_id: -1 },
+            sortQuery: [{listing_id: -1}],
             tasks: undefined,
-            value: 100,
+            value: 1000,
         };
         this.loadClient = this.loadClient.bind(this);
         this.updateSort = this.updateSort.bind(this);
-        this.updateFormat = this.updateFormat.bind(this);
     }
 
     componentDidMount() {
@@ -79,6 +78,7 @@ class SearchScreen extends React.Component {
     }
 
     loadData(appClient) {
+        this.getSortQuery();
         this.getFormatQuery();
         const mongoClient = appClient.getServiceClient(
             RemoteMongoClient.factory,
@@ -98,13 +98,10 @@ class SearchScreen extends React.Component {
                 },
                 { price: { $lte: value } },
                 { $or: formatQuery}
-                /* $or: [{format: 'LP'},
-                    {format: '12\"'}
-                ]},*/
             ]
             },
                 {
-                    sort: sortQuery, limit: 100,
+                    sort: sortQuery[0],
                 })
             .asArray()
             .then(records => {
@@ -119,11 +116,15 @@ class SearchScreen extends React.Component {
 
     //this needs work
     handleApply = () => {
-        this.getSortQuery();
-        // this.getFormatQuery();
-        this.onRefresh();
+        if (this.state.value == 100) {
+            this.setState({
+                value: 1000
+            }, this.onRefresh
+            );
+        } else {
+            this.onRefresh();
+        }
         this.setState({activeSections: []});
-        console.log("handleApply: ",this.state.formatQuery);
     };
 
     handleClear = () => {
@@ -137,8 +138,9 @@ class SearchScreen extends React.Component {
                 'Cass': false,
             }, checkedSort: 0,
             value: 100
-        });
-        this.handleApply();
+        }, this.handleApply
+        );
+        
     };
 
     handleSearch = text => {
@@ -155,16 +157,15 @@ class SearchScreen extends React.Component {
 
     //sort filters
     getSortQuery() {
-        const { checkedSort } = this.state;
+        this.setState({sortQuery: []})
+        const { checkedSort, sortQuery } = this.state;
         if(!checkedSort) {
-            this.setState({ sortQuery: { listing_id: -1 }});
+            sortQuery.push({ listing_id: -1 });
         } else if (checkedSort == 1) { 
-            this.setState({ sortQuery: { price: -1 }});
+            sortQuery.push({ price: -1 });
         } else {
-            this.setState({ sortQuery: { release_id: -1 }});
+            sortQuery.push({ release_id: -1 });
         }
-        console.log("checkedSort: ", this.state.checkedSort);
-        console.log("sortQuery: ", this.state.sortQuery);
     }
 
     updateSort(index) {
@@ -226,16 +227,11 @@ class SearchScreen extends React.Component {
         }
 
         // if no format is selected, display results of all formats
-        if (formatQuery.length < 1) {
+        if (!formatQuery.length) {
             for (let e in checkedFormats) {
                 formatQuery.push({ format: { $regex: e, '$options': 'i' }}) 
             }
         }
-    
-        // console.log("getFormatQuery: ",this.state.formatQuery); 
-    }
-    updateFormat(index) {
-
     }
 
     //format filters
@@ -318,7 +314,7 @@ class SearchScreen extends React.Component {
 
                 <View style={styles.filterHeaderContainer}>
                     <Text style={styles.filterText}>Max Price</Text>
-                    {this.state.value == 100 ? <Text style={styles.priceText}>100+</Text> : <Text style={styles.priceText}>{this.state.value}</Text>}
+                    {this.state.value >= 100 ? <Text style={styles.priceText}>100+</Text> : <Text style={styles.priceText}>{this.state.value}</Text>}
                 </View>
 
                 <View style={styles.sliderContainer}>
