@@ -24,7 +24,7 @@ class DigScreen extends React.Component {
       cart: global.cart,
       client: undefined,
       currentUserId: undefined,
-      genre: null,
+      genre: '',
       isLoadingComplete: false,
       recommended: false,
       records: undefined,
@@ -69,7 +69,7 @@ class DigScreen extends React.Component {
     const db = mongoClient.db("crate-digger");
     const records = db.collection("music-0");
     records
-      .aggregate([{ $match: { $and: [{ status: "For Sale" }, { styles: genre }] }}, { $sample: { size: 100 } }])
+      .aggregate([{ $match: { $and: [{ status: "For Sale" }, { styles: { $regex: genre, '$options': 'i' } }] }}, { $sample: { size: 100 } }])
       .asArray()
       .then(records => {
         this.setState({ records });
@@ -91,7 +91,7 @@ class DigScreen extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-            {/*genre ? <Text style={styles.headerText}>{genre}</Text> : <Text style={styles.headerText}>All</Text>*/}
+            {genre ? <Text style={styles.headerText}>{genre}</Text> : <Text style={styles.headerText}>All</Text>}
           </View>
           <DeckSwiper
             dataSource={records}
@@ -163,7 +163,7 @@ class DigScreen extends React.Component {
               </View>
             }
           />
-          {/*<View style={styles.filterButtonContainer}>
+          <View style={styles.filterButtonContainer}>
             <Button
               style={styles.genreButton}
               onPress={this.showActionSheet}
@@ -178,14 +178,17 @@ class DigScreen extends React.Component {
               destructiveButtonIndex={6}
               style={styles.actionSheet}
               onPress={(index) => {
-                if (index == 6) this.setState({ genre: null })
-                else this.setState({ genre: genres[index] })
-                this.onRefresh();
+                if (index == 6) {
+                  this.setState({ genre: '' }, this.onRefresh)
+                }
+                else if (index != 7) {
+                  this.setState({ genre: genres[index] }, this.onRefresh)
+                }  
                 console.log(this.state.genre);
               }}
             />
 
-            <Button
+            {/*<Button
               style={
                 this.state.recommended
                   ? styles.recommendedButtonOn
@@ -197,8 +200,8 @@ class DigScreen extends React.Component {
               }}
             >
               <Text style={styles.filterButtonText}>Recommended</Text>
-            </Button>
-          </View>*/}
+            </Button>*/}
+          </View>
         </View>
       );
     }
@@ -284,7 +287,7 @@ const styles = StyleSheet.create({
     marginTop: 450,
     flexDirection: 'row',
     paddingHorizontal: 40,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   genreButton: {
     borderWidth: 1,
