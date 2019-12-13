@@ -146,10 +146,6 @@ class AlbumDetailsScreen extends React.Component {
 
 export { sameartist, samelabel, sameid };
 
-AlbumDetailsScreen.navigationOptions = {
-  header: null,
-};
-
 export default withNavigation(AlbumDetailsScreen);
 
 const styles = StyleSheet.create({
