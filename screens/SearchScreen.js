@@ -164,7 +164,7 @@ class SearchScreen extends React.Component {
         } else if (checkedSort == 1) { 
             sortQuery.push({ price: -1 });
         } else {
-            sortQuery.push({ release_id: -1 });
+            sortQuery.push({ price: 1 });
         }
     }
 
@@ -197,7 +197,7 @@ class SearchScreen extends React.Component {
                     onPress={() => this.updateSort(1)}
                     right
                     textStyle={styles.checkBoxText}
-                    title='Price'
+                    title='Highest Price'
                     uncheckedColor={nearWhite}
                 />
 
@@ -209,7 +209,7 @@ class SearchScreen extends React.Component {
                     onPress={() => this.updateSort(2)}
                     right
                     textStyle={styles.checkBoxText}
-                    title='Release Date'
+                    title='Lowest Price'
                     uncheckedColor={nearWhite}
                 />
             </View>

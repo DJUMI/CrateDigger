@@ -12,7 +12,7 @@ import { DeckSwiper, Button, Text } from 'native-base';
 import ActionSheet from 'react-native-actionsheet';
 import { withNavigation } from 'react-navigation';
 
-let genres = ['House', 'Techno', 'Hip-hop', 'Electro', 'Drum n Bass', 'Disco', 'None', 'Cancel'];
+let genres = ['Acid', 'Deep House', 'Disco', 'Downtempo', 'Drum n Bass', 'Electro', 'Hip-hop', 'House', 'Techno', 'None', 'Cancel'];
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
@@ -174,17 +174,16 @@ class DigScreen extends React.Component {
             <ActionSheet
               ref={o => this.ActionSheet = o}
               options={genres}
-              cancelButtonIndex={7}
-              destructiveButtonIndex={6}
+              cancelButtonIndex={10}
+              destructiveButtonIndex={9}
               style={styles.actionSheet}
               onPress={(index) => {
-                if (index == 6) {
+                if (index == 9) {
                   this.setState({ genre: '' }, this.onRefresh)
                 }
-                else if (index != 7) {
+                else if (index != 10) {
                   this.setState({ genre: genres[index] }, this.onRefresh)
                 }  
-                console.log(this.state.genre);
               }}
             />
 
