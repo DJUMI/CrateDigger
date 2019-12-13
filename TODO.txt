@@ -21,6 +21,7 @@ Cart List
 Home List
 
 More lists
+    still showing doubles
 
 Screens
 
@@ -32,7 +33,6 @@ Home Screen
 
 Search Screen
     Features
-        Search results list still has "Label Name Year"
         add collation to support accents
         add auto-suggestions
         save recent searches and display them when user taps searchbar
@@ -42,12 +42,11 @@ Search Screen
         add unique loading animation
         add option to load more resuts
         override keyboard to say search instead of return
-        *add Label/release date (NOTE: We don't have release date data)
     Bugs
         *close keyboard when accordion opens
         page finishes loading before drop down menu does
         items that are just 12" don't show the "
-        sort filters don't get applied until button is hit twice
+        search results showing doubles
 
 Dig Screen
     Features
@@ -58,9 +57,6 @@ Dig Screen
     Bugs
         button text needs to fit on one line(looks fine on iphone 6s but shows up on Android)
         need to handle animation when user swipes a new card before previous spring animation is finished
-        hip-hop genre filter doesn't work
-        query needs some work, only displays items with no genre when no genre is selected 
-            and doesn't allow releases with multiple genres
 
 Miscellaneous
 

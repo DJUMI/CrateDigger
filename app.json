@@ -6,8 +6,7 @@
     "sdkVersion": "34.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,7 +24,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.jiggyjamz.cratedigger",
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "android": {
       "package": "com.jiggyjamz.cratedigger"
