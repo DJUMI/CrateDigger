@@ -484,7 +484,7 @@ class SearchScreen extends React.Component {
                             style={styles.itemOtherText}
                             numberOfLines={1}
                         >
-                            Label Name Year
+                            {item.label}
                         </Text>
 
                         <Text
