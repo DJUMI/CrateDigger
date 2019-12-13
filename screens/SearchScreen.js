@@ -35,10 +35,22 @@ class SearchScreen extends React.Component {
                 'CD': false,
                 'Cass': false,
             },
+            checkedGenres: {
+                'Acid': false,
+                'Deep House': false,
+                'Disco': false,
+                'Downtempo': false,
+                'Drum n Bass': false,
+                'Electro': false,
+                'Hip-hop': false,
+                'House': false,
+                'Techno': false,
+            },
             checkedSort: 0,
             currentUserId: undefined,
             client: undefined,
             formatQuery: [],
+            genreQuery: [],
             isLoadingComplete: false,
             query: '',
             records: undefined,
@@ -80,11 +92,12 @@ class SearchScreen extends React.Component {
     loadData(appClient) {
         this.getSortQuery();
         this.getFormatQuery();
+        //this.getGenreQuery();
         const mongoClient = appClient.getServiceClient(
             RemoteMongoClient.factory,
             "mongodb-atlas"
         );
-        const { query, value, formatQuery, sortQuery } = this.state;
+        const { query, value, formatQuery, genreQuery,  sortQuery } = this.state;
 
         const db = mongoClient.db("crate-digger");
         const records = db.collection("music-0");
@@ -97,7 +110,8 @@ class SearchScreen extends React.Component {
                     { title: { $regex: query, '$options': 'i' } }]
                 },
                 { price: { $lte: value } },
-                { $or: formatQuery}
+                { $or: formatQuery},
+                //{ $or: genreQuery},
             ]
             },
                 {
@@ -136,8 +150,18 @@ class SearchScreen extends React.Component {
                 'LP': false,
                 'CD': false,
                 'Cass': false,
+            }, checkedGenres: {
+                'Acid': false,
+                'Deep House': false,
+                'Disco': false,
+                'Downtempo': false,
+                'Drum n Bass': false,
+                'Electro': false,
+                'Hip-hop': false,
+                'House': false,
+                'Techno': false,
             }, checkedSort: 0,
-            value: 100
+            value: 1000
         }, this.handleApply
         );
         
@@ -216,7 +240,7 @@ class SearchScreen extends React.Component {
         );
     }
 
-
+    //format filters
     getFormatQuery() {
         this.setState({formatQuery: []})
         const { checkedFormats, formatQuery } = this.state;
@@ -234,7 +258,6 @@ class SearchScreen extends React.Component {
         }
     }
 
-    //format filters
     renderFormatFilters(formats) {
        
         const checkedFormats = formats;
@@ -251,6 +274,50 @@ class SearchScreen extends React.Component {
                         const name = format;
                         let updatedFormats = Object.assign({}, this.state.checkedFormats, { [name]: val })
                         this.setState({ checkedFormats: updatedFormats })
+                    }}
+                    right
+                    textStyle={styles.checkBoxText}
+                    title={format}
+                    uncheckedColor={nearWhite}
+                />
+            )
+        })
+    }
+
+    //genre filters
+    getGenreQuery() {
+        this.setState({genreQuery: []})
+        const { checkedGenres, genreQuery } = this.state;
+        for (let e in checkedGenres) {
+            if (checkedGenres[e]) {
+                genreQuery.push({ style: { $regex: e, '$options': 'i' }}) 
+            }
+        }
+
+        // if no format is selected, display results of all genres
+        if (!genreQuery.length) {
+            for (let e in checkedGenres) {
+                genreQuery.push({ style: { $regex: e, '$options': 'i' }}) 
+            }
+        }
+    }
+
+    renderGenreFilters(genres) {
+       
+        const checkedGenres = genres;
+        return checkedGenres.map((genre, i) => {
+            return (
+                <CheckBox
+                    key={i}
+                    checkedColor={nearWhite}
+                    checked={this.state.checkedGenres[genre]}
+                    containerStyle={styles.checkBox}
+                    iconRight
+                    onPress={() => {
+                        const val = !this.state.checkedGenres[genre];
+                        const name = genre;
+                        let updatedGenres = Object.assign({}, this.state.checkedGenres, { [name]: val })
+                        this.setState({ checkedGenres: updatedGenres })
                     }}
                     right
                     textStyle={styles.checkBoxText}
@@ -308,9 +375,24 @@ class SearchScreen extends React.Component {
                 <View style={styles.checkBoxContainer}>
                     {this.renderFormatFilters(['7"', '10"', '12"'])}
                 </View>
+
                 <View style={styles.checkBoxContainer}>
                     {this.renderFormatFilters(['LP', 'CD', 'Cass'])}
                 </View>
+
+                {/*<Text style={styles.filterText}>Genre</Text>
+
+                <View style={styles.checkBoxContainer}>
+                    {this.renderFormatFilters(['Acid', 'Deep House', 'Disco'])}
+                </View>
+
+                <View style={styles.checkBoxContainer}>
+                    {this.renderFormatFilters(['Downtempo', 'Drum n Bass', 'Electro'])}
+                </View>
+
+                <View style={styles.checkBoxContainer}>
+                    {this.renderFormatFilters(['Hip-hop', 'House', 'Techno'])}
+                </View>*/}
 
                 <View style={styles.filterHeaderContainer}>
                     <Text style={styles.filterText}>Max Price</Text>
