@@ -60,11 +60,21 @@ class HomeList extends Component {
       case 'New Techno':
         this.setState({query: {styles: { $regex: /techno/, '$options': 'i' }} });
         break;
+      case 'New Drum n Bass':
+        this.setState({query: {styles: { $regex: /drum n bass/, '$options': 'i' }} });
+        break;
+      case 'New Acid':
+        this.setState({query: {styles: { $regex: /acid/, '$options': 'i' }} });
+        break;
       case 'New Hip-Hop':
         this.setState({query: {styles: { $regex: /hip hop/, '$options': 'i' }} });
         break;
       case 'New Electro':
         this.setState({query: {styles: { $regex: /electro/, '$options': 'i' }} });
+        break;
+      case 'New Deep House':
+        this.setState({query: {styles: { $regex: /deep house/, '$options': 'i' }} });
+        break;
     }
   }
 
