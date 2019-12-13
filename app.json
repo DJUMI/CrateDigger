@@ -11,7 +11,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -24,7 +24,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.jiggyjamz.cratedigger",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.jiggyjamz.cratedigger"
     }
   }
 }
