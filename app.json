@@ -20,9 +20,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["assets/*"],
     "ios": {
       "bundleIdentifier": "com.jiggyjamz.cratedigger",
       "supportsTablet": true
