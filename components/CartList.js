@@ -46,7 +46,6 @@ class CartList extends Component {
                             price: item.price,
                             image_url: item.image_url,
                             video_url: item.video_url,
-                            key: item.listing_id,
                         })
                     }}
                 >
@@ -125,6 +124,7 @@ class CartList extends Component {
                 <FlatList
                     data={cart}
                     renderItem={this.renderItem}
+                    keyExtractor={item => item.listing_id.toString()}
                 />
             </View>
         );

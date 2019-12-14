@@ -123,9 +123,7 @@ class AlbumDetailsScreen extends React.Component {
         </View>
 
         <View style={styles.listContainer}>
-          <MoreFromArtistList
-            key={navigation.getParam('key')}
-          />
+          <MoreFromArtistList />
         </View>
 
         <View style={styles.listHeader}>
@@ -133,9 +131,7 @@ class AlbumDetailsScreen extends React.Component {
         </View>
 
         <View style={styles.listContainer}>
-          <MoreFromLabelList
-            key={navigation.getParam('key')}
-          />
+          <MoreFromLabelList />
         </View>
         <View style={styles.footer}>
         </View>

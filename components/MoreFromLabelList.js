@@ -122,7 +122,6 @@ class MoreFromLabelList extends Component {
             price: item.price,
             image_url: item.image_url,
             video_url: item.video_url,
-            key: item.listing_id,
           })
 
         }}
@@ -170,6 +169,7 @@ class MoreFromLabelList extends Component {
           data={this.uniqueArray(this.state.records)}
           horizontal
           renderItem={this.renderItem}
+          keyExtractor={item => item.listing_id.toString()}
         />
       );
     }

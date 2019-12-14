@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
     ActivityIndicator,
     FlatList,
@@ -11,9 +11,11 @@ import {
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import { Button, Text } from 'native-base';
 import Accordion from 'react-native-collapsible/Accordion';
-import { ButtonGroup, CheckBox, Icon, SearchBar, Slider } from 'react-native-elements';
+import { CheckBox, Icon, SearchBar, Slider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
+
+import SearchItem from '../components/SearchItem'
 
 let darkBlue = '#0b121c';
 let darkGray = '#393e42';
@@ -21,7 +23,7 @@ let lightGray = '#43484d';
 let nearWhite = '#fafafa';
 let seaGreen = '#009F93';
 
-class SearchScreen extends React.Component {
+class SearchScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -54,7 +56,7 @@ class SearchScreen extends React.Component {
             isLoadingComplete: false,
             query: '',
             records: undefined,
-            sortQuery: [{listing_id: -1}],
+            sortQuery: [{ listing_id: -1 }],
             tasks: undefined,
             value: 1000,
         };
@@ -97,7 +99,7 @@ class SearchScreen extends React.Component {
             RemoteMongoClient.factory,
             "mongodb-atlas"
         );
-        const { query, value, formatQuery, genreQuery,  sortQuery } = this.state;
+        const { query, value, formatQuery, genreQuery, sortQuery } = this.state;
 
         const db = mongoClient.db("crate-digger");
         const records = db.collection("music-0");
@@ -110,9 +112,9 @@ class SearchScreen extends React.Component {
                     { title: { $regex: query, '$options': 'i' } }]
                 },
                 { price: { $lte: value } },
-                { $or: formatQuery},
-                //{ $or: genreQuery},
-            ]
+                { $or: formatQuery },
+                    //{ $or: genreQuery},
+                ]
             },
                 {
                     sort: sortQuery[0],
@@ -138,7 +140,7 @@ class SearchScreen extends React.Component {
         } else {
             this.onRefresh();
         }
-        this.setState({activeSections: []});
+        this.setState({ activeSections: [] });
     };
 
     handleClear = () => {
@@ -164,7 +166,7 @@ class SearchScreen extends React.Component {
             value: 1000
         }, this.handleApply
         );
-        
+
     };
 
     handleSearch = text => {
@@ -181,11 +183,11 @@ class SearchScreen extends React.Component {
 
     //sort filters
     getSortQuery() {
-        this.setState({sortQuery: []})
+        this.setState({ sortQuery: [] })
         const { checkedSort, sortQuery } = this.state;
-        if(!checkedSort) {
+        if (!checkedSort) {
             sortQuery.push({ listing_id: -1 });
-        } else if (checkedSort == 1) { 
+        } else if (checkedSort == 1) {
             sortQuery.push({ price: -1 });
         } else {
             sortQuery.push({ price: 1 });
@@ -199,7 +201,7 @@ class SearchScreen extends React.Component {
     renderSort() {
         const { checkedSort } = this.state;
 
-        return(
+        return (
             <View style={styles.checkBoxContainer}>
                 <CheckBox
                     checkedColor={nearWhite}
@@ -242,24 +244,24 @@ class SearchScreen extends React.Component {
 
     //format filters
     getFormatQuery() {
-        this.setState({formatQuery: []})
+        this.setState({ formatQuery: [] })
         const { checkedFormats, formatQuery } = this.state;
         for (let e in checkedFormats) {
             if (checkedFormats[e]) {
-                formatQuery.push({ format: { $regex: e, '$options': 'i' }}) 
+                formatQuery.push({ format: { $regex: e, '$options': 'i' } })
             }
         }
 
         // if no format is selected, display results of all formats
         if (!formatQuery.length) {
             for (let e in checkedFormats) {
-                formatQuery.push({ format: { $regex: e, '$options': 'i' }}) 
+                formatQuery.push({ format: { $regex: e, '$options': 'i' } })
             }
         }
     }
 
     renderFormatFilters(formats) {
-       
+
         const checkedFormats = formats;
         return checkedFormats.map((format, i) => {
             return (
@@ -286,24 +288,24 @@ class SearchScreen extends React.Component {
 
     //genre filters
     getGenreQuery() {
-        this.setState({genreQuery: []})
+        this.setState({ genreQuery: [] })
         const { checkedGenres, genreQuery } = this.state;
         for (let e in checkedGenres) {
             if (checkedGenres[e]) {
-                genreQuery.push({ style: { $regex: e, '$options': 'i' }}) 
+                genreQuery.push({ style: { $regex: e, '$options': 'i' } })
             }
         }
 
         // if no format is selected, display results of all genres
         if (!genreQuery.length) {
             for (let e in checkedGenres) {
-                genreQuery.push({ style: { $regex: e, '$options': 'i' }}) 
+                genreQuery.push({ style: { $regex: e, '$options': 'i' } })
             }
         }
     }
 
     renderGenreFilters(genres) {
-       
+
         const checkedGenres = genres;
         return checkedGenres.map((genre, i) => {
             return (
@@ -327,9 +329,9 @@ class SearchScreen extends React.Component {
             )
         })
     }
-    
+
     //header with search bar and drop down menu
-    renderHeader = (content, index, isActive) => {
+    renderHeader = (isActive) => {
         if (isActive) {
             return (
                 <View style={styles.headerContainer}>
@@ -363,7 +365,7 @@ class SearchScreen extends React.Component {
         }
     }
 
-    renderContent = section => {
+    renderContent = () => {
         return (
             <View style={styles.filterContentContainer}>
                 <Text style={styles.filterText}>Sort By</Text>
@@ -433,78 +435,7 @@ class SearchScreen extends React.Component {
     }
 
     renderItem = ({ item }) => {
-        const { navigation } = this.props;
-
-        return (
-            <TouchableOpacity
-                style={styles.itemContainer}
-                onPress={() => {
-                    navigation.navigate('Details', {
-                        item: item,
-                        listing_id: item.listing_id,
-                        release_id: item.release_id,
-                        title: item.title,
-                        artist: item.artist,
-                        label: item.label,
-                        format: item.format,
-                        styles: item.styles,
-                        price: item.price,
-                        image_url: item.image_url,
-                        video_url: item.video_url,
-                    })
-                }}
-            >
-                <View style={styles.itemInfoContainer}>
-                    {item.image_url ?
-                        <Image
-                            source={{ uri: item.image_url }}
-                            style={styles.imageContainer}
-                        /> :
-                        <Image
-                            source={require('../assets/images/vinylstock.jpg')}
-                            style={styles.imageContainer}
-                        />
-                    }
-                    <View style={styles.itemTitleContainer}>
-                        <Text
-                            style={styles.itemOtherText}
-                            numberOfLines={1}
-                        >
-                            {item.artist}
-                        </Text>
-
-                        <Text
-                            style={styles.itemTitleText}
-                            numberOfLines={1}
-                        >
-                            {item.title}
-                        </Text>
-
-                        <Text
-                            style={styles.itemOtherText}
-                            numberOfLines={1}
-                        >
-                            {item.label}
-                        </Text>
-
-                        <Text
-                            style={styles.itemOtherText}
-                            numberOfLines={1}
-                        >
-                            {item.format}
-                        </Text>
-                    </View>
-
-                    <View style={styles.arrowContainer}>
-                        <Icon
-                            name='chevron-thin-right'
-                            type='entypo'
-                            size= {40}
-                            color={nearWhite} />
-                    </View>
-                </View>
-            </TouchableOpacity>
-        );
+        return (<SearchItem item={item} />);
     }
 
     render() {
@@ -536,7 +467,7 @@ class SearchScreen extends React.Component {
                         <View style={styles.emptyContainer}>
                             <Text style={styles.emptyText}>
                                 Sorry there are no items that match your search.
-                                </Text>
+                            </Text>
                         </View>
                     </View>
                 );
@@ -567,6 +498,7 @@ class SearchScreen extends React.Component {
                         <ScrollView>
                             <FlatList
                                 data={records}
+                                keyExtractor={item => item.listing_id.toString()}
                                 renderItem={this.renderItem}
                             />
                         </ScrollView>
@@ -685,48 +617,6 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontWeight: 'bold',
-    },
-    itemContainer: {
-        flex: 1,
-    },
-    itemInfoContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        backgroundColor: darkBlue,
-        paddingVertical: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: nearWhite,
-    },
-    imageContainer: {
-        borderRadius: 2,
-        width: 90,
-        height: 90,
-        marginLeft: 5,
-        alignSelf: 'center',
-    },
-    itemTitleContainer: {
-        height: 90,
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        paddingLeft: 5,
-        width: 240,
-    },
-    itemOtherText: {
-        fontSize: 15,
-        padding: 1,
-        color: nearWhite,
-    },
-    itemTitleText: {
-        fontSize: 20,
-        padding: 1,
-        color: nearWhite,
-    },
-    arrowContainer: {
-        flex: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        height: 90,
-        marginRight: 5,
     },
     activityContainer: {
         flex: 1,

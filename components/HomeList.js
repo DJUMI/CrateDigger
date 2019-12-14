@@ -155,7 +155,6 @@ class HomeList extends Component {
             styles: item.styles,
             image_url: item.image_url,
             video_url: item.video_url,
-            key: item.listing_id,
           })
         }}
       >
@@ -221,6 +220,7 @@ class HomeList extends Component {
           data={this.uniqueArray(this.state.records)}
           horizontal
           renderItem={this.renderItem}
+          keyExtractor={item => item.listing_id.toString()}
         />
       );
     }
