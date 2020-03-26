@@ -26,6 +26,7 @@ class AlbumDetailsScreen extends React.Component {
     super(props);
     this.state = {
       cart: global.cart,
+      total: global.total,
     };
   }
 
@@ -86,6 +87,7 @@ class AlbumDetailsScreen extends React.Component {
             style={styles.button}
             onPress={() => {
               this.state.cart.push(item);
+              global.total += price;
               Alert.alert('Added!')
             }}
           >

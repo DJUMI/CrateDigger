@@ -1,11 +1,11 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     View,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
+import { Button, Text } from 'native-base';
 
 import CartList from '../components/CartList';
 
@@ -16,6 +16,7 @@ class CartScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            total: global.total
         };
     }
 
@@ -23,7 +24,7 @@ class CartScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
-                    <View style={styles.infoContainer}>
+                    <View style={styles.itemContainer}>
                         <Text style={styles.headerText}>Item</Text>
                     </View>
 
@@ -37,11 +38,6 @@ class CartScreen extends React.Component {
                 </View>
 
                 <CartList />
-
-                {/*<View style={styles.footerContainer}>
-                    <Text style={styles.footerText}>Total:</Text>
-                    <Text style={styles.footerText}>{global.total}</Text>
-                </View>*/}
             </View>
         );
     }
@@ -67,13 +63,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     itemContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        paddingVertical: 5,
-        borderBottomColor: nearWhite,
-        borderBottomWidth: 1,
-    },
-    infoContainer: {
         flex: 2,
         paddingLeft: 5,
     },
@@ -88,17 +77,5 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 15,
         color: nearWhite
-    },
-    footerContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        alignSelf: 'flex-end',
-        paddingVertical: 5,
-        paddingRight: 5,
-    },
-    footerText: {
-        fontSize: 15,
-        color: nearWhite,
-        paddingRight: 10,
     },
 })

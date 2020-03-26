@@ -3,22 +3,24 @@ import {
     FlatList,
     Image,
     StyleSheet,
-    Text,
     TouchableOpacity,
     View,
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
+import { Button, Text } from 'native-base';
+
 
 let darkBlue = '#0b121c';
 let nearWhite = '#fafafa';
+let seaGreen = '#009F93';
 
 class CartList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             cart: global.cart,
-            isLoadingComplete: false,   
+            isLoadingComplete: false,
         };
     }
 
@@ -50,15 +52,15 @@ class CartList extends Component {
                     }}
                 >
                     {item.image_url ?
-                    <Image
-                      source={{ uri: item.image_url }}
-                      style={styles.imageContainer}
-                    /> :
-                    <Image
-                      source={require('../assets/images/vinylstock.jpg')}
-                      style={styles.imageContainer}
-                    />
-                  }
+                        <Image
+                            source={{ uri: item.image_url }}
+                            style={styles.imageContainer}
+                        /> :
+                        <Image
+                            source={require('../assets/images/vinylstock.jpg')}
+                            style={styles.imageContainer}
+                        />
+                    }
 
                     <View style={styles.itemTitleContainer}>
                         <Text
@@ -117,6 +119,72 @@ class CartList extends Component {
         );
     }
 
+    renderFooter = () => {
+        if (cart.length == 0) {
+            return (
+                <View>
+                    <View style={styles.footerContainer}>
+                        <Text style={styles.footerText}>Total:</Text>
+                        <Text style={styles.footerText}>${parseFloat(Math.round(global.total * 100) / 100).toFixed(2)}</Text>
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            disabled
+                            rounded
+                            style={styles.buttonDisabled}
+                            onPress={() => {
+                                this.setState({ cart: [] });
+                                global.cart = [];
+                                global.total = 0;
+                            }}
+                        >
+                            <Text style={styles.buttonDisabledText}>Clear cart</Text>
+                        </Button>
+
+                        <Button
+                            disabled
+                            rounded
+                            style={styles.buttonDisabled}
+                        >
+                            <Text style={styles.buttonDisabledText}>Check out</Text>
+                        </Button>
+                    </View>
+                </View>
+            );
+        } else
+            return (
+                <View>
+                    <View style={styles.footerContainer}>
+                        <Text style={styles.footerText}>Total:</Text>
+                        <Text style={styles.footerText}>${parseFloat(Math.round(global.total * 100) / 100).toFixed(2)}</Text>
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            rounded
+                            style={styles.clearButton}
+                            onPress={() => {
+                                this.setState({ cart: [] });
+                                global.cart = [];
+                                global.total = 0;
+                                console.log(cart);
+                            }}
+                        >
+                            <Text style={styles.cartButtonText}>Clear cart</Text>
+                        </Button>
+
+                        <Button
+                            rounded
+                            style={styles.checkOutButton}
+                        >
+                            <Text style={styles.cartButtonText}>Check out</Text>
+                        </Button>
+                    </View>
+                </View>
+            );
+    }
+
     render() {
         const { cart } = this.state;
         return (
@@ -125,6 +193,7 @@ class CartList extends Component {
                     data={cart}
                     renderItem={this.renderItem}
                     keyExtractor={item => item.listing_id.toString()}
+                    ListFooterComponent={this.renderFooter}
                 />
             </View>
         );
@@ -207,5 +276,58 @@ const styles = StyleSheet.create({
     numText: {
         fontSize: 20,
         color: darkBlue,
+    },
+    footerContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        alignSelf: 'flex-end',
+        paddingVertical: 5,
+        paddingRight: 5,
+    },
+    footerText: {
+        fontSize: 15,
+        color: nearWhite,
+        paddingRight: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        paddingBottom: 55,
+        paddingTop: 10,
+        paddingHorizontal: 30,
+        justifyContent: 'space-between',
+    },
+    checkOutButton: {
+        borderWidth: 1,
+        borderColor: 'black',
+        backgroundColor: seaGreen,
+        width: 140,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    clearButton: {
+        borderWidth: 1,
+        borderColor: 'black',
+        backgroundColor: 'red',
+        width: 140,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    cartButtonText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: nearWhite,
+    },
+    buttonDisabled: {
+        borderWidth: 1,
+        borderColor: 'black',
+        backgroundColor: darkBlue,
+        width: 140,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    buttonDisabledText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
     },
 })

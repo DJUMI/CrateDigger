@@ -6,8 +6,6 @@ Features
 Bugs
     more from label list doesn't work with multiple labels
     UI refactor to get rid of any fixed dimensions by using percentages and flex
-Performance
-    Add pagination to search query
 
 Components
 
@@ -44,10 +42,9 @@ Search Screen
         fix misspellings
         highlight search input in results
         add unique loading animation
-        add option to load more resuts
+        replace load more button with onEndReached
     Bugs
         close keyboard when accordion opens
-        items that are just 12" don't show the "
         search results showing doubles
 
 Dig Screen
