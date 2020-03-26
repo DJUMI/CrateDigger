@@ -15,7 +15,8 @@ import { CheckBox, Icon, SearchBar, Slider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 
-import SearchItem from '../components/SearchItem'
+import SearchItem from '../components/SearchItem';
+import Pagination from '../components/Pagination';
 
 let darkBlue = '#0b121c';
 let darkGray = '#393e42';
@@ -54,6 +55,7 @@ class SearchScreen extends Component {
             formatQuery: [],
             genreQuery: [],
             isLoadingComplete: false,
+            numResults: 15,
             query: '',
             records: undefined,
             sortQuery: [{ listing_id: -1 }],
@@ -92,6 +94,7 @@ class SearchScreen extends Component {
     }
 
     loadData(appClient) {
+        this.setState({ numResults: 15 });
         this.getSortQuery();
         this.getFormatQuery();
         //this.getGenreQuery();
@@ -113,7 +116,7 @@ class SearchScreen extends Component {
                 },
                 { price: { $lte: value } },
                 { $or: formatQuery },
-                    //{ $or: genreQuery},
+                //{ $or: genreQuery},
                 ]
             },
                 {
@@ -176,6 +179,11 @@ class SearchScreen extends Component {
     handleSubmit = () => {
         this.onRefresh();
     };
+
+    handleLoadMore = () => {
+        const temp = this.state.numResults + 15;
+        this.setState({ numResults: temp });
+    }
 
     updateSections = activeSections => {
         this.setState({ activeSections });
@@ -472,38 +480,85 @@ class SearchScreen extends Component {
                     </View>
                 );
             } else {
-                //display results
-                return (
-                    <View style={styles.container}>
+                //display results w/ load more button
+                if (this.state.numResults < this.state.records.length) {
+                    return (
+                        <View style={styles.container}>
 
-                        <SearchBar
-                            placeholder="Search title, artist, or label..."
-                            placeholderTextColor={nearWhite}
-                            round
-                            onChangeText={this.handleSearch}
-                            value={query}
-                            onSubmitEditing={this.handleSubmit}
-                            containerStyle={styles.searchBarContainer}
-                        />
-
-                        <Accordion
-                            activeSections={this.state.activeSections}
-                            containerStyle={styles.accordionContainer}
-                            sections={['0']}
-                            renderHeader={this.renderHeader}
-                            renderContent={this.renderContent}
-                            onChange={this.updateSections}
-                        />
-
-                        <ScrollView>
-                            <FlatList
-                                data={records}
-                                keyExtractor={item => item.listing_id.toString()}
-                                renderItem={this.renderItem}
+                            <SearchBar
+                                placeholder="Search title, artist, or label..."
+                                placeholderTextColor={nearWhite}
+                                round
+                                onChangeText={this.handleSearch}
+                                value={query}
+                                onSubmitEditing={this.handleSubmit}
+                                containerStyle={styles.searchBarContainer}
                             />
-                        </ScrollView>
-                    </View>
-                );
+
+                            <Accordion
+                                activeSections={this.state.activeSections}
+                                containerStyle={styles.accordionContainer}
+                                sections={['0']}
+                                renderHeader={this.renderHeader}
+                                renderContent={this.renderContent}
+                                onChange={this.updateSections}
+                            />
+
+                            <ScrollView>
+                                <FlatList
+                                    data={records.slice(0, this.state.numResults)}
+                                    keyExtractor={item => item.listing_id.toString()}
+                                    renderItem={this.renderItem}
+                                />
+                                <View style={styles.loadMoreContainer}>
+                                    <Button
+                                        style={styles.loadMoreButton}
+                                        onPress={this.handleLoadMore}
+
+                                    >
+                                        <Text style={styles.buttonText}>
+                                            Load more results
+                                        </Text>
+                                    </Button>
+                                </View>
+
+                            </ScrollView>
+                        </View>
+                    );
+                } else {
+                    return (
+                        <View style={styles.container}>
+
+                            <SearchBar
+                                placeholder="Search title, artist, or label..."
+                                placeholderTextColor={nearWhite}
+                                round
+                                onChangeText={this.handleSearch}
+                                value={query}
+                                onSubmitEditing={this.handleSubmit}
+                                containerStyle={styles.searchBarContainer}
+                            />
+
+                            <Accordion
+                                activeSections={this.state.activeSections}
+                                containerStyle={styles.accordionContainer}
+                                sections={['0']}
+                                renderHeader={this.renderHeader}
+                                renderContent={this.renderContent}
+                                onChange={this.updateSections}
+                            />
+
+                            <ScrollView>
+                                <FlatList
+                                    data={records.slice(0, this.state.numResults)}
+                                    keyExtractor={item => item.listing_id.toString()}
+                                    renderItem={this.renderItem}
+                                />
+                            </ScrollView>
+                        </View>
+                    );
+                }
+
             }
         } else {
             //loading
@@ -631,5 +686,15 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: nearWhite,
         alignSelf: 'center',
+    },
+    loadMoreContainer: {
+        alignItems: 'center',
+        paddingTop: 5,
+    },
+    loadMoreButton: {
+        backgroundColor: seaGreen,
+        justifyContent: 'center',
+        padding: 10,
+        width: 200,
     },
 });
