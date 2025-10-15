@@ -19,7 +19,7 @@
     "csvjson-csv2json": "^5.0.6",
     "entypo": "^2.1.0",
     "eslint": "^6.1.0",
-    "expo": "^34.0.1",
+    "expo": "^48.0.0",
     "expo-asset": "^6.0.0",
     "expo-constants": "6.0.0",
     "expo-font": "~6.0.0",
